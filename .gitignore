@@ -128,3 +128,4 @@ public/pspdfkit-lib
 nohup.out
 
 package-lock.json
+.vscode/launch.json
