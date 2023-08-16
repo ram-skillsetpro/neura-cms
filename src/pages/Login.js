@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import fetcher from '../utils/fetcher'
 import styled from 'styled-components';
+
 const GridWrapper = styled.div`
   display: grid;
   grid-gap: 10px;
@@ -9,11 +11,34 @@ const GridWrapper = styled.div`
   grid-template-columns: repeat(12, 1fr);
   grid-auto-rows: minmax(25px, auto);
 `; 
-export const Login = () => (
-  <GridWrapper>
-    <h2>Login Page</h2>
+function Login() {
+
+  const handleLogin = async () => {
+    try {
+      const response = await fetcher.post('login', {});
+
+
+    console.log(response);
+
+      // Handle the response as needed
+    } catch (error) {
+      console.error('Error logging in:', error);
+    }
+  }; 
+
+  useEffect(() => {
+    handleLogin();
+  }, [])
+
+
+return (
+    <GridWrapper>
+    <h2>Login Page new</h2>
     <p>State at ceiling lay on arms while you're using the keyboard so this human feeds me.</p>
     <p>I am a kitty cat, sup, feed me, no cares in the world</p>
     <p>Meow meow, I tell my human purr for no reason but to chase after</p>
   </GridWrapper>
-)
+);
+}
+
+export default Login;
