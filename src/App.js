@@ -5,7 +5,7 @@ import { styled } from '@mui/material/styles';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { NavigationBar } from './components/NavigationBar';
 import { User } from './pages/User';
-import { Login } from './pages/Login';
+import Login from './pages/Login';
 import { Index } from './pages/Index';
 import { NoMatch } from './NoMatch';
 import Sidebar from './components/Sidebar';
