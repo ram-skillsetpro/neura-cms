@@ -9,34 +9,43 @@ import Login from './pages/Login';
 import { Index } from './pages/Index';
 import { NoMatch } from './NoMatch';
 import Sidebar from './components/Sidebar';
+import PrivateRoute from './components/PrivateRoute';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
+import { isAuthenticated } from './utils/authGuard';
 
 function App() {
+
+  const isAuthentic = isAuthenticated();
+
   return (
     <React.Fragment>
       <Router>
-           <NavigationBar />
-          <Switch>
-            <Route path="/login" component={Login} />
-            <div>
+        <NavigationBar />
+        <Switch>
+          <Route path="/login" component={Login} />
+          <div>
             <Box sx={{ flexGrow: 1 }}>
-      <Grid container spacing={2}>
-        <Grid item xs={3}>
-        <Card sx={{ minWidth: "100%" }}>
-        <Sidebar />
-        </Card>
-        </Grid>
-        <Grid item xs={9}>
-        <Route exact path="/" component={Index} />
+              <Grid container spacing={2}>
+                <Grid item xs={3}>
+                  <Card sx={{ minWidth: "100%" }}>
+                    <Sidebar />
+                  </Card>
+                </Grid>
+                <Grid item xs={9}>
+                  <PrivateRoute
+                    path="/"
+                    component={Index}
+                    isAuthenticated={isAuthentic}
+                  />
                   <Route path="/user" component={User} />
                   <Route component={NoMatch} />
-        </Grid>
-      </Grid>
-    </Box>                 
+                </Grid>
+              </Grid>
+            </Box>
           </div>
-          </Switch>
+        </Switch>
       </Router>
     </React.Fragment>
   );
