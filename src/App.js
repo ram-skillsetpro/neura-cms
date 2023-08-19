@@ -1,53 +1,28 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import { styled } from '@mui/material/styles';
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { NavigationBar } from './components/NavigationBar';
 import { User } from './pages/User';
 import Login from './pages/Login';
 import { Index } from './pages/Index';
 import { NoMatch } from './NoMatch';
-import Sidebar from './components/Sidebar';
-import PrivateRoute from './components/PrivateRoute';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import Card from '@mui/material/Card';
+import Layout from './components/layout/Layout'; // Import the Layout HOC
 import { isAuthenticated } from './utils/authGuard';
 
 function App() {
 
   const isAuthentic = isAuthenticated();
-
   return (
-    <React.Fragment>
-      <Router>
+    <Router>
+      <React.Fragment>
         <NavigationBar />
-        <Switch>
-          <Route path="/login" component={Login} />
-          <div>
-            <Box sx={{ flexGrow: 1 }}>
-              <Grid container spacing={2}>
-                <Grid item xs={3}>
-                  <Card sx={{ minWidth: "100%" }}>
-                    <Sidebar />
-                  </Card>
-                </Grid>
-                <Grid item xs={9}>
-                  <PrivateRoute
-                    path="/"
-                    component={Index}
-                    isAuthenticated={isAuthentic}
-                  />
-                  <Route path="/user" component={User} />
-                  <Route component={NoMatch} />
-                </Grid>
-              </Grid>
-            </Box>
-          </div>
-        </Switch>
-      </Router>
-    </React.Fragment>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/" element={isAuthentic ? <Layout> <Index /> </Layout> : <Navigate to="/login" />} />
+          <Route path="/user" element={isAuthentic ? <Layout> <Index /> </Layout> : <Navigate to="/login" />} />
+          <Route path="*" element={<NoMatch />} />
+        </Routes>
+      </React.Fragment>
+    </Router>
   );
 }
 
