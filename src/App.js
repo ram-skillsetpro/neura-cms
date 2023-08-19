@@ -8,17 +8,20 @@ import { NoMatch } from './NoMatch';
 import Layout from './components/layout/Layout'; // Import the Layout HOC
 import { isAuthenticated } from './utils/authGuard';
 
-function App() {
-
+function PrivateRoute({ element }) {
   const isAuthentic = isAuthenticated();
+  return isAuthentic ? element : <Navigate to="/login" />;
+}
+
+function App() {
   return (
     <Router>
       <React.Fragment>
         <NavigationBar />
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/" element={isAuthentic ? <Layout> <Index /> </Layout> : <Navigate to="/login" />} />
-          <Route path="/user" element={isAuthentic ? <Layout> <Index /> </Layout> : <Navigate to="/login" />} />
+          <Route path="/" element={<PrivateRoute element={<Layout> <Index /> </Layout>} />} />
+          <Route path="/user" element={<PrivateRoute element={<Layout> <User /> </Layout>} />} />
           <Route path="*" element={<NoMatch />} />
         </Routes>
       </React.Fragment>

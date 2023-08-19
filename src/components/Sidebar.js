@@ -7,6 +7,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import InboxIcon from '@mui/icons-material/Inbox';
 import DraftsIcon from '@mui/icons-material/Drafts';
+import { Link } from 'react-router-dom';
 
 export default function SelectedListItem() {
   const [selectedIndex, setSelectedIndex] = React.useState(1);
@@ -69,6 +70,11 @@ export default function SelectedListItem() {
         >
           <ListItemText primary="Spam" />
         </ListItemButton>
+      </List>
+      <List component="nav" aria-label="secondary mailbox folder">
+      <Link to="/user">
+        User
+      </Link>
       </List>
     </Box>
   );

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,8 +14,11 @@ import Container from '@mui/material/Container';
 import fetcher from '../utils/fetcher'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { isAuthenticated } from '../utils/authGuard';
 
-function Login() {
+const Login = () => {
+  const navigate = useNavigate();
+  const isAuthentic = isAuthenticated();
 
   const [formData, setFormData] = useState({
     emailId: '',
@@ -43,7 +47,7 @@ function Login() {
       const response = await fetcher.post('login', values);
       if (response?.response?.token) {
         localStorage.setItem('auth', JSON.stringify(response.response));
-        window.location.href = '/';
+        navigate('/');
       }
     } catch (err) {
       console.log(err);
@@ -57,6 +61,9 @@ function Login() {
   });
 
   useEffect(() => {
+    if (isAuthentic) {
+      navigate('/');
+    }
   }, [])
 
 
