@@ -7,7 +7,10 @@ export const formatDate = (date) => {
 
 export const AUTHORITY = {
     COMPANY_SUPER_ADMIN: 'COMPANY_SUPER_ADMIN',
-    ALERT: 'ALERT'
+    UPDATE_DEMO_USER: 'CMS_UPDATE_DEMO_USER'
 };
 
-export const AUTHORITY_ROUT_MAP = [ {route_regx: "/user/alert/create", authority: ['ALERT']} ];
+export const AUTHORITY_ROUT_MAP = [
+    { route_regx: "/manage/company", authority: ['CMS_UPDATE_DEMO_USER'] },
+    { route_regx: "/manage/user", authority: ['CMS_UPDATE_DEMO_USER'] }
+];

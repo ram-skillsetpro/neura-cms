@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { isLoggedin, getToken } from './authGuard';
 
 const apiClient = axios.create({
   // Can set any default configurations here, such as base URL, headers, etc.
@@ -40,16 +41,22 @@ apiClient.interceptors.response.use(
 )
 
 // Fetcher object with all methods
-const fetcher = {
-  get: async function (endpoint, params = null) {
-    const headers = {};
-    const response = await apiClient.get(endpoint, { params, headers })
-    return response.data
-  },
-  post: async function(endpoint, data = null) {
-    const headers = {};
-    const response = await apiClient.post(endpoint, data, { headers });
-    return response.data;
+const fetcher = {	
+  get: async function (endpoint, params = null) {	
+    const headers = {};	
+    if (isLoggedin()) {	
+      headers.Authorization = 'Bearer ' + getToken();	
+    }	
+    const response = await apiClient.get(endpoint, { params, headers })	
+    return response.data	
+  },	
+  post: async function(endpoint, data = null) {	
+    const headers = {};	
+    if (isLoggedin()) {	
+      headers.Authorization = 'Bearer ' + getToken();	
+    }	
+    const response = await apiClient.post(endpoint, data, { headers });	
+    return response.data;	
   },
   patch: async function (endpoint, data = null) {
     const response = await apiClient.patch(endpoint, data)

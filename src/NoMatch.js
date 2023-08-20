@@ -7,6 +7,6 @@ const Wrapper = styled.div`
 `;
 export const NoMatch = () => (
   <Wrapper>
-    <h2>No Match</h2>
+    <h2>404 - Humor not found.</h2>
   </Wrapper>
 )

@@ -7,9 +7,11 @@ import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import InboxIcon from '@mui/icons-material/Inbox';
 import DraftsIcon from '@mui/icons-material/Drafts';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 
 export default function SelectedListItem() {
+  const navigate = useNavigate();
   const [selectedIndex, setSelectedIndex] = React.useState(1);
 
   const handleListItemClick = (event, index) => {
@@ -60,21 +62,18 @@ export default function SelectedListItem() {
       <List component="nav" aria-label="secondary mailbox folder">
         <ListItemButton
           selected={selectedIndex === 4}
-          onClick={(event) => handleListItemClick(event, 4)}
+          onClick={() => navigate('/manage/company')}
         >
-          <ListItemText primary="Trash" />
+          <ListItemText primary="Company Master" />
         </ListItemButton>
         <ListItemButton
           selected={selectedIndex === 5}
-          onClick={(event) => handleListItemClick(event, 5)}
+          onClick={() => navigate('/manage/user')}
         >
-          <ListItemText primary="Spam" />
+          <ListItemText primary="User Master" />
         </ListItemButton>
       </List>
       <List component="nav" aria-label="secondary mailbox folder">
-      <Link to="/user">
-        User
-      </Link>
       </List>
     </Box>
   );
