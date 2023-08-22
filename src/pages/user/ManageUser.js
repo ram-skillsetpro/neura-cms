@@ -97,22 +97,10 @@ const ManageUser = () => {
     setOpenStates(newOpenStates);
   };
 
-
-
-  const handleEditUser = (user, index) => {
-    handleMenuClose(index);
-    setUser(user);
-  }
-
   const handleOpenUserCompanyMapDialog = (user, index) => {
     handleMenuClose(index);
     setUser(user);
     setOpenUserCompanyMapDialog(true);
-  };
-
-  const handleCloseCompanyDialog = () => {
-    setUser(null);
-    fetchUserList(currentPage);
   };
 
   const handlePageChange = (event, page) => {
@@ -224,7 +212,6 @@ const ManageUser = () => {
                     'aria-labelledby': `basic-button-${index}`
                   }}
                 >
-                  <MenuItem onClick={() => handleEditUser(user, index)}>Edit</MenuItem>
                   <MenuItem onClick={() => handleOpenUserCompanyMapDialog(user, index)}>Activate</MenuItem>
                 </Menu>
               </TableCell>
