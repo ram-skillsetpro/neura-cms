@@ -25,35 +25,58 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Checkbox
-} from '@mui/material'
-import { BiDotsVerticalRounded } from 'react-icons/bi'
-import fetcher from '../../utils/fetcher'
-import Create from './Create';
+  Checkbox,
+  FormControl,
+  InputLabel,
+  Select
+} from '@mui/material';
+import { BiDotsVerticalRounded } from 'react-icons/bi';
+import fetcher from '../../utils/fetcher';
+import SnackBar from "../../components/SnackBar";
 
-const ManageCompany = () => {
+const ManageUser = () => {
 
+  const [userList, setUserList] = useState([]);
   const [companyList, setCompanyList] = useState([]);
-  const [company, setCompany] = useState(null);
+  const [user, setUser] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [progress, setProgress] = useState(false);
   const [dialogProgress, setDialogProgress] = useState(false);
   const [openStates, setOpenStates] = useState(Array(30).fill(false));
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
-  const [openCompanyDialog, setOpenCompanyDialog] = useState(false);
+  const [openUserCompanyMapDialog, setOpenUserCompanyMapDialog] = useState(false);
+  const [selectedCompany, setSelectedCompany] = useState('');
+  const [snackbar, setSnackbar] = useState({
+    show: false,
+    status: "",
+    message: "",
+  });
+  const toggleSnackbar = (value) => {
+    setSnackbar(value);
+  };
 
 
-  const fetchCompanyList = async (page) => {
+
+  const fetchUserList = async (page) => {
     try {
       setProgress(true);
-      const cmpres = await fetcher.post(`cms/list-all-company?pgn=${page-1}`);
-      setCompanyList(cmpres.response.result);
-      setTotalPages(Math.ceil(cmpres.response.totct / cmpres.response.perpg));
+      const res = await fetcher.get(`cms/unapproved-demo-users?pgn=${page-1}`);
+      setUserList(res.response.result);
+      setTotalPages(Math.ceil(res.response.totct / res.response.perpg));
     } catch (error) {
       console.log(error);
     } finally {
       setProgress(false);
+    }
+  };
+
+  const fetchCompanyList = async () => {
+    try {
+      const res = await fetcher.get(`/company-list`);
+      setCompanyList(res.response);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -72,47 +95,54 @@ const ManageCompany = () => {
     setOpenStates(newOpenStates);
   };
 
-  const handleEditCompany = (company, index) => {
+
+
+  const handleEditUser = (user, index) => {
     handleMenuClose(index);
-    setCompany(company);
-    setOpenCompanyDialog(true);
+    setUser(user);
   }
 
-  const handleOpenConfirmDialog = (company, index) => {
+  const handleOpenUserCompanyMapDialog = (user, index) => {
     handleMenuClose(index);
-    setCompany(company);
-    setOpenConfirmDialog(true);
+    setUser(user);
+    setOpenUserCompanyMapDialog(true);
   };
 
   const handleCloseCompanyDialog = () => {
-    setCompany(null);
-    setOpenCompanyDialog(false);
-    fetchCompanyList(currentPage);
+    setUser(null);
+    fetchUserList(currentPage);
   };
 
   const handlePageChange = (event, page) => {
     setCurrentPage(page);
-    fetchCompanyList(page);
+    fetchUserList(page);
   };
 
-  const handleUpdateCompanyStatus = async () => {
+  const handleUpdateUserCompanyMapping= async () => {
     try {
       setDialogProgress(true);
-      const cmpRes = await fetcher.get(`cms/company-details?companyId=${company.id}`);
-      cmpRes.response.isActive = !company.isActive;
-      await fetcher.post('cms/edit-company', cmpRes.response);
-      fetchCompanyList(currentPage);
+      const res = await fetcher.post(`cms/map-demo-user`,  {companyId: selectedCompany, user: user.id});
+      if (res.status !== 200) {
+        setSnackbar({
+          show: true,
+          status: 'error',
+          message: res.response
+        });
+      }
+      fetchUserList(currentPage);
     } catch (err) {
       console.log(err);
     } finally {
       setDialogProgress(false);
-      setCompany(null);
-      setOpenConfirmDialog(false);
+      setUser(null);
+      setSelectedCompany('');
+      setOpenUserCompanyMapDialog(false);
     }
   };
 
   useEffect(() => {
-    fetchCompanyList(currentPage);
+    fetchUserList(currentPage);
+    fetchCompanyList();
   }, [currentPage]);
 
   return (
@@ -122,29 +152,31 @@ const ManageCompany = () => {
       <Table stickyHeader>
         <TableHead>
           <TableRow>
-            <TableCell>Code</TableCell>
             <TableCell>Name</TableCell>
-            <TableCell>Description</TableCell>
+            <TableCell>Email</TableCell>
+            <TableCell>User Name</TableCell>
+            <TableCell>Company Name</TableCell>
             <TableCell></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          { companyList.map((company, index) => (
+          { userList.map((user, index) => (
             <TableRow key={index}>
               <TableCell>
-                
                   <Typography component="p">
-                    {company.companyCode}
+                    {user.lastName}
                   </Typography>
-                
               </TableCell>
               <TableCell>
               <Typography component="p">
-                    {company.name}
+                    {user.email}
                   </Typography>
               </TableCell>
               <TableCell>
-                <Typography component="p"> {company.description} </Typography>
+                <Typography component="p"> {user.userName} </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography component="p"> {user.companyName} </Typography>
               </TableCell>
               <TableCell>
                 <Button
@@ -164,10 +196,8 @@ const ManageCompany = () => {
                     'aria-labelledby': `basic-button-${index}`
                   }}
                 >
-                  <MenuItem onClick={() => handleEditCompany(company, index)}>Edit</MenuItem>
-                  <MenuItem onClick={() => handleOpenConfirmDialog(company, index)}>
-                    {company?.isActive ? 'Deactivate' : 'Activate'}
-                  </MenuItem>
+                  <MenuItem onClick={() => handleEditUser(user, index)}>Edit</MenuItem>
+                  <MenuItem onClick={() => handleOpenUserCompanyMapDialog(user, index)}>Activate</MenuItem>
                 </Menu>
               </TableCell>
             </TableRow>
@@ -180,27 +210,32 @@ const ManageCompany = () => {
     <Stack spacing={2} sx={{ margin: "20px 0 0", flexDirection: "row-reverse" }}>
         <Pagination count={totalPages} color="primary" page={currentPage} onChange={handlePageChange} />
       </Stack>
-      
-      <Dialog open={openCompanyDialog}>
-        <DialogContent>
-          <Create submitCallback={handleCloseCompanyDialog} company={company} />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseCompanyDialog}>Close</Button>
-        </DialogActions>
-      </Dialog>
 
       
-      <Dialog open={openConfirmDialog}>
-      { dialogProgress ? <CircularProgress /> : null }
+      <Dialog open={openUserCompanyMapDialog}>
+        {dialogProgress ? <CircularProgress /> : null}
         <DialogContent>
-          <Typography componebt="p">Are you sure you want to  {company?.isActive ? ( 'Deactivate') : ( 'Activate' )}</Typography>
+          <Typography component="p">Are you sure you want to Activate?</Typography>
+          <FormControl fullWidth>
+            <InputLabel>Select a Company</InputLabel>
+            <Select
+              value={selectedCompany}
+              onChange={(e) => setSelectedCompany(e.target.value)}
+            >
+              {companyList.map((company) => (
+                <MenuItem key={company.id} value={company.id}>
+                  {company.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenConfirmDialog(false)}>Cancel</Button>
-          <Button variant="contained" onClick={handleUpdateCompanyStatus}>Ok</Button>
+          <Button onClick={() => setOpenUserCompanyMapDialog(false)}>Cancel</Button>
+          <Button disabled={!selectedCompany} variant="contained" onClick={handleUpdateUserCompanyMapping}>Save</Button>
         </DialogActions>
       </Dialog>
+      <SnackBar {...snackbar} onClose={toggleSnackbar} />
     </>
   );
 
@@ -208,4 +243,4 @@ const ManageCompany = () => {
 
 }
 
-export default ManageCompany;
+export default ManageUser;

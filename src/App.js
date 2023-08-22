@@ -7,7 +7,7 @@ import { Index } from './pages/Index';
 import { NoMatch } from './NoMatch';
 import Layout from './components/layout/Layout'; // Import the Layout HOC
 import { isAuthenticated, isRestrictedRoutWithAuthority, canAccessTheRouteWithUserAuthorities } from './utils/authGuard';
-import ManageUser from './pages/master/ManageUser';
+import ManageUser from './pages/user/ManageUser';
 import ManageCompany from './pages/company/ManageCompany';
 import CreateCompany from './pages/company/Create';
 import { useLocation } from 'react-router-dom';
@@ -31,8 +31,7 @@ function App() {
           <Route path="/" element={<PrivateRoute element={<Layout> <Index /> </Layout>} />} />
           <Route path="/company/create" element={<PrivateRoute element={<Layout> <CreateCompany /> </Layout>} />} />
           <Route path="/company/manage" element={<PrivateRoute element={<Layout> <ManageCompany /> </Layout>} />} />
-          <Route path="/manage/user" element={<PrivateRoute element={<Layout> <ManageUser /> </Layout>} />} />
-          <Route path="/manage/company" element={<PrivateRoute element={<Layout> <ManageCompany /> </Layout>} />} />
+          <Route path="/user/manage" element={<PrivateRoute element={<Layout> <ManageUser /> </Layout>} />} />
           <Route path="*" element={<NoMatch />} />
         </Routes>
       </React.Fragment>

@@ -11,6 +11,6 @@ export const AUTHORITY = {
 };
 
 export const AUTHORITY_ROUT_MAP = [
-    { route_regx: "/manage/company", authority: ['CMS_UPDATE_DEMO_USER'] },
-    { route_regx: "/manage/user", authority: ['CMS_UPDATE_DEMO_USER'] }
+    { route_regx: "/company/manage", authority: ['CMS_UPDATE_DEMO_USER'] },
+    { route_regx: "/user/manage", authority: ['CMS_UPDATE_DEMO_USER'] }
 ];

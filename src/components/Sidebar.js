@@ -62,13 +62,13 @@ export default function SelectedListItem() {
       <List component="nav" aria-label="secondary mailbox folder">
         <ListItemButton
           selected={selectedIndex === 4}
-          onClick={() => navigate('/manage/company')}
+          onClick={() => navigate('/company/manage')}
         >
           <ListItemText primary="Company Master" />
         </ListItemButton>
         <ListItemButton
           selected={selectedIndex === 5}
-          onClick={() => navigate('/manage/user')}
+          onClick={() => navigate('/user/manage')}
         >
           <ListItemText primary="User Master" />
         </ListItemButton>
