@@ -1,16 +1,16 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { isAuthenticated, isRestrictedRoutWithAuthority, canAccessTheRouteWithUserAuthorities } from './utils/authGuard';
 import { NavigationBar } from './components/NavigationBar';
-import { User } from './pages/User';
+import Layout from './components/layout/Layout'; // Import the Layout HOC
 import Login from './pages/Login';
 import { Index } from './pages/Index';
-import { NoMatch } from './NoMatch';
-import Layout from './components/layout/Layout'; // Import the Layout HOC
-import { isAuthenticated, isRestrictedRoutWithAuthority, canAccessTheRouteWithUserAuthorities } from './utils/authGuard';
+import { NoMatch } from './pages/NoMatch';
 import ManageUser from './pages/user/ManageUser';
 import ManageCompany from './pages/company/ManageCompany';
 import CreateCompany from './pages/company/Create';
-import { useLocation } from 'react-router-dom';
+
 
 function PrivateRoute({ element }) {
   let isAuthentic = isAuthenticated();
