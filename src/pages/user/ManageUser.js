@@ -28,7 +28,9 @@ import {
   Checkbox,
   FormControl,
   InputLabel,
-  Select
+  Select,
+  Breadcrumbs,
+  Link
 } from '@mui/material';
 import { BiDotsVerticalRounded } from 'react-icons/bi';
 import fetcher from '../../utils/fetcher';
@@ -147,8 +149,34 @@ const ManageUser = () => {
 
   return (
     <>
+     <Breadcrumbs aria-label="breadcrumb" sx={{margin: "20px 0 50px"}}>
+        <Link underline="hover" color="inherit" href="/">
+          Files
+        </Link>
+        <Link
+          underline="hover"
+          color="inherit"
+          href="#"
+        >
+          Core
+        </Link>
+        <Link
+          underline="hover"
+          color="text.primary"
+          href="#"
+          aria-current="page"
+        >
+          Breadcrumbs
+        </Link>
+      </Breadcrumbs>
+      <Typography variant="h3">
+      Uploading
+      </Typography>
+      <Typography className='subtitle'>
+      3 Files, 2 Uploading
+      </Typography>
       {progress ? <CircularProgress /> : null}
-      <TableContainer sx={{ maxHeight: "calc(100vh - 230px)" }}>
+      <TableContainer sx={{ maxHeight: "calc(100vh - 230px)" }} component={Paper}>
       <Table stickyHeader>
         <TableHead>
           <TableRow>

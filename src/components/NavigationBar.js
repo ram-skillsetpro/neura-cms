@@ -10,19 +10,28 @@ import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
+import Grid from '@mui/material/Grid';
+import Avatar from '@mui/material/Avatar';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  backgroundColor: "#F2F2F2",
+  border: "1px solid #F2F2F2",
+  color: "#232323",
   '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
+    backgroundColor:"#F2F2F2",
   },
+  // '&:active': {
+  //   border:"1px solid #e284af"
+  // },
+  // '&:focus': {
+  //   border:"1px solid #e284af"
+  // },
   marginRight: theme.spacing(2),
   marginLeft: 0,
   width: '100%',
@@ -61,46 +70,35 @@ export const NavigationBar = () => (
   <Box sx={{ flexGrow: 1 }}>
   <AppBar position="static">
     <Toolbar>
-      <IconButton
-        size="large"
-        edge="start"
-        color="inherit"
-        aria-label="open drawer"
-        sx={{ mr: 2 }}
-      >
-        <MenuIcon />
-      </IconButton>
-      <Typography
-        variant="h6"
-        noWrap
-        component="div"
-        sx={{ display: { xs: 'none', sm: 'block' } }}
-      >
-        simpleO.ai
-      </Typography>
-      <Search>
+    <Box sx={{ flexGrow: 1 }}>
+      <Grid container spacing={2}>
+        <Grid item xs={2}>
+        <img src='images/simpleo-ai-logo@2x.png' alt='simpleO.ai' className='top-logo'/>
+        </Grid>
+        <Grid item xs={8}>
+        <Search sx={{marginTop:"12px"}}>
         <SearchIconWrapper>
-          <SearchIcon />
+        <img src='images/icon-search@4x.png' alt='simpleO.ai' className='icon-size'/>
         </SearchIconWrapper>
         <StyledInputBase
           placeholder="Search…"
           inputProps={{ 'aria-label': 'search' }}
         />
       </Search>
-      <Box sx={{ flexGrow: 1 }} />
-      <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+        </Grid>
+        <Grid item xs={2} style={{textAlign:"right"}}>
+        {/* <IconButton size="large" aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={4} color="error">
             <MailIcon />
           </Badge>
-        </IconButton>
+        </IconButton> */}
         <IconButton
           size="large"
           aria-label="show 17 new notifications"
           color="inherit"
         >
           <Badge badgeContent={17} color="error">
-            <NotificationsIcon />
+          <img src='images/icon-bell.svg' alt='simpleO.ai'/>
           </Badge>
         </IconButton>
         <IconButton
@@ -112,21 +110,11 @@ export const NavigationBar = () => (
           // onClick={handleProfileMenuOpen}
           color="inherit"
         >
-          <AccountCircle />
+          <Avatar sx={{ width: 24, height: 24 }}>H</Avatar>
         </IconButton>
-      </Box>
-      <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-        <IconButton
-          size="large"
-          aria-label="show more"
-          // aria-controls={mobileMenuId}
-          aria-haspopup="true"
-          // onClick={handleMobileMenuOpen}
-          color="inherit"
-        >
-          <MoreIcon />
-        </IconButton>
-      </Box>
+        </Grid>
+      </Grid>
+    </Box>
     </Toolbar>
   </AppBar>
   {/* {renderMobileMenu}
