@@ -1,36 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box,
   Button,
-  Grid,
   TableContainer,
   Table,
   TableCell,
   TableHead,
   TableRow,
   Typography,
-  Input,
   TableBody,
   Menu,
   MenuItem,
   Pagination,
   Stack,
-  Paper,
-  Divider,
-  InputBase,
-  IconButton,
   CircularProgress,
-  Tooltip,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
-  Checkbox,
   FormControl,
   InputLabel,
   Select,
   Breadcrumbs,
-  Link
+  Link,
+  Tabs,
+  Tab
 } from '@mui/material';
 import { BiDotsVerticalRounded } from 'react-icons/bi';
 import fetcher from '../../utils/fetcher';
@@ -46,9 +38,9 @@ const ManageUser = () => {
   const [progress, setProgress] = useState(false);
   const [dialogProgress, setDialogProgress] = useState(false);
   const [openStates, setOpenStates] = useState(Array(30).fill(false));
-  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [openUserCompanyMapDialog, setOpenUserCompanyMapDialog] = useState(false);
   const [selectedCompany, setSelectedCompany] = useState('');
+  const [currentUserTab, setCurrentUserTab] = useState(0);
   const [snackbar, setSnackbar] = useState({
     show: false,
     status: "",
@@ -58,14 +50,25 @@ const ManageUser = () => {
     setSnackbar(value);
   };
 
-
+  const handleUserTabChange = (e, tabIndex) => {
+    setUserList([]);
+    setCurrentPage(1);
+    setCurrentUserTab(tabIndex);
+    fetchUserList(currentPage);
+  };
 
   const fetchUserList = async (page) => {
     try {
       setProgress(true);
-      const res = await fetcher.get(`cms/unapproved-demo-users?pgn=${page-1}`);
-      setUserList(res.response.result);
-      setTotalPages(Math.ceil(res.response.totct / res.response.perpg));
+      if (currentUserTab) {
+        const res = await fetcher.get(`cms/unapproved-demo-users?pgn=${page-1}`);
+        setUserList(res.response.result);
+        setTotalPages(Math.ceil(res.response.totct / res.response.perpg));
+      } else {
+        const res = await fetcher.get(`cms/approved-demo-users?pgn=${page-1}`);
+        setUserList(res.response.result);
+        setTotalPages(Math.ceil(res.response.totct / res.response.perpg));
+      }
     } catch (error) {
       console.log(error);
     } finally {
@@ -164,63 +167,126 @@ const ManageUser = () => {
       3 Files, 2 Uploading
       </Typography>
       {progress ? <CircularProgress /> : null}
-      <TableContainer sx={{ maxHeight: "calc(100vh - 230px)" }} component={Paper}>
-      <Table stickyHeader>
-        <TableHead>
-          <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell>Email</TableCell>
-            <TableCell>User Name</TableCell>
-            <TableCell>Company Name</TableCell>
-            <TableCell></TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          { userList.map((user, index) => (
-            <TableRow key={index}>
-              <TableCell>
-                  <Typography component="p">
-                    {user.lastName}
-                  </Typography>
-              </TableCell>
-              <TableCell>
-              <Typography component="p">
-                    {user.email}
-                  </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography component="p"> {user.userName} </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography component="p"> {user.companyName} </Typography>
-              </TableCell>
-              <TableCell>
-                <Button
-                  id={`basic-button-${index}`}
-                  aria-controls={`basic-menu-${index}`}
-                  aria-haspopup="true"
-                  onClick={() => handleMenuOpen(index)}
-                >
-                  <BiDotsVerticalRounded />
-                </Button>
-                <Menu
-                  id={`basic-menu-${index}`}
-                  anchorEl={openStates[index] ? document.getElementById(`basic-button-${index}`) : null}
-                  open={openStates[index] || false}
-                  onClose={() => handleMenuClose(index)}
-                  MenuListProps={{
-                    'aria-labelledby': `basic-button-${index}`
-                  }}
-                >
-                  <MenuItem onClick={() => handleOpenUserCompanyMapDialog(user, index)}>Activate</MenuItem>
-                </Menu>
-              </TableCell>
+      <Tabs value={currentUserTab} onChange={handleUserTabChange}>
+        <Tab label='Unapproved User' />
+        
+          <Tab label='Approved User' />
+        
+      </Tabs>
+        <TableContainer sx={{ maxHeight: "calc(100vh - 230px)" }}>
+          {currentUserTab === 0 && (
+        <Table stickyHeader>
+          <TableHead>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell>Email</TableCell>
+              <TableCell>User Name</TableCell>
+              <TableCell>Company Name</TableCell>
+              <TableCell></TableCell>
             </TableRow>
-          ))}
-
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            { userList.map((user, index) => (
+              <TableRow key={index}>
+                <TableCell>
+                    <Typography component="p">
+                      {user.lastName}
+                    </Typography>
+                </TableCell>
+                <TableCell>
+                <Typography component="p">
+                      {user.email}
+                    </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography component="p"> {user.userName} </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography component="p"> {user.companyName} </Typography>
+                </TableCell>
+                <TableCell>
+                  <Button
+                    id={`basic-button-${index}`}
+                    aria-controls={`basic-menu-${index}`}
+                    aria-haspopup="true"
+                    onClick={() => handleMenuOpen(index)}
+                  >
+                    <BiDotsVerticalRounded />
+                  </Button>
+                  <Menu
+                    id={`basic-menu-${index}`}
+                    anchorEl={openStates[index] ? document.getElementById(`basic-button-${index}`) : null}
+                    open={openStates[index] || false}
+                    onClose={() => handleMenuClose(index)}
+                    MenuListProps={{
+                      'aria-labelledby': `basic-button-${index}`
+                    }}
+                  >
+                    <MenuItem onClick={() => handleOpenUserCompanyMapDialog(user, index)}>Activate</MenuItem>
+                  </Menu>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        )}
+        { currentUserTab === 1 && (
+          <Table stickyHeader>
+          <TableHead>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell>Email</TableCell>
+              <TableCell>User Name</TableCell>
+              <TableCell>Company Name</TableCell>
+              <TableCell></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            { userList.map((user, index) => (
+              <TableRow key={index}>
+                <TableCell>
+                    <Typography component="p">
+                      {user.lastName}
+                    </Typography>
+                </TableCell>
+                <TableCell>
+                <Typography component="p">
+                      {user.email}
+                    </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography component="p"> {user.userName} </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography component="p"> {user.companyName} </Typography>
+                </TableCell>
+                <TableCell>
+                  <Button
+                    id={`basic-button-${index}`}
+                    aria-controls={`basic-menu-${index}`}
+                    aria-haspopup="true"
+                    onClick={() => handleMenuOpen(index)}
+                  >
+                    <BiDotsVerticalRounded />
+                  </Button>
+                  <Menu
+                    id={`basic-menu-${index}`}
+                    anchorEl={openStates[index] ? document.getElementById(`basic-button-${index}`) : null}
+                    open={openStates[index] || false}
+                    onClose={() => handleMenuClose(index)}
+                    MenuListProps={{
+                      'aria-labelledby': `basic-button-${index}`
+                    }}
+                  >
+                    <MenuItem onClick={() => handleOpenUserCompanyMapDialog(user, index)}>Activate</MenuItem>
+                  </Menu>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        )}
+      </TableContainer>
     
     <Stack spacing={2} sx={{ margin: "20px 0 0", flexDirection: "row-reverse" }}>
         <Pagination count={totalPages} color="primary" page={currentPage} onChange={handlePageChange} />
