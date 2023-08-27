@@ -8,9 +8,12 @@ import Divider from '@mui/material/Divider';
 import InboxIcon from '@mui/icons-material/Inbox';
 import DraftsIcon from '@mui/icons-material/Drafts';
 import { useNavigate } from 'react-router-dom';
+import { AUTHORITY } from "../utils/constants";
+import {userAuthority } from "../utils/authGuard";
 
 
 export default function SelectedListItem() {
+  const authority = userAuthority().map(authority => authority.name);
   const navigate = useNavigate();
   const [selectedIndex, setSelectedIndex] = React.useState(1);
 
@@ -60,20 +63,30 @@ export default function SelectedListItem() {
       </List>
       <Divider />
       <List component="nav" aria-label="secondary mailbox folder">
-        <ListItemButton
-          selected={selectedIndex === 4}
-          onClick={() => navigate('/company/manage')}
-        >
-          <ListItemText primary="Company Master" />
-        </ListItemButton>
-        <ListItemButton
-          selected={selectedIndex === 5}
-          onClick={() => navigate('/user/manage')}
-        >
-          <ListItemText primary="User Master" />
-        </ListItemButton>
-      </List>
-      <List component="nav" aria-label="secondary mailbox folder">
+        { authority.includes(AUTHORITY.UPDATE_DEMO_USER) && (
+          <ListItemButton
+            selected={selectedIndex === 4}
+            onClick={() => navigate('/company/manage')}
+          >
+            <ListItemText primary="Company Master" />
+          </ListItemButton>
+        )}
+        { authority.includes(AUTHORITY.UPDATE_DEMO_USER) && (
+          <ListItemButton
+            selected={selectedIndex === 5}
+            onClick={() => navigate('/user/manage')}
+          >
+            <ListItemText primary="User Master" />
+          </ListItemButton>
+        )}
+        { (authority.includes(AUTHORITY.USER_QC) || authority.includes(AUTHORITY.USER_DE)) && (
+          <ListItemButton
+            selected={selectedIndex === 6}
+            onClick={() => navigate('/user/manage')}
+          >
+            <ListItemText primary="Contract Master" />
+          </ListItemButton>
+        )}
       </List>
     </Box>
   );

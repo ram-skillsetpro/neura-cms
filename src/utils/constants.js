@@ -7,7 +7,9 @@ export const formatDate = (date) => {
 
 export const AUTHORITY = {
     COMPANY_SUPER_ADMIN: 'COMPANY_SUPER_ADMIN',
-    UPDATE_DEMO_USER: 'CMS_UPDATE_DEMO_USER'
+    UPDATE_DEMO_USER: 'CMS_UPDATE_DEMO_USER',
+    USER_QC: 'CMS_USER_QC',
+    USER_DE: 'CMS_USER_DE'
 };
 
 export const AUTHORITY_ROUT_MAP = [

@@ -39,6 +39,7 @@ const ManageUser = () => {
   const [dialogProgress, setDialogProgress] = useState(false);
   const [openStates, setOpenStates] = useState(Array(30).fill(false));
   const [openUserCompanyMapDialog, setOpenUserCompanyMapDialog] = useState(false);
+  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [selectedCompany, setSelectedCompany] = useState('');
   const [currentUserTab, setCurrentUserTab] = useState(0);
   const [snackbar, setSnackbar] = useState({
@@ -54,18 +55,17 @@ const ManageUser = () => {
     setUserList([]);
     setCurrentPage(1);
     setCurrentUserTab(tabIndex);
-    fetchUserList(currentPage);
   };
 
   const fetchUserList = async (page) => {
     try {
       setProgress(true);
       if (currentUserTab) {
-        const res = await fetcher.get(`cms/unapproved-demo-users?pgn=${page-1}`);
+        const res = await fetcher.get(`cms/approved-demo-users?pgn=${page-1}`);
         setUserList(res.response.result);
         setTotalPages(Math.ceil(res.response.totct / res.response.perpg));
       } else {
-        const res = await fetcher.get(`cms/approved-demo-users?pgn=${page-1}`);
+        const res = await fetcher.get(`cms/unapproved-demo-users?pgn=${page-1}`);
         setUserList(res.response.result);
         setTotalPages(Math.ceil(res.response.totct / res.response.perpg));
       }
@@ -133,10 +133,33 @@ const ManageUser = () => {
     }
   };
 
+  const handleOpenConfirmDialog = (user, index) => {
+    handleMenuClose(index);
+    setUser(user);
+    setOpenConfirmDialog(true);
+  };
+
+  const handleDeactivateUser = async () => {
+    try {
+      const res = await fetcher.get(`cms/deactivate-company?companyId=${user.companyId}`);
+      setSnackbar({
+        show: true,
+        status: 'success',
+        message: res.response
+      });
+      fetchUserList(currentPage);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setUser(null);
+      setOpenConfirmDialog(false);
+    }
+  }
+
   useEffect(() => {
     fetchUserList(currentPage);
     fetchCompanyList();
-  }, [currentPage]);
+  }, [currentPage, currentUserTab]);
 
   return (
     <>
@@ -278,7 +301,7 @@ const ManageUser = () => {
                       'aria-labelledby': `basic-button-${index}`
                     }}
                   >
-                    <MenuItem onClick={() => handleOpenUserCompanyMapDialog(user, index)}>Activate</MenuItem>
+                    <MenuItem onClick={() => handleOpenConfirmDialog(user, index)}>Deactivate</MenuItem>
                   </Menu>
                 </TableCell>
               </TableRow>
@@ -314,6 +337,16 @@ const ManageUser = () => {
         <DialogActions>
           <Button onClick={() => setOpenUserCompanyMapDialog(false)}>Cancel</Button>
           <Button disabled={!selectedCompany} variant="contained" onClick={handleUpdateUserCompanyMapping}>Save</Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={openConfirmDialog}>
+        <DialogContent>
+          <Typography componebt="p">Are you sure you want to Deactivate?</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenConfirmDialog(false)}>Cancel</Button>
+          <Button variant="contained" onClick={handleDeactivateUser}>Ok</Button>
         </DialogActions>
       </Dialog>
       <SnackBar {...snackbar} onClose={toggleSnackbar} />
