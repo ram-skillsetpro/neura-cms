@@ -68,22 +68,25 @@ const Login = () => {
 
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main">
       <CssBaseline />
-      <Box
-        sx={{
-          marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-
-        </Avatar>
-        <Typography component="h1" variant="h5">
+      <Grid container className='login-bx'>
+  <Grid item xs={5} className='loging-left'>
+    <box className="popup-slide-image-container">
+    <img src='images/list-view.png'></img>
+    </box>
+    <box className="popup-slide-text">
+    <Typography component="h3">The Future of Contract Management is here.</Typography>
+    <Typography component="p">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla pretium et ipsum sed consequat. Pellentesque habitant morbi tristique senectus et netus et</Typography>
+    </box>
+  </Grid>
+  <Grid item xs={7} className='loging-right'>
+  <Box className="login-form">
+  <img src='images/simpleo-ai-logo@2x.png' style={{width:'20%', display:'block', margin:'20px auto'}}></img>
+        <Typography component="h4">
           Sign in
         </Typography>
+        <Typography component="p">Accelerate contract review and management with SimpLegal's AI-powered system.</Typography>
         <Box component="form" sx={{ mt: 1 }}>
           <TextField
             margin="normal"
@@ -93,6 +96,7 @@ const Login = () => {
             autoFocus
             onChange={formik.handleChange}
             value={formik.values.emailId}
+            size="small"
           />
           {formik.touched.emailId && formik.errors.emailId && (
             <div>{formik.errors.emailId}</div>
@@ -105,14 +109,24 @@ const Login = () => {
             type="password"
             onChange={formik.handleChange}
             value={formik.values.password}
+            size="small"
           />
           {formik.touched.password && formik.errors.password && (
             <div>{formik.errors.password}</div>
           )}
-          <FormControlLabel
+           <Grid container>
+            <Grid item xs>
+            <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
           />
+            </Grid>
+            <Grid item>
+            <Link href="#" variant="body2" style={{marginTop:'10px', display:'inline-block'}}>
+                Forgot password?
+              </Link>
+            </Grid>
+          </Grid>
           <Button
             type="button"
             fullWidth
@@ -122,20 +136,16 @@ const Login = () => {
           >
             Sign In
           </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="#" variant="body2">
+          <div style={{marginTop:'10px', textAlign:'center'}}>
+          <Link href="#" variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
-            </Grid>
-          </Grid>
+            </div>
         </Box>
       </Box>
+  </Grid>
+</Grid>
+      
 
     </Container>
   );
