@@ -12,6 +12,7 @@ body {
 }
 *{font-family: 'Open Sans', sans-serif !important;}
 table th{font-weight: 600 !important;}
+table td{padding: 10px 16px !important;}
 .body-bx{padding-top: 60px;}
 .body-container{
   width: 100%;
