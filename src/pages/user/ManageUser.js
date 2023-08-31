@@ -22,7 +22,8 @@ import {
   Breadcrumbs,
   Link,
   Tabs,
-  Tab
+  Tab,
+  Paper
 } from '@mui/material';
 import { BiDotsVerticalRounded } from 'react-icons/bi';
 import fetcher from '../../utils/fetcher';
@@ -196,7 +197,7 @@ const ManageUser = () => {
           <Tab label='Approved User' />
         
       </Tabs>
-        <TableContainer sx={{ maxHeight: "calc(100vh - 230px)" }}>
+      <TableContainer sx={{ maxHeight: "calc(100vh - 230px)" }} component={Paper}>
           {currentUserTab === 0 && (
         <Table stickyHeader>
           <TableHead>
@@ -310,7 +311,6 @@ const ManageUser = () => {
         </Table>
         )}
       </TableContainer>
-    
     <Stack spacing={2} sx={{ margin: "20px 0 0", flexDirection: "row-reverse" }}>
         <Pagination count={totalPages} color="primary" page={currentPage} onChange={handlePageChange} />
       </Stack>

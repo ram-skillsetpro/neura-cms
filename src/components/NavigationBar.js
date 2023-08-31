@@ -67,7 +67,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 
 export const NavigationBar = () => (
-  <Box sx={{ flexGrow: 1 }}>
+  <Box sx={{ flexGrow: 1 }} className="top-nav-header">
   <AppBar position="static">
     <Toolbar>
     <Box sx={{ flexGrow: 1 }}>

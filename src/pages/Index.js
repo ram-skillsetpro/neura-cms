@@ -4,6 +4,10 @@ import Typography from '@mui/material/Typography';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 import { DataGrid } from '@mui/x-data-grid';
+import {
+  Paper,
+  TableContainer
+} from '@mui/material'
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 70 },
@@ -67,8 +71,8 @@ export const Index = (props) => (
       <Typography variant="overline" display="block" gutterBottom>
       3 Files, 2 Uploading
       </Typography>
-
-      <div style={{ height: 400, width: '100%' }}>
+      
+      <TableContainer sx={{ maxHeight: "400px" }} component={Paper}>
       <DataGrid
         rows={rows}
         columns={columns}
@@ -80,7 +84,7 @@ export const Index = (props) => (
         pageSizeOptions={[5, 10]}
         checkboxSelection
       />
-    </div>
+    </TableContainer>
 
     <Typography variant="h5" gutterBottom sx={{marginTop: "50px"}}> 
     Recent files
@@ -89,7 +93,7 @@ export const Index = (props) => (
       3 Files
       </Typography>
 
-      <div style={{ height: 400, width: '100%' }}>
+      <TableContainer sx={{ maxHeight: "400px" }} component={Paper}>
       <DataGrid
         rows={rows}
         columns={columns}
@@ -101,6 +105,6 @@ export const Index = (props) => (
         pageSizeOptions={[5, 10]}
         checkboxSelection
       />
-    </div>
+    </TableContainer>
       </Box>
 )

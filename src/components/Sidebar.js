@@ -23,7 +23,7 @@ export default function SelectedListItem() {
 
   return (
     <Box sx={{ width: '100%', height: '100%', bgcolor: 'background.paper' }}>
-      <List component="nav" aria-label="main mailbox folders">
+      {/* <List component="nav" aria-label="main mailbox folders">
         <ListItemButton
           selected={selectedIndex === 0}
           onClick={(event) => handleListItemClick(event, 0)}
@@ -61,13 +61,16 @@ export default function SelectedListItem() {
           <ListItemText primary="Trash" />
         </ListItemButton>
       </List>
-      <Divider />
-      <List component="nav" aria-label="secondary mailbox folder">
+      <Divider /> */}
+      <List component="nav" aria-label="secondary mailbox folder" className='left-nav'>
         { authority.includes(AUTHORITY.UPDATE_DEMO_USER) && (
           <ListItemButton
             selected={selectedIndex === 4}
             onClick={() => navigate('/company/manage')}
           >
+            <ListItemIcon>
+            <InboxIcon />
+          </ListItemIcon>
             <ListItemText primary="Company Master" />
           </ListItemButton>
         )}
@@ -76,6 +79,9 @@ export default function SelectedListItem() {
             selected={selectedIndex === 5}
             onClick={() => navigate('/user/manage')}
           >
+            <ListItemIcon>
+            <InboxIcon />
+          </ListItemIcon>
             <ListItemText primary="User Master" />
           </ListItemButton>
         )}
@@ -84,6 +90,9 @@ export default function SelectedListItem() {
             selected={selectedIndex === 6}
             onClick={() => navigate('/user/manage')}
           >
+            <ListItemIcon>
+            <InboxIcon />
+          </ListItemIcon>
             <ListItemText primary="Contract Master" />
           </ListItemButton>
         )}

@@ -10,6 +10,12 @@ body {
   font-family: 'Poppins', sans-serif !important;
 }
 *{font-family: 'Poppins', sans-serif !important;}
+.body-bx{padding-top: 60px;}
+.body-container{
+  width: 100%;
+  height: calc(100vh - 80px);
+  overflow-y: auto;
+}
 .top-logo{height: 30px; margin-top: 12px;}
 .icon-size{height: 25px;}
 .css-hip9hq-MuiPaper-root-MuiAppBar-root{
@@ -125,4 +131,13 @@ font-size: 0.9em;
     border: 1px solid #ef4747 !important;
     box-shadow: none !important;
     height: 42px;
+}
+
+.left-nav > div{
+  border-bottom: 1px solid #e3e3e3;
+}
+.top-nav-header{
+  position: fixed;
+  width: 100%;
+  z-index: 10;
 }
