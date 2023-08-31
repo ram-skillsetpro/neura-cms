@@ -11,13 +11,14 @@ body {
   font-family: 'Open Sans', sans-serif !important;
 }
 *{font-family: 'Open Sans', sans-serif !important;}
+table th{font-weight: 600 !important;}
 .body-bx{padding-top: 60px;}
 .body-container{
   width: 100%;
   height: calc(100vh - 80px);
   overflow-y: auto;
 }
-.top-logo{height: 30px; margin-top: 12px;}
+.top-logo{height: 30px; margin-top: 17px;}
 .icon-size{height: 25px;}
 .css-hip9hq-MuiPaper-root-MuiAppBar-root{
   background-color: #fff !important;
@@ -117,6 +118,7 @@ font-size: 0.9em;
   margin-bottom: 20px;
 }
 .loging-right p{text-align: center; margin-bottom: 20px;}
+.login-form{padding: 0 10%;}
 
 .css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input{
   background: #fff !important;
@@ -143,6 +145,7 @@ font-size: 0.9em;
 }
 .top-nav-header{
   position: fixed;
+  top:0;
   width: 100%;
   z-index: 10;
 }
@@ -164,3 +167,6 @@ font-size: 0.9em;
 .form-bx .MuiFormControl-root{
   margin-top: 20px;
 }
+.MuiDialogContent-root .form-bx{padding: 0;}
+.MuiDialogContent-root .MuiPaper-elevation{box-shadow: none;}
+.close-button{position: absolute !important; right: 10px; top: 10px;}
