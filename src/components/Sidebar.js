@@ -10,7 +10,8 @@ import DraftsIcon from '@mui/icons-material/Drafts';
 import { useNavigate } from 'react-router-dom';
 import { AUTHORITY } from "../utils/constants";
 import {userAuthority } from "../utils/authGuard";
-
+import PeopleOutlineSharpIcon from '@mui/icons-material/PeopleOutlineSharp';
+import BusinessSharpIcon from '@mui/icons-material/BusinessSharp';
 
 export default function SelectedListItem() {
   const authority = userAuthority().map(authority => authority.name);
@@ -69,7 +70,7 @@ export default function SelectedListItem() {
             onClick={() => navigate('/company/manage')}
           >
             <ListItemIcon>
-            <InboxIcon />
+            <BusinessSharpIcon />
           </ListItemIcon>
             <ListItemText primary="Company Master" />
           </ListItemButton>
@@ -80,7 +81,7 @@ export default function SelectedListItem() {
             onClick={() => navigate('/user/manage')}
           >
             <ListItemIcon>
-            <InboxIcon />
+            <PeopleOutlineSharpIcon />
           </ListItemIcon>
             <ListItemText primary="User Master" />
           </ListItemButton>

@@ -1,7 +1,7 @@
 import {
     Box,
     Button,
-    Input, CircularProgress} from '@mui/material'
+    Input, CircularProgress, Paper, TextField} from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -63,13 +63,14 @@ const Create = ({ submitCallback, company }) => {
 
 
     return (
-        <Container component="main" maxWidth="xs">
+        <Container maxWidth="xs" component={Paper}>
         {progress ? <CircularProgress /> : null}
-        <Typography component="h1" variant="h5">
+       
+        <Box component="form" sx={{ mt: 1 }} className='form-bx'>
+        <Typography component="h3">
           Create Company
         </Typography>
-        <Box component="form" sx={{ mt: 1 }}>
-            <Input
+            <TextField
                 fullWidth
                 label="Company Description"
                 name="companyDescription"
@@ -77,17 +78,21 @@ const Create = ({ submitCallback, company }) => {
                 autoFocus
                 onChange={formik.handleChange}
                 value={formik.values.companyDescription}
+                variant="outlined" 
+                size="small"
             />
             {formik.touched.companyDescription && formik.errors.companyDescription && (
                 <div>{formik.errors.companyDescription}</div>
             )}
-            <Input
+            <TextField
                 fullWidth
                 name="companyName"
                 label="Company Name"
                 placeholder='Company Name'
                 onChange={formik.handleChange}
                 value={formik.values.companyName}
+                variant="outlined" 
+                size="small"
             />
             {formik.touched.companyName && formik.errors.companyName && (
                 <div>{formik.errors.companyName}</div>

@@ -8,10 +8,10 @@ const WithSidebarLayout = ({ children }) => {
   return (
 
     <Grid sx={{ flexGrow: 1 }} container className='body-bx'>
-      <Grid item xs={3}>
+      <Grid item xs className='sidebar-bx'>
       <Sidebar />
       </Grid>
-      <Grid item xs={9} className='body-container'>
+      <Grid item xs className='body-container'>
       <Container fixed>
       {children}
       </Container>

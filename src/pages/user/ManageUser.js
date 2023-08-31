@@ -213,20 +213,16 @@ const ManageUser = () => {
             { userList.map((user, index) => (
               <TableRow key={index}>
                 <TableCell>
-                    <Typography component="p">
                       {user.lastName}
-                    </Typography>
                 </TableCell>
                 <TableCell>
-                <Typography component="p">
                       {user.email}
-                    </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography component="p"> {user.userName} </Typography>
+                  {user.userName}
                 </TableCell>
                 <TableCell>
-                  <Typography component="p"> {user.companyName} </Typography>
+                  {user.companyName}
                 </TableCell>
                 <TableCell>
                   <Button
@@ -269,20 +265,16 @@ const ManageUser = () => {
             { userList.map((user, index) => (
               <TableRow key={index}>
                 <TableCell>
-                    <Typography component="p">
                       {user.lastName}
-                    </Typography>
                 </TableCell>
                 <TableCell>
-                <Typography component="p">
                       {user.email}
-                    </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography component="p"> {user.userName} </Typography>
+                  {user.userName}
                 </TableCell>
                 <TableCell>
-                  <Typography component="p"> {user.companyName} </Typography>
+                  {user.companyName}
                 </TableCell>
                 <TableCell>
                   <Button
@@ -319,10 +311,12 @@ const ManageUser = () => {
       <Dialog open={openUserCompanyMapDialog}>
         {dialogProgress ? <CircularProgress /> : null}
         <DialogContent>
-          <Typography component="p">Are you sure you want to Activate?</Typography>
-          <FormControl fullWidth>
-            <InputLabel>Select a Company</InputLabel>
+          <box className="form-bx">
+          <Typography component="p" style={{marginBottom:"10px"}}>Are you sure you want to Activate?</Typography>
+          <FormControl fullWidth size="small">
+            <InputLabel id="select-company">Select a Company</InputLabel>
             <Select
+              labelId="select-company"
               value={selectedCompany}
               onChange={(e) => setSelectedCompany(e.target.value)}
             >
@@ -333,6 +327,7 @@ const ManageUser = () => {
               ))}
             </Select>
           </FormControl>
+          </box>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenUserCompanyMapDialog(false)}>Cancel</Button>

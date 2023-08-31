@@ -151,19 +151,13 @@ const ManageCompany = () => {
           { companyList.map((company, index) => (
             <TableRow key={index}>
               <TableCell>
-                
-                  <Typography component="p">
                     {company.companyCode}
-                  </Typography>
-                
               </TableCell>
               <TableCell>
-              <Typography component="p">
                     {company.name}
-                  </Typography>
               </TableCell>
               <TableCell>
-                <Typography component="p"> {company.description} </Typography>
+                {company.description}
               </TableCell>
               <TableCell>
                 <Button
