@@ -164,7 +164,7 @@ const ManageUser = () => {
 
   return (
     <>
-     <Breadcrumbs aria-label="breadcrumb" sx={{margin: "20px 0 50px"}}>
+     {/* <Breadcrumbs aria-label="breadcrumb" sx={{margin: "20px 0 50px"}}>
         <Link underline="hover" color="inherit" href="/">
           Files
         </Link>
@@ -183,15 +183,15 @@ const ManageUser = () => {
         >
           Breadcrumbs
         </Link>
-      </Breadcrumbs>
-      <Typography variant="h3">
-      Uploading
+      </Breadcrumbs> */}
+      <Typography variant="h3" className='page-heading'>
+      Manage User
       </Typography>
-      <Typography className='subtitle'>
+      {/* <Typography className='subtitle'>
       3 Files, 2 Uploading
-      </Typography>
+      </Typography> */}
       {progress ? <CircularProgress /> : null}
-      <Tabs value={currentUserTab} onChange={handleUserTabChange}>
+      <Tabs value={currentUserTab} onChange={handleUserTabChange} component={Paper} style={{marginBottom:"5px"}}>
         <Tab label='Unapproved User' />
         
           <Tab label='Approved User' />

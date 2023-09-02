@@ -72,7 +72,7 @@ export default function SelectedListItem() {
             <ListItemIcon>
             <BusinessSharpIcon />
           </ListItemIcon>
-            <ListItemText primary="Company Master" />
+            <ListItemText primary="Manage Company" />
           </ListItemButton>
         )}
         { authority.includes(AUTHORITY.UPDATE_DEMO_USER) && (
@@ -83,7 +83,7 @@ export default function SelectedListItem() {
             <ListItemIcon>
             <PeopleOutlineSharpIcon />
           </ListItemIcon>
-            <ListItemText primary="User Master" />
+            <ListItemText primary="Manage User" />
           </ListItemButton>
         )}
         { (authority.includes(AUTHORITY.USER_QC) || authority.includes(AUTHORITY.USER_DE)) && (

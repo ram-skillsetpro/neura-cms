@@ -171,3 +171,5 @@ font-size: 0.9em;
 .MuiDialogContent-root .form-bx{padding: 0;}
 .MuiDialogContent-root .MuiPaper-elevation{box-shadow: none;}
 .close-button{position: absolute !important; right: 10px; top: 10px;}
+
+.body-container h3.page-heading{margin-bottom: 20px; font-weight: 600;}

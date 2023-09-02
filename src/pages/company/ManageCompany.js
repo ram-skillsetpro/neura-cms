@@ -112,7 +112,7 @@ const ManageCompany = () => {
 
   return (
     <>
-    <Breadcrumbs aria-label="breadcrumb" sx={{margin: "20px 0 50px"}}>
+    {/* <Breadcrumbs aria-label="breadcrumb" sx={{margin: "20px 0 50px"}}>
         <Link underline="hover" color="inherit" href="/">
           Files
         </Link>
@@ -131,13 +131,13 @@ const ManageCompany = () => {
         >
           Breadcrumbs
         </Link>
-      </Breadcrumbs>
-      <Typography variant="h3">
-      Uploading
+      </Breadcrumbs> */}
+      <Typography variant="h3" className='page-heading'>
+      Manage Company
       </Typography>
-      <Typography className='subtitle'>
+      {/* <Typography className='subtitle'>
       3 Files, 2 Uploading
-      </Typography>
+      </Typography> */}
       {progress ? <CircularProgress /> : null}
       <TableContainer sx={{ maxHeight: "calc(100vh - 230px)" }} component={Paper}>
       <Table stickyHeader>

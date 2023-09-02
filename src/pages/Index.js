@@ -44,7 +44,7 @@ const rows = [
 
 export const Index = (props) => (
   <Box sx={{ width: '100%', padding:"20px",}}>
-    <Breadcrumbs aria-label="breadcrumb" sx={{margin: "20px 0 50px"}}>
+    {/* <Breadcrumbs aria-label="breadcrumb" sx={{margin: "20px 0 50px"}}>
         <Link underline="hover" color="inherit" href="/">
           Files
         </Link>
@@ -63,16 +63,16 @@ export const Index = (props) => (
         >
           Breadcrumbs
         </Link>
-      </Breadcrumbs>
+      </Breadcrumbs> */}
 
-      <Typography variant="h5" gutterBottom>
+      {/* <Typography variant="h5" gutterBottom>
       Uploading
       </Typography>
       <Typography variant="overline" display="block" gutterBottom>
       3 Files, 2 Uploading
-      </Typography>
+      </Typography> */}
       
-      <TableContainer sx={{ maxHeight: "400px" }} component={Paper}>
+      {/* <TableContainer sx={{ maxHeight: "400px" }} component={Paper}>
       <DataGrid
         rows={rows}
         columns={columns}
@@ -84,16 +84,16 @@ export const Index = (props) => (
         pageSizeOptions={[5, 10]}
         checkboxSelection
       />
-    </TableContainer>
+    </TableContainer> */}
 
-    <Typography variant="h5" gutterBottom sx={{marginTop: "50px"}}> 
+    {/* <Typography variant="h5" gutterBottom sx={{marginTop: "50px"}}> 
     Recent files
       </Typography>
       <Typography variant="overline" display="block" gutterBottom>
       3 Files
-      </Typography>
+      </Typography> */}
 
-      <TableContainer sx={{ maxHeight: "400px" }} component={Paper}>
+      {/* <TableContainer sx={{ maxHeight: "400px" }} component={Paper}>
       <DataGrid
         rows={rows}
         columns={columns}
@@ -105,6 +105,6 @@ export const Index = (props) => (
         pageSizeOptions={[5, 10]}
         checkboxSelection
       />
-    </TableContainer>
+    </TableContainer> */}
       </Box>
 )

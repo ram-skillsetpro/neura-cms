@@ -16,6 +16,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import Grid from '@mui/material/Grid';
 import Avatar from '@mui/material/Avatar';
+// import logo from '../../public/images/simpleo-ai-logo@2x.png'
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -73,18 +74,18 @@ export const NavigationBar = () => (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
         <Grid item xs={2}>
-        <img src='images/simpleo-ai-logo@2x.png' alt='simpleO.ai' className='top-logo'/>
+        <img src="/images/simpleo-ai-logo@2x.png" alt='simpleO.ai' className='top-logo'/>
         </Grid>
         <Grid item xs={8}>
-        <Search sx={{marginTop:"12px"}}>
+        {/* <Search sx={{marginTop:"12px"}}>
         <SearchIconWrapper>
-        <img src='images/icon-search@4x.png' alt='simpleO.ai' className='icon-size'/>
+        <img src='/images/icon-search@4x.png' alt='simpleO.ai' className='icon-size'/>
         </SearchIconWrapper>
         <StyledInputBase
           placeholder="Search…"
           inputProps={{ 'aria-label': 'search' }}
         />
-      </Search>
+      </Search> */}
         </Grid>
         <Grid item xs={2} style={{textAlign:"right"}}>
         {/* <IconButton size="large" aria-label="show 4 new mails" color="inherit">
@@ -92,7 +93,7 @@ export const NavigationBar = () => (
             <MailIcon />
           </Badge>
         </IconButton> */}
-        <IconButton
+        {/* <IconButton
           size="large"
           aria-label="show 17 new notifications"
           color="inherit"
@@ -100,7 +101,7 @@ export const NavigationBar = () => (
           <Badge badgeContent={17} color="error">
           <img src='images/icon-bell.svg' alt='simpleO.ai'/>
           </Badge>
-        </IconButton>
+        </IconButton> */}
         <IconButton
           size="large"
           edge="end"
