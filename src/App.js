@@ -10,6 +10,8 @@ import { NoMatch } from './pages/NoMatch';
 import ManageUser from './pages/user/ManageUser';
 import ManageCompany from './pages/company/ManageCompany';
 import CreateCompany from './pages/company/Create';
+import CreateContract from './pages/contract/Create';
+import ManageContract from './pages/contract/ManageContract';
 
 
 function PrivateRoute({ element }) {
@@ -32,6 +34,8 @@ function App() {
           <Route path="/company/create" element={<PrivateRoute element={<Layout> <CreateCompany /> </Layout>} />} />
           <Route path="/company/manage" element={<PrivateRoute element={<Layout> <ManageCompany /> </Layout>} />} />
           <Route path="/user/manage" element={<PrivateRoute element={<Layout> <ManageUser /> </Layout>} />} />
+          <Route path="/contract/create" element={<PrivateRoute element={<Layout> <CreateContract /> </Layout>} />} />
+          <Route path="/contract/manage" element={<PrivateRoute element={<Layout> <ManageContract /> </Layout>} />} />
           <Route path="*" element={<NoMatch />} />
         </Routes>
       </React.Fragment>

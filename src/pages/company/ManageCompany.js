@@ -23,7 +23,7 @@ import {
 } from '@mui/material'
 import { BiDotsVerticalRounded } from 'react-icons/bi'
 import fetcher from '../../utils/fetcher'
-import Create from './Create';
+import CreateCompany from './Create';
 import CloseIcon from '@mui/icons-material/Close';
 
 const ManageCompany = () => {
@@ -198,7 +198,7 @@ const ManageCompany = () => {
       
       <Dialog open={openCompanyDialog}>
         <DialogContent>
-          <Create submitCallback={handleCloseCompanyDialog} company={company} />
+          <CreateCompany submitCallback={handleCloseCompanyDialog} company={company} />
         </DialogContent>
           <IconButton className='close-button' onClick={handleCloseCompanyDialog}><CloseIcon/></IconButton>
       </Dialog>

@@ -9,20 +9,30 @@ import fetcher from '../../utils/fetcher'
 import { useNavigate } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import SnackBar from "../../components/SnackBar";
 
-const CreateCompany = ({ submitCallback, company }) => {
+const CreateContract = ({ submitCallback, contract }) => {
     const navigate = useNavigate();
     const [progress, setProgress] = useState(false);
+    const [snackbar, setSnackbar] = useState({
+        show: false,
+        status: "",
+        message: "",
+      });
+      const toggleSnackbar = (value) => {
+        setSnackbar(value);
+      };
     
     const [formData, setFormData] = useState({
-        companyDescription: company?.description || '',
-        companyName: company?.name || '',
-        id: company?.id || ''
+        desc: contract?.desc || '',
+        name: contract?.name || '',
+        id: contract?.id || '',
+        is_active: contract?.is_active || ''
     });
 
     const validationSchema = Yup.object().shape({
-        companyDescription: Yup.string().required('Company description is required'),
-        companyName: Yup.string().required('Company name is required')
+        desc: Yup.string().required('Contract description is required'),
+        name: Yup.string().required('Contract name is required')
     });
 
     const handleChange = (e) => {
@@ -36,14 +46,16 @@ const CreateCompany = ({ submitCallback, company }) => {
     const handleSubmit = async (values) => {
         try {
             setProgress(true);
-            if (company?.id) {
-                const cmpRes = await fetcher.get(`cms/company-details?companyId=${company.id}`);
-                cmpRes.response.description = values.companyDescription;
-                cmpRes.response.name = values.companyName;
-                await fetcher.post('cms/edit-company', cmpRes.response);
+            if (contract?.id) {
+                await fetcher.post(`cms/edit-contract-type`, values);
             } else {
-                await fetcher.post('cms/create-company', values);
+                await fetcher.post('cms/add-contract-type', values);
             }
+            setSnackbar({
+                show: true,
+                status: 'success',
+                message: 'Saved successfully'
+            });
         } catch (err) {
             console.log(err);
         } finally {
@@ -68,34 +80,34 @@ const CreateCompany = ({ submitCallback, company }) => {
        
         <Box component="form" sx={{ mt: 1 }} className='form-bx'>
         <Typography component="h3">
-          Create Company
+          Create Contract
         </Typography>
             <TextField
                 fullWidth
-                label="Company Description"
-                name="companyDescription"
-                placeholder='Company Description'
+                label="Contract Description"
+                name="desc"
+                placeholder='Contract Description'
                 autoFocus
                 onChange={formik.handleChange}
-                value={formik.values.companyDescription}
+                value={formik.values.desc}
                 variant="outlined" 
                 size="small"
             />
-            {formik.touched.companyDescription && formik.errors.companyDescription && (
-                <div>{formik.errors.companyDescription}</div>
+            {formik.touched.desc && formik.errors.desc && (
+                <div>{formik.errors.desc}</div>
             )}
             <TextField
                 fullWidth
-                name="companyName"
-                label="Company Name"
-                placeholder='Company Name'
+                name="name"
+                label="Contract Name"
+                placeholder='Contract Name'
                 onChange={formik.handleChange}
-                value={formik.values.companyName}
+                value={formik.values.name}
                 variant="outlined" 
                 size="small"
             />
-            {formik.touched.companyName && formik.errors.companyName && (
-                <div>{formik.errors.companyName}</div>
+            {formik.touched.name && formik.errors.name && (
+                <div>{formik.errors.name}</div>
             )}
             <Button
                 type="button"
@@ -107,9 +119,11 @@ const CreateCompany = ({ submitCallback, company }) => {
                 Save
             </Button>
         </Box>
+        <SnackBar {...snackbar} onClose={toggleSnackbar} />
         </Container>
+        
     )
 }
 
-export default CreateCompany;
+export default CreateContract;
 

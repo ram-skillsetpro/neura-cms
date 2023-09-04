@@ -86,10 +86,21 @@ export default function SelectedListItem() {
             <ListItemText primary="Manage User" />
           </ListItemButton>
         )}
-        { (authority.includes(AUTHORITY.USER_QC) || authority.includes(AUTHORITY.USER_DE)) && (
+        { (authority.includes(AUTHORITY.CLAUSE_PROMPT_MANAGEMENT)) && (
           <ListItemButton
             selected={selectedIndex === 6}
-            onClick={() => navigate('/user/manage')}
+            onClick={() => navigate('/contract/create')}
+          >
+            <ListItemIcon>
+            <InboxIcon />
+          </ListItemIcon>
+            <ListItemText primary="Contract Create" />
+          </ListItemButton>
+        )}
+        { (authority.includes(AUTHORITY.CLAUSE_PROMPT_MANAGEMENT)) && (
+          <ListItemButton
+            selected={selectedIndex === 7}
+            onClick={() => navigate('/contract/manage')}
           >
             <ListItemIcon>
             <InboxIcon />
