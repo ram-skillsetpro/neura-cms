@@ -20,24 +20,24 @@ import {
 import { BiDotsVerticalRounded } from 'react-icons/bi'
 import fetcher from '../../utils/fetcher'
 import CloseIcon from '@mui/icons-material/Close';
-import CreateContract from './Create';
+import CreateClause from './Create';
 
-const ManageContract = () => {
+const ManageClause = () => {
 
-  const [contractList, setContractList] = useState([]);
-  const [contract, setContract] = useState(null);
+  const [clauseList, setClauseList] = useState([]);
+  const [clause, setClause] = useState(null);
   const [progress, setProgress] = useState(false);
   const [dialogProgress, setDialogProgress] = useState(false);
   const [openStates, setOpenStates] = useState(Array(30).fill(false));
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
-  const [openContractDialog, setOpenContractDialog] = useState(false);
+  const [openClauseDialog, setOpenClauseDialog] = useState(false);
 
 
-  const fetchContractList = async () => {
+  const fetchClauseList = async () => {
     try {
       setProgress(true);
-      const res = await fetcher.get(`cms/contract-type-list/all`);
-      setContractList(res.response);
+      const res = await fetcher.get(`cms/clause-type-list/all`);
+      setClauseList(res.response);
     } catch (error) {
       console.log(error);
     } finally {
@@ -60,33 +60,33 @@ const ManageContract = () => {
     setOpenStates(newOpenStates);
   };
 
-  const handleEditContract = (contract, index) => {
+  const handleEditClause = (clause, index) => {
     handleMenuClose(index);
-    setContract(contract);
-    setOpenContractDialog(true);
+    setClause(clause);
+    setOpenClauseDialog(true);
   }
 
-  const handleCloseContractDialog = () => {
-    setContract(null);
-    setOpenContractDialog(false);
-    fetchContractList();
+  const handleCloseClauseDialog = () => {
+    setClause(null);
+    setOpenClauseDialog(false);
+    fetchClauseList();
   };
 
-  const handleOpenConfirmDialog = (contract, index) => {
+  const handleOpenConfirmDialog = (clause, index) => {
     handleMenuClose(index);
-    setContract(contract);
+    setClause(clause);
     setOpenConfirmDialog(true);
   };
 
-  const handleUpdateContractStatus = async () => {
+  const handleUpdateClauseStatus = async () => {
     try {
       setProgress(true);
-      const status = contract.is_active ? 0 : 1;
-      await fetcher.get(`cms/action-contract-type?contractId=${contract.id}&status=${status}`);
+      const status = clause.is_active ? 0 : 1;
+      await fetcher.get(`cms/action-clause-type?clauseId=${clause.id}&status=${status}`);
       
-      const index = contractList.findIndex((contract) => contract.id === contract.id);
-      contractList[index].is_active = status;
-      contract.is_active = status;
+      const index = clauseList.findIndex((clause) => clause.id === clause.id);
+      clauseList[index].is_active = status;
+      clause.is_active = status;
     } catch (error) {
       console.log(error);
     } finally {
@@ -96,13 +96,13 @@ const ManageContract = () => {
   };
 
   useEffect(() => {
-    fetchContractList();
+    fetchClauseList();
   }, []);
 
   return (
     <>
       <Typography variant="h3" className='page-heading'>
-      Manage Contract
+      Manage Clause
       </Typography>
       {progress ? <CircularProgress /> : null}
       <TableContainer sx={{ maxHeight: "calc(100vh - 230px)" }} component={Paper}>
@@ -115,13 +115,13 @@ const ManageContract = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          { contractList.map((contract, index) => (
+          { clauseList.map((clause, index) => (
             <TableRow key={index}>
               <TableCell>
-                    {contract.name}
+                    {clause.name}
               </TableCell>
               <TableCell>
-                {contract.desc}
+                {clause.desc}
               </TableCell>
               <TableCell>
                 <Button
@@ -141,9 +141,9 @@ const ManageContract = () => {
                     'aria-labelledby': `basic-button-${index}`
                   }}
                 >
-                  <MenuItem onClick={() => handleEditContract(contract, index)}>Edit</MenuItem>
-                  <MenuItem onClick={() => handleOpenConfirmDialog(contract, index)}>
-                    {contract?.is_active ? 'Deactivate' : 'Activate'}
+                  <MenuItem onClick={() => handleEditClause(clause, index)}>Edit</MenuItem>
+                  <MenuItem onClick={() => handleOpenConfirmDialog(clause, index)}>
+                    {clause?.is_active ? 'Deactivate' : 'Activate'}
                   </MenuItem>
                 </Menu>
               </TableCell>
@@ -154,21 +154,21 @@ const ManageContract = () => {
       </Table>
     </TableContainer>
       
-      <Dialog open={openContractDialog}>
+      <Dialog open={openClauseDialog}>
         <DialogContent>
-            <CreateContract submitCallback={handleCloseContractDialog} contract={contract} />
+            <CreateClause submitCallback={handleCloseClauseDialog} clause={clause} />
         </DialogContent>
-          <IconButton className='close-button' onClick={handleCloseContractDialog}><CloseIcon/></IconButton>
+          <IconButton className='close-button' onClick={handleCloseClauseDialog}><CloseIcon/></IconButton>
       </Dialog>
 
       <Dialog open={openConfirmDialog}>
       { dialogProgress ? <CircularProgress /> : null }
         <DialogContent>
-          <Typography componebt="p">Are you sure you want to  {contract?.is_active ? ( 'Deactivate') : ( 'Activate' )}</Typography>
+          <Typography componebt="p">Are you sure you want to  {clause?.is_active ? ( 'Deactivate') : ( 'Activate' )}</Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenConfirmDialog(false)}>Cancel</Button>
-          <Button variant="contained" onClick={handleUpdateContractStatus}>Ok</Button>
+          <Button variant="contained" onClick={handleUpdateClauseStatus}>Ok</Button>
         </DialogActions>
       </Dialog>
 
@@ -179,4 +179,4 @@ const ManageContract = () => {
 
 }
 
-export default ManageContract;
+export default ManageClause;

@@ -12,7 +12,8 @@ import ManageCompany from './pages/company/ManageCompany';
 import CreateCompany from './pages/company/Create';
 import CreateContract from './pages/contract/Create';
 import ManageContract from './pages/contract/ManageContract';
-
+import CreateClause from './pages/clause/Create';
+import ManageClause from './pages/clause/ManageClause';
 
 function PrivateRoute({ element }) {
   let isAuthentic = isAuthenticated();
@@ -36,6 +37,8 @@ function App() {
           <Route path="/user/manage" element={<PrivateRoute element={<Layout> <ManageUser /> </Layout>} />} />
           <Route path="/contract/create" element={<PrivateRoute element={<Layout> <CreateContract /> </Layout>} />} />
           <Route path="/contract/manage" element={<PrivateRoute element={<Layout> <ManageContract /> </Layout>} />} />
+          <Route path="/clause/create" element={<PrivateRoute element={<Layout> <CreateClause /> </Layout>} />} />
+          <Route path="/clause/manage" element={<PrivateRoute element={<Layout> <ManageClause /> </Layout>} />} />
           <Route path="*" element={<NoMatch />} />
         </Routes>
       </React.Fragment>

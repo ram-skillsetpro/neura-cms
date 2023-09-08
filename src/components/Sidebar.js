@@ -108,6 +108,28 @@ export default function SelectedListItem() {
             <ListItemText primary="Contract Master" />
           </ListItemButton>
         )}
+        { (authority.includes(AUTHORITY.CLAUSE_PROMPT_MANAGEMENT)) && (
+          <ListItemButton
+            selected={selectedIndex === 8}
+            onClick={() => navigate('/clause/create')}
+          >
+            <ListItemIcon>
+            <InboxIcon />
+          </ListItemIcon>
+            <ListItemText primary="Clause Create" />
+          </ListItemButton>
+        )}
+        { (authority.includes(AUTHORITY.CLAUSE_PROMPT_MANAGEMENT)) && (
+          <ListItemButton
+            selected={selectedIndex === 9}
+            onClick={() => navigate('/clause/manage')}
+          >
+            <ListItemIcon>
+            <InboxIcon />
+          </ListItemIcon>
+            <ListItemText primary="Clause Master" />
+          </ListItemButton>
+        )}
       </List>
     </Box>
   );
