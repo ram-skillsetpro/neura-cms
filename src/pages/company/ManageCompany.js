@@ -42,7 +42,7 @@ const ManageCompany = () => {
   const fetchCompanyList = async (page) => {
     try {
       setProgress(true);
-      const cmpres = await fetcher.post(`cms/list-all-company?pgn=${page-1}`);
+      const cmpres = await fetcher.post(`cms/list-all-company?pgn=${page}`);
       setCompanyList(cmpres.response.result);
       setTotalPages(Math.ceil(cmpres.response.totct / cmpres.response.perpg));
     } catch (error) {

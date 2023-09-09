@@ -62,11 +62,11 @@ const ManageUser = () => {
     try {
       setProgress(true);
       if (currentUserTab) {
-        const res = await fetcher.get(`cms/approved-demo-users?pgn=${page-1}`);
+        const res = await fetcher.get(`cms/approved-demo-users?pgn=${page}`);
         setUserList(res.response.result);
         setTotalPages(Math.ceil(res.response.totct / res.response.perpg));
       } else {
-        const res = await fetcher.get(`cms/unapproved-demo-users?pgn=${page-1}`);
+        const res = await fetcher.get(`cms/unapproved-demo-users?pgn=${page}`);
         setUserList(res.response.result);
         setTotalPages(Math.ceil(res.response.totct / res.response.perpg));
       }
