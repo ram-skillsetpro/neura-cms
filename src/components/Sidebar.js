@@ -130,6 +130,28 @@ export default function SelectedListItem() {
             <ListItemText primary="Clause Master" />
           </ListItemButton>
         )}
+        { (authority.includes(AUTHORITY.CLAUSE_PROMPT_MANAGEMENT)) && (
+          <ListItemButton
+            selected={selectedIndex === 10}
+            onClick={() => navigate('/clause-prompt/add')}
+          >
+            <ListItemIcon>
+            <InboxIcon />
+          </ListItemIcon>
+            <ListItemText primary="Add Clause Prompt" />
+          </ListItemButton>
+        )}
+        { (authority.includes(AUTHORITY.CLAUSE_PROMPT_MANAGEMENT)) && (
+          <ListItemButton
+            selected={selectedIndex === 11}
+            onClick={() => navigate('/clause-prompt/manage')}
+          >
+            <ListItemIcon>
+            <InboxIcon />
+          </ListItemIcon>
+            <ListItemText primary="Clause Prompt" />
+          </ListItemButton>
+        )}
       </List>
     </Box>
   );

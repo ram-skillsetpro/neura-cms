@@ -20,9 +20,9 @@ import {
 import { BiDotsVerticalRounded } from 'react-icons/bi'
 import fetcher from '../../utils/fetcher'
 import CloseIcon from '@mui/icons-material/Close';
-import CreateClause from './CreateClause';
+import AddClausePrompt from './AddClausePrompt';
 
-const ManageClause = () => {
+const ClausePrompt = () => {
 
   const [clauseList, setClauseList] = useState([]);
   const [clause, setClause] = useState(null);
@@ -33,10 +33,10 @@ const ManageClause = () => {
   const [openClauseDialog, setOpenClauseDialog] = useState(false);
 
 
-  const fetchClauseList = async () => {
+  const fetchClausePromptsList = async () => {
     try {
       setProgress(true);
-      const res = await fetcher.get(`cms/clause-type-list/all`);
+      const res = await fetcher.get(`cms/list-clause-prompt/all`);
       setClauseList(res.response);
     } catch (error) {
       console.log(error);
@@ -60,7 +60,14 @@ const ManageClause = () => {
     setOpenStates(newOpenStates);
   };
 
-  const handleEditClause = (clause, index) => {
+  const handleAddClausePrompt = (clause, index) => {
+    handleMenuClose(index);
+    const newCP = {clauseid: clause.clauseid, companyid: clause.companyid}
+    setClause(newCP);
+    setOpenClauseDialog(true);
+  }
+
+  const handleEditClausePrompt = (clause, index) => {
     handleMenuClose(index);
     setClause(clause);
     setOpenClauseDialog(true);
@@ -69,7 +76,7 @@ const ManageClause = () => {
   const handleCloseClauseDialog = () => {
     setClause(null);
     setOpenClauseDialog(false);
-    fetchClauseList();
+    fetchClausePromptsList();
   };
 
   const handleOpenConfirmDialog = (clause, index) => {
@@ -81,12 +88,12 @@ const ManageClause = () => {
   const handleUpdateClauseStatus = async () => {
     try {
       setProgress(true);
-      const status = clause.is_active ? 0 : 1;
-      await fetcher.get(`cms/action-clause-type?clauseId=${clause.id}&status=${status}`);
+      const status = clause.isActive ? 0 : 1;
+      await fetcher.get(`cms/action-clause-prompt?clpmid=${clause.id}&status=${status}`);
       
       const index = clauseList.findIndex((clause) => clause.id === clause.id);
-      clauseList[index].is_active = status;
-      clause.is_active = status;
+      clauseList[index].isActive = status;
+      clause.isActive = status;
     } catch (error) {
       console.log(error);
     } finally {
@@ -96,7 +103,7 @@ const ManageClause = () => {
   };
 
   useEffect(() => {
-    fetchClauseList();
+    fetchClausePromptsList();
   }, []);
 
   return (
@@ -109,8 +116,8 @@ const ManageClause = () => {
       <Table stickyHeader>
         <TableHead>
           <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell>Description</TableCell>
+            <TableCell>Text</TableCell>
+            <TableCell>Status</TableCell>
             <TableCell></TableCell>
           </TableRow>
         </TableHead>
@@ -118,10 +125,10 @@ const ManageClause = () => {
           { clauseList.map((clause, index) => (
             <TableRow key={index}>
               <TableCell>
-                    {clause.name}
+                    {clause.text}
               </TableCell>
               <TableCell>
-                {clause.desc}
+                {clause.isActive ? 'Active' : 'Deactive'}
               </TableCell>
               <TableCell>
                 <Button
@@ -141,9 +148,10 @@ const ManageClause = () => {
                     'aria-labelledby': `basic-button-${index}`
                   }}
                 >
-                  <MenuItem onClick={() => handleEditClause(clause, index)}>Edit</MenuItem>
+                  <MenuItem onClick={() => handleAddClausePrompt(clause, index)}>Add</MenuItem>
+                  <MenuItem onClick={() => handleEditClausePrompt(clause, index)}>Edit</MenuItem>
                   <MenuItem onClick={() => handleOpenConfirmDialog(clause, index)}>
-                    {clause?.is_active ? 'Deactivate' : 'Activate'}
+                    {clause?.isActive ? 'Deactivate' : 'Activate'}
                   </MenuItem>
                 </Menu>
               </TableCell>
@@ -156,7 +164,7 @@ const ManageClause = () => {
       
       <Dialog open={openClauseDialog}>
         <DialogContent>
-            <CreateClause submitCallback={handleCloseClauseDialog} clause={clause} />
+            <AddClausePrompt submitCallback={handleCloseClauseDialog} clause={clause} />
         </DialogContent>
           <IconButton className='close-button' onClick={handleCloseClauseDialog}><CloseIcon/></IconButton>
       </Dialog>
@@ -164,7 +172,7 @@ const ManageClause = () => {
       <Dialog open={openConfirmDialog}>
       { dialogProgress ? <CircularProgress /> : null }
         <DialogContent>
-          <Typography componebt="p">Are you sure you want to  {clause?.is_active ? ( 'Deactivate') : ( 'Activate' )}</Typography>
+          <Typography componebt="p">Are you sure you want to  {clause?.isActive ? ( 'Deactivate') : ( 'Activate' )}</Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenConfirmDialog(false)}>Cancel</Button>
@@ -179,4 +187,4 @@ const ManageClause = () => {
 
 }
 
-export default ManageClause;
+export default ClausePrompt;
