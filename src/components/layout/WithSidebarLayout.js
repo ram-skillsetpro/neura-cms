@@ -1,25 +1,17 @@
 import React from 'react';
-import Sidebar from '../Sidebar';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
+import Sidebar from '../Sidebar/Sidebar';
+import style from './Layout.module.scss';
 
 const WithSidebarLayout = ({ children }) => {
-  return (
-
-    <Grid sx={{ flexGrow: 1 }} container className='body-bx'>
-      <Grid item xs className='sidebar-bx'>
-      <Sidebar />
-      </Grid>
-      <Grid item xs className='body-container'>
-      <Container fixed>
-      {children}
-      </Container>
-      </Grid>
-      <Grid item xs={12}>
-       
-      </Grid>
-    </Grid>
+  return ( 
+    <div className={style.layoutWrapper}>
+      <div className={style.sidebar}>
+        <Sidebar />
+      </div>
+      <div className={style.viewArea}>
+        {children}
+      </div>
+    </div>
   );
 };
 

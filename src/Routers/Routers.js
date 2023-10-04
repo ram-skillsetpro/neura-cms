@@ -1,7 +1,7 @@
 import React from "react";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { canAccessTheRouteWithUserAuthorities, isAuthenticated, isRestrictedRoutWithAuthority } from "../utils/authGuard";
-import Layout from "../components/layout/Layout";  // Import the Layout HOC
+import Layout from "../components/Layout/Layout";  // Import the Layout HOC
 import Login from "../pages/Login";
 import { Index } from "../pages/Index";
 import CreateCompany from "../pages/company/Create";
