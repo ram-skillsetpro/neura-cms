@@ -1,0 +1,20 @@
+@import './../../assets/scss/mixins';
+@import './../../assets/scss/variables';
+
+.layoutWrapper{
+    display: flex;
+    min-height: 100vh;
+    padding-top: 64px;
+    .sidebar{
+        width: 240px;
+        flex: 0 0 auto;
+    }
+    .viewArea{
+        flex: 1;
+        padding: 24px;
+    }
+}
+
+.noSidebarLayout{
+    padding: 24px;
+}
