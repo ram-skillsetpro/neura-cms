@@ -29,7 +29,7 @@ import { BiDotsVerticalRounded } from 'react-icons/bi';
 import fetcher from '../../utils/fetcher';
 import SnackBar from "../../components/SnackBar";
 
-const ManageUser = () => {
+const Roles = () => {
 
   const [userList, setUserList] = useState([]);
   const [companyList, setCompanyList] = useState([]);
@@ -163,36 +163,12 @@ const ManageUser = () => {
   }, [currentPage, currentUserTab]);
 
   return (
-    <>
-     {/* <Breadcrumbs aria-label="breadcrumb" sx={{margin: "20px 0 50px"}}>
-        <Link underline="hover" color="inherit" href="/">
-          Files
-        </Link>
-        <Link
-          underline="hover"
-          color="inherit"
-          href="#"
-        >
-          Core
-        </Link>
-        <Link
-          underline="hover"
-          color="text.primary"
-          href="#"
-          aria-current="page"
-        >
-          Breadcrumbs
-        </Link>
-      </Breadcrumbs> */}
-      <Typography variant="h3" className='page-heading'>
-      
-      </Typography>
-      <div className='headingRow'>
-        <h1>Manage User</h1>
-      </div>
-      {/* <Typography className='subtitle'>
-      3 Files, 2 Uploading
-      </Typography> */}
+    <>  
+      <div className='headingRow d-flex justify-content-between'>
+        <h1>Roles</h1>
+        <button className='btn btn-primary'>Add New Role</button>
+      </div> 
+
       {progress ? <CircularProgress /> : null}
       <Tabs value={currentUserTab} onChange={handleUserTabChange} component={Paper} style={{marginBottom:"5px"}}>
         <Tab label='Unapproved User' />
@@ -355,4 +331,4 @@ const ManageUser = () => {
 
 }
 
-export default ManageUser;
+export default Roles;

@@ -15,30 +15,12 @@ body {
 table th{font-weight: 600 !important;}
 table td{padding: 10px 16px !important;}
 .body-bx{padding-top: 60px;}
-.body-container{
-  width: 100%;
-  height: calc(100vh - 80px);
-  overflow-y: auto;
-}
-.top-logo{height: 30px; margin-top: 17px;}
+ 
 .icon-size{height: 25px;}
 .css-hip9hq-MuiPaper-root-MuiAppBar-root{
   background-color: #fff !important;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05) !important;
-}
-.body-container{padding: 30px 50px;}
-.body-container h3{
-  font-size: 1.3em;
-  font-weight: normal;
-  margin: 0;
-  padding: 1px 1%;
-}
-.body-container .subtitle{
-font-size: 0.9em;
-    margin: 0;
-    padding: 1px 1%;
-    margin-bottom: 10px;
-}
+} 
 .login-bx{
   min-width: 860px;
   max-width: 960px;
@@ -172,5 +154,33 @@ font-size: 0.9em;
 .MuiDialogContent-root .form-bx{padding: 0;}
 .MuiDialogContent-root .MuiPaper-elevation{box-shadow: none;}
 .close-button{position: absolute !important; right: 10px; top: 10px;}
+ 
 
-.body-container h3.page-heading{margin-bottom: 20px; font-weight: 600;}
+
+//New CSS
+
+.btn-primary{ 
+  background-color: $primaryColor;
+  color: $white;
+  padding: 8px 16px;
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  @include borderRadius(4px);
+  &:hover{
+    background-color: $primaryColor_v2;
+  }
+  &:focus{
+    box-shadow: none;
+    outline: none;
+  }
+}
+
+.headingRow{
+  margin-bottom: 20px;
+  h1{
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0;
+  }
+}

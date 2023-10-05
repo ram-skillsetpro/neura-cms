@@ -1,7 +1,7 @@
 import React from "react";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { canAccessTheRouteWithUserAuthorities, isAuthenticated, isRestrictedRoutWithAuthority } from "../utils/authGuard";
-import Layout from "../components/layout/Layout";  // Import the Layout HOC
+import Layout from "../components/Layout/Layout";  // Import the Layout HOC
 import Login from "../pages/Login";
 import { Index } from "../pages/Index";
 import CreateCompany from "../pages/company/Create";
@@ -14,6 +14,7 @@ import ManageClause from "../pages/clause/ManageClause";
 import ClausePrompt from "../pages/clause/ClausePrompt";
 import AddClausePrompt from "../pages/clause/AddClausePrompt";
 import { NoMatch } from "../pages/NoMatch";
+import Roles from "../pages/Roles/Roles";
 
 
 function PrivateRoute({ element }) {
@@ -30,6 +31,8 @@ const Routers = () => {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<PrivateRoute element={<Layout> <Index /> </Layout>} />} />
+          <Route path="/roles" element={<PrivateRoute element={<Layout> <Roles /> </Layout>} />} />
+          
           <Route path="/company/create" element={<PrivateRoute element={<Layout> <CreateCompany /> </Layout>} />} />
           <Route path="/company/manage" element={<PrivateRoute element={<Layout> <ManageCompany /> </Layout>} />} />
           <Route path="/user/manage" element={<PrivateRoute element={<Layout> <ManageUser /> </Layout>} />} />
