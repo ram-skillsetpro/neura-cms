@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom'; 
-import { NavigationBar } from './components/NavigationBar';
+import Header from './components/Header/Header';
 import Routers from './Routers/Routers';
 import { isAuthenticated } from './utils/authGuard';
 
@@ -11,7 +11,7 @@ function App() {
     <BrowserRouter>
       <>
         {isAuthentic ? 
-          <NavigationBar /> 
+          <Header /> 
           : null
         }
         <Routers />

@@ -1,0 +1,95 @@
+@import '../../assets/scss/mixins';
+@import '../../assets/scss/variables';
+
+.header{
+    padding: 16px 24px;
+    height: 64px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    background-color: $white;
+    @include boxShadow(0 1px 10px 0 rgba(0,0,0,0.1));
+    .logo{
+        width: 120px;
+        img{
+            width: 100%;
+            display: block;
+        }
+    }
+    .headerRight{
+        margin-left: auto;
+        .usernameDropown{
+            padding: 0;
+            [class*="btn-default"]{
+                display: flex;
+                align-items: center;
+                font-size: 10px;
+                padding: 0;
+                color: rgba($black, 0.6);
+                text-align: left;
+                &:focus{
+                    outline: none;
+                    box-shadow: none;
+                }
+                &::after{
+                    margin-left: 10px; 
+                    border-top: 6px solid rgba($black, 0.6);
+                    border-right: 5px solid transparent; 
+                    border-left: 5px solid transparent;
+                    display: none;
+                }
+                .btnAvatar{
+                    // margin-right: 8px;
+                    color: rgba($black, 0.5);
+                    svg{
+                        width: 28px;
+                        height: 28px;
+                    }
+                }
+                .btnUsername{
+                    strong{
+                        font-size: 11px;
+                        display: block;
+                        color: $black;
+                    }
+                }
+            }
+        }
+
+        .dropdownBox{
+            width: 200px;
+            padding: 16px;
+            text-align: center;
+            @include boxShadow(0 5px 10px rgba(0,0,0,0.15));
+            border: none;
+            z-index: 11;
+            .dropImg{
+                margin-bottom: 6px;
+                color: rgba($black, 0.4);
+                svg{
+                    width: 48px;
+                    height: 48px;
+                }        
+            }
+            h3{
+                font-size: 14px;
+                font-weight: 600;
+                margin-bottom: 6px;
+            }
+            h4{
+                font-size: 12px;
+                font-weight: 400;
+                color: rgba($black, 0.5);
+                margin-bottom: 10px;
+            }
+
+            button{
+                width: 100%;
+            }
+        }
+    }
+}

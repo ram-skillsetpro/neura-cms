@@ -11,18 +11,21 @@
             list-style: none;
             a{
                 display: flex;
-                font-size: 13px;
-                padding: 12px 16px;
+                font-size: 12px;
+                font-weight: 600;
+                padding: 14px 16px;
                 align-items: center;
                 color: rgba($black, 0.7);
                 text-decoration: none;
                 border-left: transparent solid 4px;
                 svg{
                     margin-right: 10px;
+                    font-size: 18px;
                 }
                 &.active{
                     color: $primaryColor;
                     border-color: $primaryColor;
+                    background-color: rgba($primaryColor, 0.05);
                 }
             }
         }
