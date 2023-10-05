@@ -22,10 +22,6 @@ const Header = () => {
               <div className={style.btnAvatar}>
                 <AccountCircle  />
               </div>
-              <div className={style.btnUsername}>
-                <strong>Happy Singh</strong>
-                Admin
-              </div>
             </Dropdown.Toggle>
 
             <Dropdown.Menu className={style.dropdownBox}>

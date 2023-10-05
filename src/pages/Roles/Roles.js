@@ -164,7 +164,7 @@ const Roles = () => {
 
   return (
     <>  
-      <div className='headingRow d-flex justify-content-between'>
+      <div className='headingRow d-flex justify-content-between align-items-center'>
         <h1>Roles</h1>
         <button className='btn btn-primary'>Add New Role</button>
       </div> 
