@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import style from './Sidebar.module.scss'; 
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { AUTHORITY } from "../../utils/constants";
 import {userAuthority } from "../../utils/authGuard";
 import CorporateFare from '@mui/icons-material/CorporateFare';
@@ -46,10 +46,10 @@ const Sidebar = () => {
         <ul>
           {navs.map((nav, index) => 
             <li key={index}>
-              <Link to={nav.url} className={nav.active ? style.active: null}>
+              <NavLink to={nav.url} className={({ isActive }) => (isActive ? style.active : '')}>
                 {nav.icon}
                 {nav.title}
-              </Link>
+              </NavLink>
             </li>
           )}
         </ul>
