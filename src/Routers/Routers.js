@@ -41,7 +41,6 @@ const Routers = () => {
           <Route path="/clause/create" element={<PrivateRoute element={<Layout> <CreateClause /> </Layout>} />} />
           <Route path="/clause/manage" element={<PrivateRoute element={<Layout> <ManageClause /> </Layout>} />} />
           <Route path="/clause-prompt/manage" element={<PrivateRoute element={<Layout> <ClausePrompt /> </Layout>} />} />
-          <Route path="/clause-prompt/add" element={<PrivateRoute element={<Layout> <AddClausePrompt /> </Layout>} />} />
           <Route path="*" element={<NoMatch />} />
         </Routes>
     )
