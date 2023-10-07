@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import style from './Roles.module.scss';
-import { Table, TableCell, TableHead, TableRow, TableBody, IconButton, TableFooter, TablePagination, Drawer } from '@mui/material'; 
+import style from './Authorities.module.scss';
+import { Table, TableCell, TableHead, TableRow, TableBody, IconButton, TableFooter, TablePagination } from '@mui/material'; 
 import BorderColorIcon from '@mui/icons-material/BorderColor';
-import CreateRole from './CreateRole';
 
-const Roles = () => {
-  const [panelState, setPanelState] = useState(false);
-  const rolesData = [
+const Authorities = () => {
+  const authsData = [
     {
       title: 'Publisher',
       desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
@@ -31,12 +29,12 @@ const Roles = () => {
       authCount: 4,
       status: 'active'
     },
-  ] 
+  ]
 
   return (
     <>  
       <div className='headingRow'>
-        <h1>Roles</h1>
+        <h1>Authorities</h1>
       </div> 
 
       <div className='whiteContainer'>
@@ -44,7 +42,7 @@ const Roles = () => {
           <div className='tableSearchFilter'>
             <input type='text' className='form-control' placeholder='Search Roles' />
           </div>
-          <button className='btn btn-primary' onClick={() => setPanelState(true)}>Add New Role</button>
+          <button className='btn btn-primary'>Add New Authorities</button>
         </div>
 
         <Table className='dataTable'>
@@ -58,19 +56,19 @@ const Roles = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            { rolesData.map((role, index) => (
+            { authsData.map((item, index) => (
               <TableRow key={index}>
                 <TableCell>
-                      {role.title}
+                      {item.title}
                 </TableCell>
                 <TableCell>
-                      {role.desc}
+                      {item.desc}
                 </TableCell>
                 <TableCell>
-                  {role.authCount}
+                  {item.authCount}
                 </TableCell>
                 <TableCell>
-                  {role.status}
+                  {item.status}
                 </TableCell>
                 <TableCell>
                   <IconButton aria-label="Edit" className={style.editBtn}>
@@ -103,20 +101,6 @@ const Roles = () => {
           </TableFooter>
         </Table>
       </div> 
-
-
-      {/* Create Role panel */}
-      <Drawer
-          anchor="right"
-          open={panelState}
-          onClose={() => setPanelState(false)}
-          PaperProps={{ 
-            sx: {width: {xs: '100%', sm: '500px'}},
-            style: { backgroundColor: '#f5f5f5', padding: '16px' } 
-          }} 
-        >
-          <CreateRole closeEvent={() => setPanelState(false)} />
-        </Drawer>
     </>
   );
 
@@ -124,4 +108,4 @@ const Roles = () => {
 
 }
 
-export default Roles;
+export default Authorities;

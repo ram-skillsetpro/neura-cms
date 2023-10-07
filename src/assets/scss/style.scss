@@ -1,7 +1,7 @@
 @import './mixins';
 @import './variables';
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap');
 
 body { 
   background-color: $lightGrey_v1;
@@ -9,6 +9,15 @@ body {
   font-weight: 400;
   // font-family: 'Open Sans', sans-serif !important;
   font-family: 'Inter', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  margin: 0;
+}
+
+label{
+  margin: 0;
 }
 
 table th{font-weight: 600;}
@@ -144,25 +153,66 @@ table td{padding: 10px 16px;}
 
 
 //New CSS
+.label-control{
+  display: block;
+  font-size: 12px;
+  color: $grey_v3;
+  font-weight: 500;
+  margin-bottom: 4px;
+  span{
+    color: $primaryColor;
+  }
+}
 .form-control{
   font-size: 12px;
   padding: 10px 16px;
+  border-color: rgba($black, 0.1);
   height: auto;
+  &:focus {  
+    border-color: rgba($primaryColor,0.3); 
+    box-shadow: none;
+  }
+}
+
+.btn{
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  @include borderRadius(4px);
+}
+.btn-outline-primary{
+  border-color: $primaryColor;
+  color: $primaryColor;
+  &:hover{
+    background-color: transparent;
+    border-color: $primaryColor_v2;
+    color: $primaryColor_v2;
+  }
+  &:focus, &:active{
+    box-shadow: none!important;
+    outline: none;
+    color: $primaryColor_v2!important;
+    border-color: $primaryColor_v2!important;
+    background-color: transparent!important;
+  }
 }
 .btn-primary{ 
   background-color: $primaryColor;
   color: $white;
+  border: $primaryColor solid 1px;
   padding: 8px 16px;
-  border: none;
   font-size: 13px;
   font-weight: 600;
   @include borderRadius(4px);
   &:hover{
     background-color: $primaryColor_v2;
+    border-color: $primaryColor_v2;
   }
-  &:focus{
-    box-shadow: none;
+  &:focus, &:active{
+    box-shadow: none!important;
     outline: none;
+    border-color: $primaryColor_v2!important;
+    background-color: $primaryColor_v2!important;
   }
 }
 
@@ -220,4 +270,50 @@ table td{padding: 10px 16px;}
       }
     }
   }
+}
+
+
+//Create Role Section 
+.createMainTitle{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  margin: -16px -16px 16px;
+  background-color: $white;
+  @include boxShadow(0 0 5px rgba($black, 0.1));
+  h2{
+      font-size: 16px;
+      color: $darkGrey_v3;
+  }
+}
+
+.createSection{
+  background-color: $white;
+  @include boxShadow(0 0 3px rgba($black, 0.05));
+  .createSubTitle{ 
+      font-size: 14px;
+      font-weight: 500;
+      color: $darkGrey_v4;
+      margin: 0;
+      padding: 14px 16px;
+      border-bottom: $lightGrey_v1 solid 1px; 
+  }
+
+  .createFormSection{
+    padding: 16px;
+    textarea{
+      height: 90px;
+    }
+    .css-ahj2mt-MuiTypography-root{
+      font-size: 13px;
+      margin-right: 10px;
+    }
+    .css-12q9u1p-MuiButtonBase-root-MuiRadio-root.Mui-checked,
+    .css-m94tiq-MuiButtonBase-root-MuiCheckbox-root.Mui-checked, 
+    .css-m94tiq-MuiButtonBase-root-MuiCheckbox-root.MuiCheckbox-indeterminate{
+      color: $primaryColor;
+    }
+  }
+
 }
