@@ -18,15 +18,11 @@ const Sidebar = () => {
   useEffect(() => {
     if(authority.includes(AUTHORITY.UPDATE_DEMO_USER)){
       setNavs([
-        {url: '/company/create', title: 'Create Company', icon: <BusinessSharpIcon /> },
         {url: '/company/manage', title: 'Manage Company', icon: <BusinessSharpIcon /> },
         {url: '/user/manage', title: 'Manage User', icon: <PeopleOutlineSharpIcon />},
-        // {url: '/roles', title: 'Roles', icon: <CorporateFare />, active:true},
-        // {url: '/user/manage', title: 'Authorities', icon: <Badge />},
-        // {url: '/user/manage', title: 'Authorities Maping', icon: <DomainAdd />},
-        // {url: '/user/manage', title: 'Users', icon: <PeopleOutlineSharpIcon />},
-        // {url: '/user/manage', title: 'Reports', icon: <Assignment />},
-        // {url: '/user/manage', title: 'Roles', icon: <CorporateFare />},
+        {url: '/roles', title: 'Roles', icon: <CorporateFare />, active:true},
+        {url: '/user/manage', title: 'Authorities', icon: <Badge />}, 
+        {url: '/reports', title: 'Reports', icon: <Assignment />}, 
       ])
     }
     if(authority.includes(AUTHORITY.CLAUSE_PROMPT_MANAGEMENT)){
