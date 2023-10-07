@@ -21,7 +21,7 @@ const Sidebar = () => {
         {url: '/company/manage', title: 'Manage Company', icon: <BusinessSharpIcon /> },
         {url: '/user/manage', title: 'Manage User', icon: <PeopleOutlineSharpIcon />},
         {url: '/roles', title: 'Roles', icon: <CorporateFare />, active:true},
-        {url: '/user/manage', title: 'Authorities', icon: <Badge />}, 
+        {url: '/authorities', title: 'Authorities', icon: <Badge />}, 
         {url: '/reports', title: 'Reports', icon: <Assignment />}, 
       ])
     }
