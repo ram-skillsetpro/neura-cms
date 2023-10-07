@@ -10,6 +10,7 @@ import DomainAdd from '@mui/icons-material/DomainAdd';
 import BusinessSharpIcon from '@mui/icons-material/BusinessSharp'
 import PeopleOutlineSharpIcon from '@mui/icons-material/PeopleOutlineSharp';
 import InboxIcon from '@mui/icons-material/Inbox'
+import {PageUrls } from "../../utils/constants";
 
 const Sidebar = () => {
   const authority = userAuthority().map(authority => authority.name);
@@ -17,22 +18,22 @@ const Sidebar = () => {
   
   useEffect(() => {
     if(authority.includes(AUTHORITY.UPDATE_DEMO_USER)){
-      setNavs([
-        {url: '/company/manage', title: 'Manage Company', icon: <BusinessSharpIcon /> },
-        {url: '/user/manage', title: 'Manage User', icon: <PeopleOutlineSharpIcon />},
-        {url: '/roles', title: 'Roles', icon: <CorporateFare />, active:true},
-        {url: '/authorities', title: 'Authorities', icon: <Badge />}, 
-        {url: '/reports', title: 'Reports', icon: <Assignment />}, 
-      ])
+      setNavs(prevNavs => [...prevNavs, 
+        {url: PageUrls.COMPANY, title: 'Manage Company', icon: <BusinessSharpIcon /> },
+        {url: PageUrls.USER, title: 'Manage User', icon: <PeopleOutlineSharpIcon />},
+        {url: PageUrls.ROLES, title: 'Roles', icon: <CorporateFare />, active:true},
+        {url: PageUrls.AUTHORITIES, title: 'Authorities', icon: <Badge />}, 
+        {url: PageUrls.REPORTS, title: 'Reports', icon: <Assignment />}, 
+      ]);
     }
     if(authority.includes(AUTHORITY.CLAUSE_PROMPT_MANAGEMENT)){
-      setNavs([
-        {url: '/contract/create', title: 'Contract Create', icon: <InboxIcon />}, 
-        {url: '/contract/manage', title: 'Contract Master', icon: <InboxIcon />},
-        {url: '/clause/create', title: 'Clause Create', icon: <InboxIcon />},
-        {url: '/clause/manage', title: 'Clause Master', icon: <InboxIcon />},
-        {url: '/clause-prompt/manage', title: 'Clause Prompt', icon: <InboxIcon />},
-      ])
+      setNavs(prevNavs => [...prevNavs, 
+        {url: PageUrls.CONTRACT_CREATE, title: 'Contract Create', icon: <InboxIcon />}, 
+        {url: PageUrls.CONTRACT, title: 'Contract Master', icon: <InboxIcon />},
+        {url: PageUrls.CLAUSE_CREATE, title: 'Clause Create', icon: <InboxIcon />},
+        {url: PageUrls.CLAUSE, title: 'Clause Master', icon: <InboxIcon />},
+        {url: PageUrls.CLAUSE_PROMPT, title: 'Clause Prompt', icon: <InboxIcon />},
+      ]);
     }
   },[])
   

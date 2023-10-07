@@ -3,7 +3,7 @@ import style from './Header.module.scss';
 import Dropdown from 'react-bootstrap/Dropdown'; 
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { Link } from 'react-router-dom';
-import logoImg from '../../assets/images/simpleo-ai-logo@2x.png';
+import logoImg from '../../../assets/images/simpleo-ai-logo@2x.png';
  
 const Header = () => {
   return(
