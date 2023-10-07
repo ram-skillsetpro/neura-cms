@@ -1,5 +1,5 @@
 import React from 'react';
-import Sidebar from '../Sidebar/Sidebar';
+import Sidebar from '../sidebar/Sidebar';
 import style from './Layout.module.scss';
 
 const WithSidebarLayout = ({ children }) => {

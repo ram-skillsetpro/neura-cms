@@ -5,6 +5,23 @@ export const formatDate = (date) => {
     return `${year}-${month}-${day}`
 };
 
+export const PageUrls = {
+    INDEX: '/',
+    LOGIN: '/login',
+    ROLES: '/roles',
+    COMPANY_CREATE: '/company/create',
+    COMPANY: '/company',
+    USER: '/user',
+    CONTRACT_CREATE: '/contract/create',
+    CONTRACT: '/contract',
+    CLAUSE_CREATE: '/clause/create',
+    CLAUSE: '/clause',
+    CLAUSE_PROMPT: '/clause-prompt',
+    UNAUTHORIZED: '/unauthorized',
+    AUTHORITIES: '/authorities',
+    REPORTS: '/reports'
+};
+
 export const AUTHORITY = {
     COMPANY_SUPER_ADMIN: 'COMPANY_SUPER_ADMIN',
     UPDATE_DEMO_USER: 'CMS_UPDATE_DEMO_USER',
@@ -14,12 +31,12 @@ export const AUTHORITY = {
 };
 
 export const AUTHORITY_ROUT_MAP = [
-    { route_regx: "/company/create", authority: [AUTHORITY.UPDATE_DEMO_USER] },
-    { route_regx: "/company/manage", authority: [AUTHORITY.UPDATE_DEMO_USER] },
-    { route_regx: "/user/manage", authority: [AUTHORITY.UPDATE_DEMO_USER] },
-    { route_regx: "/contract/create", authority: [AUTHORITY.CLAUSE_PROMPT_MANAGEMENT] },
-    { route_regx: "/contract/manage", authority: [AUTHORITY.CLAUSE_PROMPT_MANAGEMENT] },
-    { route_regx: "/clause/create", authority: [AUTHORITY.CLAUSE_PROMPT_MANAGEMENT] },
-    { route_regx: "/clause/manage", authority: [AUTHORITY.CLAUSE_PROMPT_MANAGEMENT] },
-    { route_regx: "/clause-prompt/manage", authority: [AUTHORITY.CLAUSE_PROMPT_MANAGEMENT] }
+    { route_regx: PageUrls.COMPANY_CREATE, authority: [AUTHORITY.UPDATE_DEMO_USER] },
+    { route_regx: PageUrls.COMPANY, authority: [AUTHORITY.UPDATE_DEMO_USER] },
+    { route_regx: PageUrls.USER, authority: [AUTHORITY.UPDATE_DEMO_USER] },
+    { route_regx: PageUrls.CONTRACT_CREATE, authority: [AUTHORITY.CLAUSE_PROMPT_MANAGEMENT] },
+    { route_regx: PageUrls.CONTRACT, authority: [AUTHORITY.CLAUSE_PROMPT_MANAGEMENT] },
+    { route_regx: PageUrls.CLAUSE_CREATE, authority: [AUTHORITY.CLAUSE_PROMPT_MANAGEMENT] },
+    { route_regx: PageUrls.CLAUSE, authority: [AUTHORITY.CLAUSE_PROMPT_MANAGEMENT] },
+    { route_regx: PageUrls.CLAUSE_PROMPT, authority: [AUTHORITY.CLAUSE_PROMPT_MANAGEMENT] }
 ];
