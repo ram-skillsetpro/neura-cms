@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import style from './Authorities.module.scss';
-import { Table, TableCell, TableHead, TableRow, TableBody, IconButton, TableFooter, TablePagination } from '@mui/material'; 
+import { Table, TableCell, TableHead, TableRow, TableBody, IconButton, TableFooter, TablePagination, Drawer } from '@mui/material'; 
 import BorderColorIcon from '@mui/icons-material/BorderColor';
+import CreateAuthority from './CreateAuthority';
 
 const Authorities = () => {
+  const [panelState, setPanelState] = useState(false);
   const authsData = [
     {
       title: 'Publisher',
@@ -42,15 +44,14 @@ const Authorities = () => {
           <div className='tableSearchFilter'>
             <input type='text' className='form-control' placeholder='Search Roles' />
           </div>
-          <button className='btn btn-primary'>Add New Authorities</button>
+          <button className='btn btn-primary' onClick={() => setPanelState(true)}>Add New Authorities</button>
         </div>
 
         <Table className='dataTable'>
           <TableHead>
             <TableRow>
               <TableCell>Title</TableCell>
-              <TableCell>Description</TableCell>
-              <TableCell>Authorities</TableCell>
+              <TableCell>Description</TableCell> 
               <TableCell>Status</TableCell>
               <TableCell></TableCell>
             </TableRow>
@@ -63,10 +64,7 @@ const Authorities = () => {
                 </TableCell>
                 <TableCell>
                       {item.desc}
-                </TableCell>
-                <TableCell>
-                  {item.authCount}
-                </TableCell>
+                </TableCell> 
                 <TableCell>
                   {item.status}
                 </TableCell>
@@ -83,7 +81,7 @@ const Authorities = () => {
             <TableRow>
               <TablePagination
                 rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                colSpan={5}
+                colSpan={4}
                 count={12}
                 rowsPerPage={10}
                 // page={page}
@@ -101,6 +99,20 @@ const Authorities = () => {
           </TableFooter>
         </Table>
       </div> 
+
+
+      {/* Create Role panel */}
+      <Drawer
+          anchor="right"
+          open={panelState}
+          onClose={() => setPanelState(false)}
+          PaperProps={{ 
+            sx: {width: {xs: '100%', sm: '500px'}},
+            style: { backgroundColor: '#f5f5f5', padding: '16px' } 
+          }} 
+        >
+          <CreateAuthority closeEvent={() => setPanelState(false)} />
+        </Drawer>
     </>
   );
 

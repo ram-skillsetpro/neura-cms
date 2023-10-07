@@ -16,6 +16,7 @@ import AddClausePrompt from "../pages/clause/AddClausePrompt";
 import { NoMatch } from "../pages/NoMatch";
 import Roles from "../pages/roles/Roles";
 import { PageUrls } from "../utils/constants";
+import Authorities from "../pages/authorities/Authorities";
 
 
 function PrivateRoute({ element }) {
@@ -35,6 +36,7 @@ const Routers = () => {
           <Route path={PageUrls.LOGIN} element={<Login />} />
           <Route path={PageUrls.INDEX} element={<PrivateRoute element={<Layout> <Index /> </Layout>} />} />
           <Route path={PageUrls.ROLES} element={<PrivateRoute element={<Layout> <Roles /> </Layout>} />} />
+          <Route path={PageUrls.AUTHORITIES} element={<PrivateRoute element={<Layout> <Authorities /> </Layout>} />} />
           
           <Route path={PageUrls.COMPANY_CREATE} element={<PrivateRoute element={<Layout> <CreateCompany /> </Layout>} />} />
           <Route path={PageUrls.COMPANY} element={<PrivateRoute element={<Layout> <ManageCompany /> </Layout>} />} />

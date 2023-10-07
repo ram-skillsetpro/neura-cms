@@ -1,13 +1,12 @@
 import React from 'react';
 import CloseIcon from '@mui/icons-material/Close';
-import { Checkbox, FormControlLabel, IconButton, Radio, RadioGroup } from '@mui/material';
+import { FormControlLabel, IconButton, Radio, RadioGroup } from '@mui/material';
 
-const CreateRole = ({closeEvent}) => {
-    const authorities = ['View Data', 'Update Game', 'Reply as Official', 'Configure', 'View Key', 'User Management']
+const CreateAuthority = ({closeEvent}) => {
     return(
         <>
             <div className="createMainTitle">
-                <h2>Create Role</h2>
+                <h2>Create Authority</h2>
                 <IconButton onClick={closeEvent}>
                     <CloseIcon />
                 </IconButton>
@@ -28,7 +27,7 @@ const CreateRole = ({closeEvent}) => {
                     </div>
 
                     <div className='form-group m-0'>
-                        <label className='label-control'>Role Status</label> 
+                        <label className='label-control'>Authority Status</label> 
                         <RadioGroup
                             row
                             aria-labelledby="demo-row-radio-buttons-group-label"
@@ -39,30 +38,16 @@ const CreateRole = ({closeEvent}) => {
                         </RadioGroup>
                     </div>
                 </section>
-            </div>
-            
-            <div className="createSection mb-3"> 
-                <h3 className="createSubTitle">Authorities Maping</h3> 
-                
-                <section className="createFormSection">  
-                    <div className='row'>
-                        {authorities.map((item, index) => 
-                            <div className='col-md-6' key={index}>
-                                <FormControlLabel control={<Checkbox sx={{'& .MuiSvgIcon-root': { fontSize: 18, }}} />} label={item} />
-                            </div>
-                        )}
-                    </div> 
-                </section>
-            </div>
+            </div> 
 
             <div className='d-flex justify-content-end'>
                 {/* <button className='btn btn-danger mr-auto'>Delete Role</button> */}
-                <button className='btn btn-outline-primary mr-2'>Cancel</button>
-                <button className='btn btn-primary'>Save Role</button>
+                <button className='btn btn-outline-primary mr-2'>Authority</button>
+                <button className='btn btn-primary'>Save Authority</button>
             </div>
             
         </>
     )
 }
 
-export default CreateRole;
+export default CreateAuthority;
