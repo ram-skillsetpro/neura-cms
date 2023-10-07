@@ -10,6 +10,7 @@ import DomainAdd from '@mui/icons-material/DomainAdd';
 import BusinessSharpIcon from '@mui/icons-material/BusinessSharp'
 import PeopleOutlineSharpIcon from '@mui/icons-material/PeopleOutlineSharp';
 import InboxIcon from '@mui/icons-material/Inbox'
+import BalanceIcon from '@mui/icons-material/Balance';
 import {PageUrls } from "../../utils/constants";
 
 const Sidebar = () => {
@@ -21,7 +22,7 @@ const Sidebar = () => {
       setNavs(prevNavs => [...prevNavs, 
         {url: PageUrls.COMPANY, title: 'Manage Company', icon: <BusinessSharpIcon /> },
         {url: PageUrls.USER, title: 'Manage User', icon: <PeopleOutlineSharpIcon />},
-        {url: PageUrls.ROLES, title: 'Roles', icon: <CorporateFare />, active:true},
+        {url: PageUrls.ROLES, title: 'Roles', icon: <BalanceIcon />, active:true},
         {url: PageUrls.AUTHORITIES, title: 'Authorities', icon: <Badge />}, 
         {url: PageUrls.REPORTS, title: 'Reports', icon: <Assignment />}, 
       ]);
