@@ -18,22 +18,22 @@ const Sidebar = () => {
   
   useEffect(() => {
     if(authority.includes(AUTHORITY.UPDATE_DEMO_USER)){
-      setNavs([
+      setNavs(prevNavs => [...prevNavs, 
         {url: PageUrls.COMPANY, title: 'Manage Company', icon: <BusinessSharpIcon /> },
         {url: PageUrls.USER, title: 'Manage User', icon: <PeopleOutlineSharpIcon />},
         {url: PageUrls.ROLES, title: 'Roles', icon: <CorporateFare />, active:true},
         {url: PageUrls.AUTHORITIES, title: 'Authorities', icon: <Badge />}, 
         {url: PageUrls.REPORTS, title: 'Reports', icon: <Assignment />}, 
-      ])
+      ]);
     }
     if(authority.includes(AUTHORITY.CLAUSE_PROMPT_MANAGEMENT)){
-      setNavs([
+      setNavs(prevNavs => [...prevNavs, 
         {url: PageUrls.CONTRACT_CREATE, title: 'Contract Create', icon: <InboxIcon />}, 
         {url: PageUrls.CONTRACT, title: 'Contract Master', icon: <InboxIcon />},
         {url: PageUrls.CLAUSE_CREATE, title: 'Clause Create', icon: <InboxIcon />},
         {url: PageUrls.CLAUSE, title: 'Clause Master', icon: <InboxIcon />},
         {url: PageUrls.CLAUSE_PROMPT, title: 'Clause Prompt', icon: <InboxIcon />},
-      ])
+      ]);
     }
   },[])
   
