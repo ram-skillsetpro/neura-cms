@@ -9,13 +9,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <>
-        {isAuthentic ? 
-          <Header /> 
-          : null
-        }
-        <Routers />
-      </>
+      <Routers />
     </BrowserRouter>
   );
 }

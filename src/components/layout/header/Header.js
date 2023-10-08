@@ -4,8 +4,18 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { Link } from 'react-router-dom';
 import logoImg from '../../../assets/images/simpleo-ai-logo@2x.png';
+import { useNavigate } from 'react-router-dom';
  
 const Header = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('auth');
+    navigate('/login');
+  };
+
+
+
   return(
     <>
       <header className={style.header}>
@@ -29,7 +39,7 @@ const Header = () => {
               </div>
               <h3>Happy Singh</h3>
               <h4>Admin</h4>
-              <button className='btn btn-primary'>Logout</button>
+              <button onClick={handleLogout} className='btn btn-primary'>Logout</button>
             </Dropdown.Menu>
           </Dropdown>
         </div>
