@@ -12,8 +12,10 @@ import PeopleOutlineSharpIcon from '@mui/icons-material/PeopleOutlineSharp';
 import InboxIcon from '@mui/icons-material/Inbox'
 import BalanceIcon from '@mui/icons-material/Balance';
 import {PageUrls } from "../../utils/constants";
+import { IconButton } from '@mui/material';
+import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 
-const Sidebar = () => {
+const Sidebar = ({closeEvent}) => {
   const authority = userAuthority().map(authority => authority.name);
   const [navs, setNavs] = useState([]);
   
@@ -37,14 +39,27 @@ const Sidebar = () => {
       ]);
     }
   },[])
+
+  const mWebCloseEvent = () => {
+    if(closeEvent){
+      closeEvent();
+    }else{
+      return false;
+    }
+  }
   
   return (
     <>
       <div className={style.sidebarNavigation}>
+        <div className='d-lg-none mb-2'>
+          <IconButton onClick={closeEvent}>
+            <MenuOpenIcon />
+          </IconButton>
+        </div>
         <ul>
           {navs.map((nav, index) => 
             <li key={index}>
-              <NavLink to={nav.url} className={({ isActive }) => (isActive ? style.active : '')}>
+              <NavLink to={nav.url} className={({ isActive }) => (isActive ? style.active : '')} onClick={mWebCloseEvent}>
                 {nav.icon}
                 {nav.title}
               </NavLink>

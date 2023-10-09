@@ -5,8 +5,10 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import { Link } from 'react-router-dom';
 import logoImg from '../../../assets/images/simpleo-ai-logo@2x.png';
 import { useNavigate } from 'react-router-dom';
+import { IconButton } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
  
-const Header = () => {
+const Header = ({mWebClick}) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -19,6 +21,12 @@ const Header = () => {
   return(
     <>
       <header className={style.header}>
+        <div className='d-lg-none'>
+          <IconButton onClick={mWebClick}>
+            <MenuIcon />
+          </IconButton>
+        </div>
+
         <div className={style.logo}>
           <Link to="/">
             <img src={logoImg} alt="" />
