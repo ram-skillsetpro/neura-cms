@@ -3,35 +3,50 @@ import style from './Roles.module.scss';
 import { Table, TableCell, TableHead, TableRow, TableBody, IconButton, TableFooter, TablePagination, Drawer } from '@mui/material'; 
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import CreateRole from './CreateRole';
+import fetcher from '../../utils/fetcher';
 
 const Roles = () => {
   const [panelState, setPanelState] = useState(false);
-  const rolesData = [
-    {
-      title: 'Publisher',
-      desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      authCount: 4,
-      status: 'active'
-    },
-    {
-      title: 'Game Administrator',
-      desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      authCount: 4,
-      status: 'active'
-    },
-    {
-      title: 'Finance',
-      desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      authCount: 4,
-      status: 'active'
-    },
-    {
-      title: 'Developer Admin',
-      desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      authCount: 4,
-      status: 'active'
-    },
-  ] 
+  const [roles, setRoles] = useState([]);
+  const [displayRoles, setDisplayRoles] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
+
+  const fetchRoles = async () => {
+    try {
+      const res = await fetcher.get(`roles`);
+      setRoles(res.response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchDisplayedRoles = () => {
+    const displayedRoles = roles.slice(
+      currentPage * rowsPerPage,
+      currentPage * rowsPerPage + rowsPerPage
+    );
+    setDisplayRoles(displayedRoles);
+  }
+
+  const handlePageChange = (event, newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setCurrentPage(0);
+  };
+
+
+  useEffect(() => {
+    fetchRoles();
+  }, []);
+
+  useEffect(() => {
+    fetchDisplayedRoles();
+  }, [currentPage, roles, rowsPerPage]);
 
   return (
     <>  
@@ -58,19 +73,19 @@ const Roles = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            { rolesData.map((role, index) => (
+            { displayRoles.map((role, index) => (
               <TableRow key={index}>
                 <TableCell>
-                      {role.title}
+                      {role.name}
                 </TableCell>
                 <TableCell>
-                      {role.desc}
+                      {role.description}
                 </TableCell>
                 <TableCell>
-                  {role.authCount}
+                  {role?.authCount}
                 </TableCell>
                 <TableCell>
-                  {role.status}
+                  {role.status ? 'Active' : 'Inactive'}
                 </TableCell>
                 <TableCell>
                   <IconButton aria-label="Edit" className={style.editBtn}>
@@ -84,20 +99,12 @@ const Roles = () => {
           <TableFooter>
             <TableRow>
               <TablePagination
-                rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                colSpan={5}
-                count={12}
-                rowsPerPage={10}
-                // page={page}
-                // SelectProps={{
-                //   inputProps: {
-                //     'aria-label': 'rows per page',
-                //   },
-                //   native: true,
-                // }}
-                // onPageChange={handleChangePage}
-                // onRowsPerPageChange={handleChangeRowsPerPage}
-                // ActionsComponent={TablePaginationActions}
+                rowsPerPageOptions={[5, 10, 25]}
+                count={roles.length}
+                rowsPerPage={rowsPerPage}
+                page={currentPage}
+                onPageChange={handlePageChange}
+                onRowsPerPageChange={handleChangeRowsPerPage}
               />
             </TableRow>
           </TableFooter>

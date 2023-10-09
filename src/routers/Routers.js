@@ -46,7 +46,7 @@ const Routers = () => {
           <Route path={PageUrls.CLAUSE_CREATE} element={<PrivateRoute element={<Layout> <CreateClause /> </Layout>} />} />
           <Route path={PageUrls.CLAUSE} element={<PrivateRoute element={<Layout> <ManageClause /> </Layout>} />} />
           <Route path={PageUrls.CLAUSE_PROMPT} element={<PrivateRoute element={<Layout> <ClausePrompt /> </Layout>} />} />
-          <Route path={PageUrls.UNAUTHORIZED} element={<NoMatch />} />
+          <Route path={PageUrls.UNAUTHORIZED} element={<Layout> <NoMatch /> </Layout>} />
           <Route path="*" element={<NoMatch />} />
         </Routes>
     )

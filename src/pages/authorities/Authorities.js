@@ -1,37 +1,51 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import style from './Authorities.module.scss';
 import { Table, TableCell, TableHead, TableRow, TableBody, IconButton, TableFooter, TablePagination, Drawer } from '@mui/material'; 
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import CreateAuthority from './CreateAuthority';
+import fetcher from '../../utils/fetcher'
 
 const Authorities = () => {
   const [panelState, setPanelState] = useState(false);
-  const authsData = [
-    {
-      title: 'Publisher',
-      desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      authCount: 4,
-      status: 'active'
-    },
-    {
-      title: 'Game Administrator',
-      desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      authCount: 4,
-      status: 'active'
-    },
-    {
-      title: 'Finance',
-      desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      authCount: 4,
-      status: 'active'
-    },
-    {
-      title: 'Developer Admin',
-      desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      authCount: 4,
-      status: 'active'
-    },
-  ]
+  const [authorities, setAuthorities] = useState([]);
+  const [displayAuthorities, setDisplayAuthorities] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
+
+  const fetchAuthorities = async () => {
+    try {
+      const res = await fetcher.get(`authorities`);
+      setAuthorities(res.response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchDisplayedAuthorities = () => {
+    const displayedAuthorities = authorities.slice(
+      currentPage * rowsPerPage,
+      currentPage * rowsPerPage + rowsPerPage
+    );
+    setDisplayAuthorities(displayedAuthorities);
+  }
+
+  const handlePageChange = (event, newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setCurrentPage(0);
+  };
+
+  useEffect(() => {
+    fetchAuthorities();
+  }, []);
+
+  useEffect(() => {
+    fetchDisplayedAuthorities();
+  }, [currentPage, authorities, rowsPerPage]);
 
   return (
     <>  
@@ -57,16 +71,16 @@ const Authorities = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            { authsData.map((item, index) => (
+            { displayAuthorities.map((item, index) => (
               <TableRow key={index}>
                 <TableCell>
-                      {item.title}
+                      {item.name}
                 </TableCell>
                 <TableCell>
-                      {item.desc}
+                      {item.description}
                 </TableCell> 
                 <TableCell>
-                  {item.status}
+                  {item.status ? 'Active' : 'Inactive'}
                 </TableCell>
                 <TableCell>
                   <IconButton aria-label="Edit" className={style.editBtn}>
@@ -80,23 +94,15 @@ const Authorities = () => {
           <TableFooter>
             <TableRow>
               <TablePagination
-                rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                colSpan={4}
-                count={12}
-                rowsPerPage={10}
-                // page={page}
-                // SelectProps={{
-                //   inputProps: {
-                //     'aria-label': 'rows per page',
-                //   },
-                //   native: true,
-                // }}
-                // onPageChange={handleChangePage}
-                // onRowsPerPageChange={handleChangeRowsPerPage}
-                // ActionsComponent={TablePaginationActions}
-              />
-            </TableRow>
-          </TableFooter>
+                  rowsPerPageOptions={[5, 10, 25]}
+                  count={authorities.length}
+                  rowsPerPage={rowsPerPage}
+                  page={currentPage}
+                  onPageChange={handlePageChange}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+              </TableRow>
+            </TableFooter>
         </Table>
       </div> 
 
