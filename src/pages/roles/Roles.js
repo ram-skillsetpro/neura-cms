@@ -39,6 +39,11 @@ const Roles = () => {
     setCurrentPage(0);
   };
 
+  const handleCloseEvent = () => {
+    setCurrentPage(0);
+    fetchRoles();
+    setPanelState(false);
+  };
 
   useEffect(() => {
     fetchRoles();
@@ -122,7 +127,7 @@ const Roles = () => {
             style: { backgroundColor: '#f5f5f5', padding: '16px' } 
           }} 
         >
-          <CreateRole closeEvent={() => setPanelState(false)} />
+          <CreateRole closeEvent={handleCloseEvent} />
         </Drawer>
     </>
   );

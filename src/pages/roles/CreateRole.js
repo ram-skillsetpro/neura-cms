@@ -1,9 +1,75 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import { Checkbox, FormControlLabel, IconButton, Radio, RadioGroup } from '@mui/material';
+import fetcher from '../../utils/fetcher'
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 const CreateRole = ({closeEvent}) => {
-    const authorities = ['View Data', 'Update Game', 'Reply as Official', 'Configure', 'View Key', 'User Management']
+    const [authorities, setAuthorities] = useState([]);
+
+    const [formData, setFormData] = useState({
+        name: '',
+        description: '',
+        status: 1,
+        authorities: [],
+        authorityCount: 0,
+        roleId: 0
+    });
+
+    const fetchAuthorities = async () => {
+        try {
+          const res = await fetcher.get(`authorities?status=1`);
+          setAuthorities(res.response);
+        } catch (error) {
+          console.log(error);
+        }
+    };
+
+    const handleSubmit = async (values) => {
+        try {
+            const res = await fetcher.post('roles', values);
+            if (res.status === 200) {
+                console.log(res);
+            }
+            closeEvent();
+          } catch (err) {
+            console.log(err);
+          }
+    };
+
+    const validationSchema = Yup.object().shape({
+        name: Yup.string().required('Name is required'),
+        description: Yup.string().required('Description is required'),
+        status: Yup.string().required('Status is required'),
+        authorities: Yup.array().min(1, 'Select at least one authority'),
+    });
+    
+    const formik = useFormik({
+        initialValues: formData,
+        validationSchema: validationSchema,
+        onSubmit: handleSubmit,
+    });
+
+    const handleCheckboxChange = (value) => {
+        const isChecked = formik.values.authorities.includes(value);
+        const updatedCheckboxes = isChecked
+          ? formik.values.authorities.filter((checkbox) => checkbox !== value)
+          : [...formik.values.authorities, value];
+    
+        formik.setFieldValue('authorities', updatedCheckboxes);
+        formik.setFieldValue('authorityCount', updatedCheckboxes.length);
+    };
+
+    // Trigger validation whenever checkbox values change
+    useEffect(() => {
+        formik.validateForm();
+    }, [formik.values.authorities]);
+
+    useEffect(() => {
+        fetchAuthorities();
+    }, []);
+
     return(
         <>
             <div className="createMainTitle">
@@ -13,18 +79,36 @@ const CreateRole = ({closeEvent}) => {
                 </IconButton>
             </div>
 
+            <form onSubmit={formik.handleSubmit}>
             <div className="createSection mb-3"> 
                 <h3 className="createSubTitle">General</h3 > 
                 
                 <section className="createFormSection">
                     <div className='form-group'>
                         <label className='label-control'>Title<span>*</span></label>
-                        <input type='text' className='form-control' />
+                        <input
+                            name="name"
+                            onChange={formik.handleChange}
+                            value={formik.values.name}
+                            type="text"
+                            className="form-control"
+                        />
+                        { formik.touched.name && formik.errors.name && (
+                            <div>{formik.errors.name}</div>
+                        )}
                     </div>
 
                     <div className='form-group'>
                         <label className='label-control'>Description</label>
-                        <textarea className='form-control'></textarea>
+                        <textarea
+                            name="description"
+                            onChange={formik.handleChange}
+                            value={formik.values.description}
+                            className="form-control"
+                        ></textarea>
+                        { formik.touched.description && formik.errors.description && (
+                            <div>{formik.errors.description}</div>
+                        )}
                     </div>
 
                     <div className='form-group m-0'>
@@ -32,10 +116,20 @@ const CreateRole = ({closeEvent}) => {
                         <RadioGroup
                             row
                             aria-labelledby="demo-row-radio-buttons-group-label"
-                            name="row-radio-buttons-group"
+                            name="status"
+                            value={formik.values.status}
+                            onChange={formik.handleChange}
                         >
-                            <FormControlLabel value="active" control={<Radio sx={{'& .MuiSvgIcon-root': { fontSize: 18, }}} />} label="Active" />
-                            <FormControlLabel value="inactive" control={<Radio sx={{'& .MuiSvgIcon-root': { fontSize: 18, }}} />} label="Inactive" />
+                            <FormControlLabel
+                                value="1"
+                                control={<Radio sx={{'& .MuiSvgIcon-root': { fontSize: 18, }}} />}
+                                label="Active"
+                            />
+                            <FormControlLabel
+                                value="0"
+                                control={<Radio sx={{'& .MuiSvgIcon-root': { fontSize: 18, }}} />}
+                                label="Inactive"
+                            />
                         </RadioGroup>
                     </div>
                 </section>
@@ -48,18 +142,31 @@ const CreateRole = ({closeEvent}) => {
                     <div className='row'>
                         {authorities.map((item, index) => 
                             <div className='col-md-6' key={index}>
-                                <FormControlLabel control={<Checkbox sx={{'& .MuiSvgIcon-root': { fontSize: 18, }}} />} label={item} />
+                                <FormControlLabel
+                                    control={
+                                    <Checkbox
+                                        sx={{ '& .MuiSvgIcon-root': { fontSize: 18 } }}
+                                        checked={formik.values.authorities.includes(item)}
+                                        onChange={() => handleCheckboxChange(item)}
+                                    />
+                                    }
+                                    label={item.name}
+                                />
                             </div>
                         )}
-                    </div> 
+                    </div>
+                    {formik.touched.authorities && formik.errors.authorities && (
+                        <div>{formik.errors.authorities}</div>
+                    )}
                 </section>
             </div>
 
             <div className='d-flex justify-content-end'>
                 {/* <button className='btn btn-danger mr-auto'>Delete Role</button> */}
                 <button className='btn btn-outline-primary mr-2'>Cancel</button>
-                <button className='btn btn-primary'>Save Role</button>
+                <button type="submit" className='btn btn-primary'>Save Role</button>
             </div>
+            </form>
             
         </>
     )

@@ -3,7 +3,7 @@ import style from './Authorities.module.scss';
 import { Table, TableCell, TableHead, TableRow, TableBody, IconButton, TableFooter, TablePagination, Drawer } from '@mui/material'; 
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import CreateAuthority from './CreateAuthority';
-import fetcher from '../../utils/fetcher'
+import fetcher from '../../utils/fetcher';
 
 const Authorities = () => {
   const [panelState, setPanelState] = useState(false);
