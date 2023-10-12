@@ -151,7 +151,7 @@ const CreateRole = ({closeEvent, role}) => {
                 <section className="createFormSection">  
                     <div className='row'>
                         {authorities.map((item, index) => 
-                            <div className='col-md-6' key={index}>
+                            <div className='col-md-6 mb-3' key={index}>
                                 <FormControlLabel
                                     control={
                                     <Checkbox
