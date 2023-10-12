@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button,
-  TableContainer,
+  Button, 
   Table,
   TableCell,
   TableHead,
@@ -17,14 +16,16 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  Breadcrumbs,
-  Link,
-  IconButton
+  IconButton,
+  Drawer,
+  TableFooter,
+  TablePagination
 } from '@mui/material'
 import { BiDotsVerticalRounded } from 'react-icons/bi'
 import fetcher from '../../utils/fetcher'
 import CreateCompany from './Create';
 import CloseIcon from '@mui/icons-material/Close';
+import CreateCompanyNew from './CreateCompany';
 
 const ManageCompany = () => {
 
@@ -37,6 +38,7 @@ const ManageCompany = () => {
   const [openStates, setOpenStates] = useState(Array(30).fill(false));
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [openCompanyDialog, setOpenCompanyDialog] = useState(false);
+  const [panelState, setPanelState] = useState(false);
 
 
   const fetchCompanyList = async (page) => {
@@ -110,91 +112,99 @@ const ManageCompany = () => {
     fetchCompanyList(currentPage);
   }, [currentPage]);
 
+
+  const handleCloseEvent = () => { 
+    setPanelState(false);
+  };
+
   return (
     <>
-    {/* <Breadcrumbs aria-label="breadcrumb" sx={{margin: "20px 0 50px"}}>
-        <Link underline="hover" color="inherit" href="/">
-          Files
-        </Link>
-        <Link
-          underline="hover"
-          color="inherit"
-          href="#"
-        >
-          Core
-        </Link>
-        <Link
-          underline="hover"
-          color="text.primary"
-          href="#"
-          aria-current="page"
-        >
-          Breadcrumbs
-        </Link>
-      </Breadcrumbs> */}
-      <Typography variant="h3" className='page-heading'>
-      Manage Company
-      </Typography>
-      {/* <Typography className='subtitle'>
-      3 Files, 2 Uploading
-      </Typography> */}
-      {progress ? <CircularProgress /> : null}
-      <TableContainer sx={{ maxHeight: "calc(100vh - 230px)" }} component={Paper}>
-      <Table stickyHeader>
-        <TableHead>
-          <TableRow>
-            <TableCell>Code</TableCell>
-            <TableCell>Name</TableCell>
-            <TableCell>Description</TableCell>
-            <TableCell></TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          { companyList.map((company, index) => (
-            <TableRow key={index}>
-              <TableCell>
-                    {company.companyCode}
-              </TableCell>
-              <TableCell>
-                    {company.name}
-              </TableCell>
-              <TableCell>
-                {company.description}
-              </TableCell>
-              <TableCell>
-                <Button
-                  id={`basic-button-${index}`}
-                  aria-controls={`basic-menu-${index}`}
-                  aria-haspopup="true"
-                  onClick={() => handleMenuOpen(index)}
-                >
-                  <BiDotsVerticalRounded />
-                </Button>
-                <Menu
-                  id={`basic-menu-${index}`}
-                  anchorEl={openStates[index] ? document.getElementById(`basic-button-${index}`) : null}
-                  open={openStates[index] || false}
-                  onClose={() => handleMenuClose(index)}
-                  MenuListProps={{
-                    'aria-labelledby': `basic-button-${index}`
-                  }}
-                >
-                  <MenuItem onClick={() => handleEditCompany(company, index)}>Edit</MenuItem>
-                  <MenuItem onClick={() => handleOpenConfirmDialog(company, index)}>
-                    {company?.isActive ? 'Deactivate' : 'Activate'}
-                  </MenuItem>
-                </Menu>
-              </TableCell>
-            </TableRow>
-          ))}
+      <div className='headingRow'>
+        <h1>Manage Company</h1>
+      </div>
 
-        </TableBody>
-      </Table>
-    </TableContainer>
+
+      <div className='whiteContainer'>
+        <div className='mb-3 d-flex justify-content-between align-items-center'>
+          <div className='tableSearchFilter'>
+            <input type='text' className='form-control' placeholder='Search Company' />
+          </div>
+          <button className='btn btn-primary' onClick={() => setPanelState(true)}>Add New Company</button>
+        </div>
+
+
+      {progress ? <CircularProgress /> : null} 
+        <Table className='dataTable'>
+          <TableHead>
+            <TableRow>
+              <TableCell>Code</TableCell>
+              <TableCell>Name</TableCell>
+              <TableCell>Description</TableCell>
+              <TableCell></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            { companyList.map((company, index) => (
+              <TableRow key={index}>
+                <TableCell>
+                      {company.companyCode}
+                </TableCell>
+                <TableCell>
+                      {company.name}
+                </TableCell>
+                <TableCell>
+                  {company.description}
+                </TableCell>
+                <TableCell>
+                  <Button
+                    id={`basic-button-${index}`}
+                    aria-controls={`basic-menu-${index}`}
+                    aria-haspopup="true"
+                    onClick={() => handleMenuOpen(index)}
+                  >
+                    <BiDotsVerticalRounded />
+                  </Button>
+                  <Menu
+                    id={`basic-menu-${index}`}
+                    anchorEl={openStates[index] ? document.getElementById(`basic-button-${index}`) : null}
+                    open={openStates[index] || false}
+                    onClose={() => handleMenuClose(index)}
+                    MenuListProps={{
+                      'aria-labelledby': `basic-button-${index}`
+                    }}
+                  >
+                    <MenuItem onClick={() => handleEditCompany(company, index)}>Edit</MenuItem>
+                    <MenuItem onClick={() => handleOpenConfirmDialog(company, index)}>
+                      {company?.isActive ? 'Deactivate' : 'Activate'}
+                    </MenuItem>
+                  </Menu>
+                </TableCell>
+              </TableRow>
+            ))}
+
+          </TableBody>
+
+
+          {/* <TableFooter>
+            <TableRow>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                count={roles.length}
+                rowsPerPage={rowsPerPage}
+                page={currentPage}
+                onPageChange={handlePageChange}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
+            </TableRow>
+          </TableFooter> */}
+        </Table> 
     
-    <Stack spacing={2} sx={{ margin: "20px 0 0", flexDirection: "row-reverse" }}>
-        <Pagination count={totalPages} color="primary" page={currentPage} onChange={handlePageChange} />
-      </Stack>
+        <Stack spacing={2} sx={{ margin: "20px 0 0", flexDirection: "row-reverse" }}>
+          <Pagination count={totalPages} color="primary" page={currentPage} onChange={handlePageChange} />
+        </Stack>
+      </div>
+
+      
       
       <Dialog open={openCompanyDialog}>
         <DialogContent>
@@ -214,6 +224,25 @@ const ManageCompany = () => {
           <Button variant="contained" onClick={handleUpdateCompanyStatus}>Ok</Button>
         </DialogActions>
       </Dialog>
+
+        
+
+      {/* Create Role panel */}
+      <Drawer
+          anchor="right"
+          open={panelState}
+          onClose={handleCloseEvent}
+          PaperProps={{ 
+            sx: {width: {xs: '100%', sm: '500px'}},
+            style: { backgroundColor: '#f5f5f5', padding: '16px' } 
+          }} 
+        >
+
+          {/* NOTE: please rename as "CreateCompany" */}
+          <CreateCompanyNew closeEvent={handleCloseEvent} />
+        </Drawer>
+
+
     </>
   );
 

@@ -68,9 +68,9 @@ const Authorities = () => {
       <div className='whiteContainer'>
         <div className='mb-3 d-flex justify-content-between align-items-center'>
           <div className='tableSearchFilter'>
-            <input type='text' className='form-control' placeholder='Search Roles' />
+            <input type='text' className='form-control' placeholder='Search Authority' />
           </div>
-          <button className='btn btn-primary' onClick={() => setPanelState(true)}>Add New Authorities</button>
+          <button className='btn btn-primary' onClick={() => setPanelState(true)}>Add New Authority</button>
         </div>
 
         <Table className='dataTable'>

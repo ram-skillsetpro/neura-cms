@@ -18,9 +18,7 @@ import {
   DialogContent,
   FormControl,
   InputLabel,
-  Select,
-  Breadcrumbs,
-  Link,
+  Select, 
   Tabs,
   Tab,
   Paper
@@ -163,152 +161,137 @@ const ManageUser = () => {
   }, [currentPage, currentUserTab]);
 
   return (
-    <>
-     {/* <Breadcrumbs aria-label="breadcrumb" sx={{margin: "20px 0 50px"}}>
-        <Link underline="hover" color="inherit" href="/">
-          Files
-        </Link>
-        <Link
-          underline="hover"
-          color="inherit"
-          href="#"
-        >
-          Core
-        </Link>
-        <Link
-          underline="hover"
-          color="text.primary"
-          href="#"
-          aria-current="page"
-        >
-          Breadcrumbs
-        </Link>
-      </Breadcrumbs> */}
-      <Typography variant="h3" className='page-heading'>
-      
-      </Typography>
+    <> 
       <div className='headingRow'>
         <h1>Manage User</h1>
       </div>
-      {/* <Typography className='subtitle'>
-      3 Files, 2 Uploading
-      </Typography> */}
-      {progress ? <CircularProgress /> : null}
-      <Tabs value={currentUserTab} onChange={handleUserTabChange} component={Paper} style={{marginBottom:"5px"}}>
-        <Tab label='Unapproved User' />
-        
-          <Tab label='Approved User' />
-        
-      </Tabs>
-      <TableContainer sx={{ maxHeight: "calc(100vh - 230px)" }} component={Paper}>
-          {currentUserTab === 0 && (
-        <Table stickyHeader>
-          <TableHead>
-            <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>User Name</TableCell>
-              <TableCell>Company Name</TableCell>
-              <TableCell></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            { userList.map((user, index) => (
-              <TableRow key={index}>
-                <TableCell>
-                      {user.lastName}
-                </TableCell>
-                <TableCell>
-                      {user.email}
-                </TableCell>
-                <TableCell>
-                  {user.userName}
-                </TableCell>
-                <TableCell>
-                  {user.companyName}
-                </TableCell>
-                <TableCell>
-                  <Button
-                    id={`basic-button-${index}`}
-                    aria-controls={`basic-menu-${index}`}
-                    aria-haspopup="true"
-                    onClick={() => handleMenuOpen(index)}
-                  >
-                    <BiDotsVerticalRounded />
-                  </Button>
-                  <Menu
-                    id={`basic-menu-${index}`}
-                    anchorEl={openStates[index] ? document.getElementById(`basic-button-${index}`) : null}
-                    open={openStates[index] || false}
-                    onClose={() => handleMenuClose(index)}
-                    MenuListProps={{
-                      'aria-labelledby': `basic-button-${index}`
-                    }}
-                  >
-                    <MenuItem onClick={() => handleOpenUserCompanyMapDialog(user, index)}>Activate</MenuItem>
-                  </Menu>
-                </TableCell>
+      
+
+      <div className='whiteContainer'>
+        <div className='mb-3 d-flex justify-content-between align-items-center'>
+          <div className='tableSearchFilter'>
+            <input type='text' className='form-control' placeholder='Search User' />
+          </div>
+        </div>
+
+        {progress ? <CircularProgress /> : null}
+        <Tabs value={currentUserTab} onChange={handleUserTabChange} component={Paper} style={{marginBottom:"5px"}}>
+          <Tab label='Unapproved User' /> 
+          <Tab label='Approved User' /> 
+        </Tabs>
+
+        <TableContainer component={Paper}>
+            {currentUserTab === 0 && (
+          <Table className='dataTable'>
+            <TableHead>
+              <TableRow>
+                <TableCell>Name</TableCell>
+                <TableCell>Email</TableCell>
+                <TableCell>User Name</TableCell>
+                <TableCell>Company Name</TableCell>
+                <TableCell></TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-        )}
-        { currentUserTab === 1 && (
-          <Table stickyHeader>
-          <TableHead>
-            <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>User Name</TableCell>
-              <TableCell>Company Name</TableCell>
-              <TableCell></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            { userList.map((user, index) => (
-              <TableRow key={index}>
-                <TableCell>
-                      {user.lastName}
-                </TableCell>
-                <TableCell>
-                      {user.email}
-                </TableCell>
-                <TableCell>
-                  {user.userName}
-                </TableCell>
-                <TableCell>
-                  {user.companyName}
-                </TableCell>
-                <TableCell>
-                  <Button
-                    id={`basic-button-${index}`}
-                    aria-controls={`basic-menu-${index}`}
-                    aria-haspopup="true"
-                    onClick={() => handleMenuOpen(index)}
-                  >
-                    <BiDotsVerticalRounded />
-                  </Button>
-                  <Menu
-                    id={`basic-menu-${index}`}
-                    anchorEl={openStates[index] ? document.getElementById(`basic-button-${index}`) : null}
-                    open={openStates[index] || false}
-                    onClose={() => handleMenuClose(index)}
-                    MenuListProps={{
-                      'aria-labelledby': `basic-button-${index}`
-                    }}
-                  >
-                    <MenuItem onClick={() => handleOpenConfirmDialog(user, index)}>Deactivate</MenuItem>
-                  </Menu>
-                </TableCell>
+            </TableHead>
+            <TableBody>
+              { userList.map((user, index) => (
+                <TableRow key={index}>
+                  <TableCell>
+                        {user.lastName}
+                  </TableCell>
+                  <TableCell>
+                        {user.email}
+                  </TableCell>
+                  <TableCell>
+                    {user.userName}
+                  </TableCell>
+                  <TableCell>
+                    {user.companyName}
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      id={`basic-button-${index}`}
+                      aria-controls={`basic-menu-${index}`}
+                      aria-haspopup="true"
+                      onClick={() => handleMenuOpen(index)}
+                    >
+                      <BiDotsVerticalRounded />
+                    </Button>
+                    <Menu
+                      id={`basic-menu-${index}`}
+                      anchorEl={openStates[index] ? document.getElementById(`basic-button-${index}`) : null}
+                      open={openStates[index] || false}
+                      onClose={() => handleMenuClose(index)}
+                      MenuListProps={{
+                        'aria-labelledby': `basic-button-${index}`
+                      }}
+                    >
+                      <MenuItem onClick={() => handleOpenUserCompanyMapDialog(user, index)}>Activate</MenuItem>
+                    </Menu>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          )}
+          { currentUserTab === 1 && (
+            <Table className='dataTable'>
+            <TableHead>
+              <TableRow>
+                <TableCell>Name</TableCell>
+                <TableCell>Email</TableCell>
+                <TableCell>User Name</TableCell>
+                <TableCell>Company Name</TableCell>
+                <TableCell></TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-        )}
-      </TableContainer>
-    <Stack spacing={2} sx={{ margin: "20px 0 0", flexDirection: "row-reverse" }}>
-        <Pagination count={totalPages} color="primary" page={currentPage} onChange={handlePageChange} />
-      </Stack>
+            </TableHead>
+            <TableBody>
+              { userList.map((user, index) => (
+                <TableRow key={index}>
+                  <TableCell>
+                        {user.lastName}
+                  </TableCell>
+                  <TableCell>
+                        {user.email}
+                  </TableCell>
+                  <TableCell>
+                    {user.userName}
+                  </TableCell>
+                  <TableCell>
+                    {user.companyName}
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      id={`basic-button-${index}`}
+                      aria-controls={`basic-menu-${index}`}
+                      aria-haspopup="true"
+                      onClick={() => handleMenuOpen(index)}
+                    >
+                      <BiDotsVerticalRounded />
+                    </Button>
+                    <Menu
+                      id={`basic-menu-${index}`}
+                      anchorEl={openStates[index] ? document.getElementById(`basic-button-${index}`) : null}
+                      open={openStates[index] || false}
+                      onClose={() => handleMenuClose(index)}
+                      MenuListProps={{
+                        'aria-labelledby': `basic-button-${index}`
+                      }}
+                    >
+                      <MenuItem onClick={() => handleOpenConfirmDialog(user, index)}>Deactivate</MenuItem>
+                    </Menu>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          )}
+        </TableContainer> 
+
+        <Stack spacing={2} sx={{ margin: "20px 0 0", flexDirection: "row-reverse" }}>
+          <Pagination count={totalPages} color="primary" page={currentPage} onChange={handlePageChange} />
+        </Stack>
+      </div>
+      
 
       
       <Dialog open={openUserCompanyMapDialog}>
