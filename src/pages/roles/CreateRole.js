@@ -5,22 +5,29 @@ import fetcher from '../../utils/fetcher'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-const CreateRole = ({closeEvent}) => {
+const CreateRole = ({closeEvent, role}) => {
     const [authorities, setAuthorities] = useState([]);
 
     const [formData, setFormData] = useState({
-        name: '',
-        description: '',
-        status: 1,
-        authorities: [],
-        authorityCount: 0,
-        roleId: 0
+        name: role?.name || '',
+        description: role?.description || '',
+        status: role?.status || 1,
+        authorities: role?.authorities || [],
+        roleId: role?.roleId || null
     });
 
     const fetchAuthorities = async () => {
         try {
-          const res = await fetcher.get(`authorities?status=1`);
-          setAuthorities(res.response);
+            const res = await fetcher.get(`authorities?status=1`);
+            setAuthorities(res.response);
+
+            if (role) {
+                const filteredArray = res.response.filter(item1 => role.authorities.some(item2 => item2.id === item1.id));
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    authorities: filteredArray
+                }));
+            }
         } catch (error) {
           console.log(error);
         }
@@ -28,14 +35,15 @@ const CreateRole = ({closeEvent}) => {
 
     const handleSubmit = async (values) => {
         try {
-            const res = await fetcher.post('roles', values);
-            if (res.status === 200) {
-                console.log(res);
+            if (role) {
+                await fetcher.put('roles', values);
+            } else {
+                await fetcher.post('roles', values);
             }
             closeEvent();
-          } catch (err) {
+        } catch (err) {
             console.log(err);
-          }
+        }
     };
 
     const validationSchema = Yup.object().shape({
@@ -58,10 +66,12 @@ const CreateRole = ({closeEvent}) => {
           : [...formik.values.authorities, value];
     
         formik.setFieldValue('authorities', updatedCheckboxes);
-        formik.setFieldValue('authorityCount', updatedCheckboxes.length);
     };
 
-    // Trigger validation whenever checkbox values change
+    useEffect(() => {
+        formik.setValues(formData);
+      }, [formData]); 
+
     useEffect(() => {
         formik.validateForm();
     }, [formik.values.authorities]);

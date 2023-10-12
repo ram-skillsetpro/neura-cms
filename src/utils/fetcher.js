@@ -67,8 +67,12 @@ const fetcher = {
     return response.data
   },
   put: async function (endpoint, data = null) {
-    const response = await apiClient.put(endpoint, data)
-    return response.data
+    const headers = {};	
+    if (isLoggedin()) {	
+      headers.Authorization = 'Bearer ' + getToken();	
+    }	
+    const response = await apiClient.put(endpoint, data, { headers })
+    return response.data;	
   },
 }
 export default fetcher

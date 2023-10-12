@@ -8,6 +8,7 @@ import fetcher from '../../utils/fetcher';
 const Roles = () => {
   const [panelState, setPanelState] = useState(false);
   const [roles, setRoles] = useState([]);
+  const [role, setRole] = useState(null);
   const [displayRoles, setDisplayRoles] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -40,9 +41,15 @@ const Roles = () => {
   };
 
   const handleCloseEvent = () => {
+    setRole(null);
     setCurrentPage(0);
     fetchRoles();
     setPanelState(false);
+  };
+
+  const handleRoleEdit = (role) => {
+    setRole(role);
+    setPanelState(true);
   };
 
   useEffect(() => {
@@ -93,7 +100,7 @@ const Roles = () => {
                   {role.status ? 'Active' : 'Inactive'}
                 </TableCell>
                 <TableCell>
-                  <IconButton aria-label="Edit" className={style.editBtn}>
+                  <IconButton onClick={() => handleRoleEdit(role)} aria-label="Edit" className={style.editBtn}>
                     <BorderColorIcon />
                 </IconButton>
                 </TableCell>
@@ -121,13 +128,13 @@ const Roles = () => {
       <Drawer
           anchor="right"
           open={panelState}
-          onClose={() => setPanelState(false)}
+          onClose={handleCloseEvent}
           PaperProps={{ 
             sx: {width: {xs: '100%', sm: '500px'}},
             style: { backgroundColor: '#f5f5f5', padding: '16px' } 
           }} 
         >
-          <CreateRole closeEvent={handleCloseEvent} />
+          <CreateRole closeEvent={handleCloseEvent} role={role}/>
         </Drawer>
     </>
   );
