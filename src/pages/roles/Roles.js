@@ -42,7 +42,6 @@ const Roles = () => {
 
   const handleCloseEvent = () => {
     setRole(null);
-    setCurrentPage(0);
     fetchRoles();
     setPanelState(false);
   };

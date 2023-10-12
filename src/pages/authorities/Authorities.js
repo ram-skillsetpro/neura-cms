@@ -8,6 +8,7 @@ import fetcher from '../../utils/fetcher';
 const Authorities = () => {
   const [panelState, setPanelState] = useState(false);
   const [authorities, setAuthorities] = useState([]);
+  const [authority, setAuthority] = useState(null);
   const [displayAuthorities, setDisplayAuthorities] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -37,6 +38,17 @@ const Authorities = () => {
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setCurrentPage(0);
+  };
+
+  const handleCloseEvent = () => {
+    setAuthority(null);
+    fetchAuthorities();
+    setPanelState(false);
+  };
+
+  const handleAuthorityEdit = (authority) => {
+    setAuthority(authority);
+    setPanelState(true);
   };
 
   useEffect(() => {
@@ -83,7 +95,7 @@ const Authorities = () => {
                   {item.status ? 'Active' : 'Inactive'}
                 </TableCell>
                 <TableCell>
-                  <IconButton aria-label="Edit" className={style.editBtn}>
+                  <IconButton onClick={() => handleAuthorityEdit(item)} aria-label="Edit" className={style.editBtn}>
                     <BorderColorIcon />
                 </IconButton>
                 </TableCell>
@@ -111,13 +123,13 @@ const Authorities = () => {
       <Drawer
           anchor="right"
           open={panelState}
-          onClose={() => setPanelState(false)}
+          onClose={handleCloseEvent}
           PaperProps={{ 
             sx: {width: {xs: '100%', sm: '500px'}},
             style: { backgroundColor: '#f5f5f5', padding: '16px' } 
           }} 
         >
-          <CreateAuthority closeEvent={() => setPanelState(false)} />
+          <CreateAuthority closeEvent={handleCloseEvent} authority={authority}/>
         </Drawer>
     </>
   );

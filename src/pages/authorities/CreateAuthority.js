@@ -1,8 +1,44 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import { FormControlLabel, IconButton, Radio, RadioGroup } from '@mui/material';
+import fetcher from '../../utils/fetcher'
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
-const CreateAuthority = ({closeEvent}) => {
+const CreateAuthority = ({closeEvent, authority}) => {
+
+    const [formData, setFormData] = useState({
+        name: authority?.name || '',
+        description: authority?.description || '',
+        status: authority?.status || 1,
+        id: authority?.id || null
+    });
+    
+    const handleSubmit = async (values) => {
+        try {
+            if (authority) {
+                await fetcher.put('authority', values);
+            } else {
+                await fetcher.post('authority', values);
+            }
+            closeEvent();
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    const validationSchema = Yup.object().shape({
+        name: Yup.string().required('Name is required'),
+        description: Yup.string().required('Description is required'),
+        status: Yup.string().required('Status is required')
+    });
+    
+    const formik = useFormik({
+        initialValues: formData,
+        validationSchema: validationSchema,
+        onSubmit: handleSubmit,
+    });
+
     return(
         <>
             <div className="createMainTitle">
@@ -12,18 +48,35 @@ const CreateAuthority = ({closeEvent}) => {
                 </IconButton>
             </div>
 
+            <form onSubmit={formik.handleSubmit}>
             <div className="createSection mb-3"> 
                 <h3 className="createSubTitle">General</h3 > 
-                
                 <section className="createFormSection">
                     <div className='form-group'>
                         <label className='label-control'>Title<span>*</span></label>
-                        <input type='text' className='form-control' />
+                        <input
+                            name="name"
+                            onChange={formik.handleChange}
+                            value={formik.values.name}
+                            type="text"
+                            className="form-control"
+                        />
+                        { formik.touched.name && formik.errors.name && (
+                            <div>{formik.errors.name}</div>
+                        )}
                     </div>
 
                     <div className='form-group'>
                         <label className='label-control'>Description</label>
-                        <textarea className='form-control'></textarea>
+                        <textarea
+                            name="description"
+                            onChange={formik.handleChange}
+                            value={formik.values.description}
+                            className="form-control"
+                        ></textarea>
+                        { formik.touched.description && formik.errors.description && (
+                            <div>{formik.errors.description}</div>
+                        )}
                     </div>
 
                     <div className='form-group m-0'>
@@ -31,20 +84,30 @@ const CreateAuthority = ({closeEvent}) => {
                         <RadioGroup
                             row
                             aria-labelledby="demo-row-radio-buttons-group-label"
-                            name="row-radio-buttons-group"
+                            name="status"
+                            value={formik.values.status}
+                            onChange={formik.handleChange}
                         >
-                            <FormControlLabel value="active" control={<Radio sx={{'& .MuiSvgIcon-root': { fontSize: 18, }}} />} label="Active" />
-                            <FormControlLabel value="inactive" control={<Radio sx={{'& .MuiSvgIcon-root': { fontSize: 18, }}} />} label="Inactive" />
+                            <FormControlLabel
+                                value="1"
+                                control={<Radio sx={{'& .MuiSvgIcon-root': { fontSize: 18, }}} />}
+                                label="Active"
+                            />
+                            <FormControlLabel
+                                value="0"
+                                control={<Radio sx={{'& .MuiSvgIcon-root': { fontSize: 18, }}} />}
+                                label="Inactive"
+                            />
                         </RadioGroup>
                     </div>
                 </section>
             </div> 
 
             <div className='d-flex justify-content-end'>
-                {/* <button className='btn btn-danger mr-auto'>Delete Role</button> */}
                 <button className='btn btn-outline-primary mr-2'>Authority</button>
-                <button className='btn btn-primary'>Save Authority</button>
+                <button type="submit" className='btn btn-primary'>Save Authority</button>
             </div>
+            </form>
             
         </>
     )
