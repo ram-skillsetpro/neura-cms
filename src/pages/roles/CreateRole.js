@@ -114,7 +114,7 @@ const CreateRole = ({closeEvent, role}) => {
                             name="description"
                             onChange={formik.handleChange}
                             value={formik.values.description}
-                            className="form-control"
+                            className="form-control h_90"
                         ></textarea>
                         { formik.touched.description && formik.errors.description && (
                             <div>{formik.errors.description}</div>

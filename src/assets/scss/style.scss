@@ -218,6 +218,9 @@ table td{padding: 10px 16px;}
 
 .headingRow{
   margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   h1{
     font-size: 20px;
     font-weight: 600;
@@ -231,12 +234,21 @@ table td{padding: 10px 16px;}
   @include boxShadow(0 0 10px rgba(0,0,0,0.05));
   @include borderRadius(4px);
 
+  //Paper CSS
+  .css-1fw5qro-MuiPaper-root{
+    @include borderRadius(0);
+    @include boxShadow(none);
+    border: $lightGrey_v1 solid 1px;
+  }
+  //Table Container CSS
   .css-11xur9t-MuiPaper-root-MuiTableContainer-root{
-    border-radius: 0;
+    @include borderRadius(0);
     @include boxShadow(none);
   }
+
+  //Tabs CSS
   .css-z0j9vg-MuiPaper-root-MuiTabs-root{
-    border-radius: 0;
+    @include borderRadius(0);
     @include boxShadow(none);
     border-bottom: $lightGrey solid 1px;
     margin-bottom: 0!important;
@@ -246,11 +258,35 @@ table td{padding: 10px 16px;}
     .css-1aquho2-MuiTabs-indicator{
       background-color: $primaryColor;
     }
+  } 
+  .css-1h9z7r5-MuiButtonBase-root-MuiTab-root{
+    @include mdScreen{
+      font-size: 12px;
+      padding: 12px;
+    }
+  }
+
+  //Table pagination
+  .css-jtlhu6-MuiTablePagination-root{
+    border: none;
+    font-size: 12px;
+    p{
+      margin: 0;
+      font-size: 12px;
+    }
   }
 }
+
+
 .tableSearchFilter{
+  @include smScreen{
+    width: 100%;
+  }
   input{
     width: 240px;
+    @include smScreen{
+      width: 100%;
+    }
   }
 }
 
@@ -275,19 +311,7 @@ table td{padding: 10px 16px;}
       padding: 12px 12px;
       border-color: $lightGrey_v1;
     }
-  }
-  tfoot{
-    tr{
-      td{
-        border: none;
-        font-size: 12px;
-        p{
-          margin: 0;
-          font-size: 12px;
-        }
-      }
-    }
-  }
+  } 
 }
 
 
@@ -321,7 +345,10 @@ table td{padding: 10px 16px;}
   .createFormSection{
     padding: 16px;
     textarea{
-      height: 90px;
+      height: 160px;
+      &.h_90{
+        height: 90px;
+      }
     }
     .css-ahj2mt-MuiTypography-root{
       font-size: 12px;

@@ -175,121 +175,123 @@ const ManageUser = () => {
         </div>
 
         {progress ? <CircularProgress /> : null}
-        <Tabs value={currentUserTab} onChange={handleUserTabChange} component={Paper} style={{marginBottom:"5px"}}>
+        <Tabs value={currentUserTab} onChange={handleUserTabChange} style={{marginBottom:"5px"}}>
           <Tab label='Unapproved User' /> 
           <Tab label='Approved User' /> 
         </Tabs>
 
-        <TableContainer component={Paper}>
-            {currentUserTab === 0 && (
-          <Table className='dataTable'>
-            <TableHead>
-              <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>User Name</TableCell>
-                <TableCell>Company Name</TableCell>
-                <TableCell></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              { userList.map((user, index) => (
-                <TableRow key={index}>
-                  <TableCell>
-                        {user.lastName}
-                  </TableCell>
-                  <TableCell>
-                        {user.email}
-                  </TableCell>
-                  <TableCell>
-                    {user.userName}
-                  </TableCell>
-                  <TableCell>
-                    {user.companyName}
-                  </TableCell>
-                  <TableCell>
-                    <Button
-                      id={`basic-button-${index}`}
-                      aria-controls={`basic-menu-${index}`}
-                      aria-haspopup="true"
-                      onClick={() => handleMenuOpen(index)}
-                    >
-                      <BiDotsVerticalRounded />
-                    </Button>
-                    <Menu
-                      id={`basic-menu-${index}`}
-                      anchorEl={openStates[index] ? document.getElementById(`basic-button-${index}`) : null}
-                      open={openStates[index] || false}
-                      onClose={() => handleMenuClose(index)}
-                      MenuListProps={{
-                        'aria-labelledby': `basic-button-${index}`
-                      }}
-                    >
-                      <MenuItem onClick={() => handleOpenUserCompanyMapDialog(user, index)}>Activate</MenuItem>
-                    </Menu>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-          )}
-          { currentUserTab === 1 && (
+        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+          <TableContainer>
+              {currentUserTab === 0 && (
             <Table className='dataTable'>
-            <TableHead>
-              <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>User Name</TableCell>
-                <TableCell>Company Name</TableCell>
-                <TableCell></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              { userList.map((user, index) => (
-                <TableRow key={index}>
-                  <TableCell>
-                        {user.lastName}
-                  </TableCell>
-                  <TableCell>
-                        {user.email}
-                  </TableCell>
-                  <TableCell>
-                    {user.userName}
-                  </TableCell>
-                  <TableCell>
-                    {user.companyName}
-                  </TableCell>
-                  <TableCell>
-                    <Button
-                      id={`basic-button-${index}`}
-                      aria-controls={`basic-menu-${index}`}
-                      aria-haspopup="true"
-                      onClick={() => handleMenuOpen(index)}
-                    >
-                      <BiDotsVerticalRounded />
-                    </Button>
-                    <Menu
-                      id={`basic-menu-${index}`}
-                      anchorEl={openStates[index] ? document.getElementById(`basic-button-${index}`) : null}
-                      open={openStates[index] || false}
-                      onClose={() => handleMenuClose(index)}
-                      MenuListProps={{
-                        'aria-labelledby': `basic-button-${index}`
-                      }}
-                    >
-                      <MenuItem onClick={() => handleOpenConfirmDialog(user, index)}>Deactivate</MenuItem>
-                    </Menu>
-                  </TableCell>
+              <TableHead>
+                <TableRow>
+                  <TableCell style={{ minWidth: '200px' }}>Name</TableCell>
+                  <TableCell style={{ minWidth: '200px' }}>Email</TableCell>
+                  <TableCell style={{ minWidth: '200px' }}>User Name</TableCell>
+                  <TableCell style={{ minWidth: '200px' }}>Company Name</TableCell>
+                  <TableCell style={{ width: '100px' }}></TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-          )}
-        </TableContainer> 
+              </TableHead>
+              <TableBody>
+                { userList.map((user, index) => (
+                  <TableRow key={index}>
+                    <TableCell>
+                          {user.lastName}
+                    </TableCell>
+                    <TableCell>
+                          {user.email}
+                    </TableCell>
+                    <TableCell>
+                      {user.userName}
+                    </TableCell>
+                    <TableCell>
+                      {user.companyName}
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        id={`basic-button-${index}`}
+                        aria-controls={`basic-menu-${index}`}
+                        aria-haspopup="true"
+                        onClick={() => handleMenuOpen(index)}
+                      >
+                        <BiDotsVerticalRounded />
+                      </Button>
+                      <Menu
+                        id={`basic-menu-${index}`}
+                        anchorEl={openStates[index] ? document.getElementById(`basic-button-${index}`) : null}
+                        open={openStates[index] || false}
+                        onClose={() => handleMenuClose(index)}
+                        MenuListProps={{
+                          'aria-labelledby': `basic-button-${index}`
+                        }}
+                      >
+                        <MenuItem onClick={() => handleOpenUserCompanyMapDialog(user, index)}>Activate</MenuItem>
+                      </Menu>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+            )}
+            { currentUserTab === 1 && (
+              <Table className='dataTable'>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Name</TableCell>
+                  <TableCell>Email</TableCell>
+                  <TableCell>User Name</TableCell>
+                  <TableCell>Company Name</TableCell>
+                  <TableCell></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                { userList.map((user, index) => (
+                  <TableRow key={index}>
+                    <TableCell>
+                          {user.lastName}
+                    </TableCell>
+                    <TableCell>
+                          {user.email}
+                    </TableCell>
+                    <TableCell>
+                      {user.userName}
+                    </TableCell>
+                    <TableCell>
+                      {user.companyName}
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        id={`basic-button-${index}`}
+                        aria-controls={`basic-menu-${index}`}
+                        aria-haspopup="true"
+                        onClick={() => handleMenuOpen(index)}
+                      >
+                        <BiDotsVerticalRounded />
+                      </Button>
+                      <Menu
+                        id={`basic-menu-${index}`}
+                        anchorEl={openStates[index] ? document.getElementById(`basic-button-${index}`) : null}
+                        open={openStates[index] || false}
+                        onClose={() => handleMenuClose(index)}
+                        MenuListProps={{
+                          'aria-labelledby': `basic-button-${index}`
+                        }}
+                      >
+                        <MenuItem onClick={() => handleOpenConfirmDialog(user, index)}>Deactivate</MenuItem>
+                      </Menu>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+            )}
+          </TableContainer> 
 
-        <Stack spacing={2} sx={{ margin: "20px 0 0", flexDirection: "row-reverse" }}>
-          <Pagination count={totalPages} color="primary" page={currentPage} onChange={handlePageChange} />
-        </Stack>
+          <Stack spacing={2} sx={{ margin: "20px 0 0", flexDirection: "row-reverse" }}>
+            <Pagination count={totalPages} color="primary" page={currentPage} onChange={handlePageChange} />
+          </Stack>
+        </Paper>
       </div>
       
 

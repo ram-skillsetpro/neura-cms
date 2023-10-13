@@ -12,6 +12,11 @@
     .viewArea{
         flex: 1;
         padding: 24px;
+        @include mdScreen {
+            flex: inherit;
+            width: 100%;
+            padding: 20px 16px;
+        }
     }
 }
 

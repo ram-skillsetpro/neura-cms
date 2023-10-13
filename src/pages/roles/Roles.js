@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import style from './Roles.module.scss';
-import { Table, TableCell, TableHead, TableRow, TableBody, IconButton, TableFooter, TablePagination, Drawer } from '@mui/material'; 
+import { Table, TableCell, TableHead, TableRow, TableBody, IconButton, TablePagination, Drawer, Chip, Paper, TableContainer } from '@mui/material'; 
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import CreateRole from './CreateRole';
 import fetcher from '../../utils/fetcher';
@@ -63,6 +63,7 @@ const Roles = () => {
     <>  
       <div className='headingRow'>
         <h1>Roles</h1>
+        <button className='btn btn-primary' onClick={() => setPanelState(true)}>Add New Role</button>
       </div> 
 
       <div className='whiteContainer'>
@@ -70,56 +71,61 @@ const Roles = () => {
           <div className='tableSearchFilter'>
             <input type='text' className='form-control' placeholder='Search Roles' />
           </div>
-          <button className='btn btn-primary' onClick={() => setPanelState(true)}>Add New Role</button>
+          {/* <button className='btn btn-primary' onClick={() => setPanelState(true)}>Add New Role</button> */}
         </div>
 
-        <Table className='dataTable'>
-          <TableHead>
-            <TableRow>
-              <TableCell>Title</TableCell>
-              <TableCell>Description</TableCell>
-              <TableCell>Authorities</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            { displayRoles.map((role, index) => (
-              <TableRow key={index}>
-                <TableCell>
-                      {role.name}
-                </TableCell>
-                <TableCell>
-                      {role.description}
-                </TableCell>
-                <TableCell>
-                  {role?.authCount}
-                </TableCell>
-                <TableCell>
-                  {role.status ? 'Active' : 'Inactive'}
-                </TableCell>
-                <TableCell>
-                  <IconButton onClick={() => handleRoleEdit(role)} aria-label="Edit" className={style.editBtn}>
-                    <BorderColorIcon />
-                </IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
+        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+          <TableContainer>
+            <Table className='dataTable'>
+              <TableHead>
+                <TableRow>
+                  <TableCell style={{ minWidth: '150px' }}>Title</TableCell>
+                  <TableCell style={{ minWidth: '250px' }}>Description</TableCell>
+                  <TableCell style={{ minWidth: '150px' }}>Authorities</TableCell>
+                  <TableCell style={{ width: '100px' }}>Status</TableCell>
+                  <TableCell style={{ width: '100px' }}></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                { displayRoles.map((role, index) => (
+                  <TableRow key={index}>
+                    <TableCell>
+                          {role.name}
+                    </TableCell>
+                    <TableCell>
+                          {role.description}
+                    </TableCell>
+                    <TableCell>
+                      {role?.authCount}
+                    </TableCell>
+                    <TableCell>
+                      {role.status ? 
+                        <Chip label="Active" color="success" size="small" /> 
+                        : 
+                        <Chip label="Inactive" color="error" size="small" /> 
+                      }
+                    </TableCell>
+                    <TableCell>
+                      <IconButton onClick={() => handleRoleEdit(role)} aria-label="Edit" className={style.editBtn}>
+                        <BorderColorIcon />
+                    </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
 
-          <TableFooter>
-            <TableRow>
-              <TablePagination
-                rowsPerPageOptions={[5, 10, 25]}
-                count={roles.length}
-                rowsPerPage={rowsPerPage}
-                page={currentPage}
-                onPageChange={handlePageChange}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-              />
-            </TableRow>
-          </TableFooter>
-        </Table>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={roles.length}
+            rowsPerPage={rowsPerPage}
+            page={currentPage}
+            onPageChange={handlePageChange}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </Paper>
       </div> 
 
 

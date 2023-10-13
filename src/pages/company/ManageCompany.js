@@ -19,7 +19,8 @@ import {
   IconButton,
   Drawer,
   TableFooter,
-  TablePagination
+  TablePagination,
+  TableContainer
 } from '@mui/material'
 import { BiDotsVerticalRounded } from 'react-icons/bi'
 import fetcher from '../../utils/fetcher'
@@ -114,6 +115,7 @@ const ManageCompany = () => {
     <>
       <div className='headingRow'>
         <h1>Manage Company</h1>
+        <button className='btn btn-primary' onClick={() => setPanelState(true)}>Add Company</button>
       </div>
 
 
@@ -122,79 +124,83 @@ const ManageCompany = () => {
           <div className='tableSearchFilter'>
             <input type='text' className='form-control' placeholder='Search Company' />
           </div>
-          <button className='btn btn-primary' onClick={() => setPanelState(true)}>Add New Company</button>
         </div>
 
 
-      {progress ? <CircularProgress /> : null} 
-        <Table className='dataTable'>
-          <TableHead>
-            <TableRow>
-              <TableCell>Code</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Description</TableCell>
-              <TableCell></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            { companyList.map((company, index) => (
-              <TableRow key={index}>
-                <TableCell>
-                      {company.companyCode}
-                </TableCell>
-                <TableCell>
-                      {company.name}
-                </TableCell>
-                <TableCell>
-                  {company.description}
-                </TableCell>
-                <TableCell>
-                  <Button
-                    id={`basic-button-${index}`}
-                    aria-controls={`basic-menu-${index}`}
-                    aria-haspopup="true"
-                    onClick={() => handleMenuOpen(index)}
-                  >
-                    <BiDotsVerticalRounded />
-                  </Button>
-                  <Menu
-                    id={`basic-menu-${index}`}
-                    anchorEl={openStates[index] ? document.getElementById(`basic-button-${index}`) : null}
-                    open={openStates[index] || false}
-                    onClose={() => handleMenuClose(index)}
-                    MenuListProps={{
-                      'aria-labelledby': `basic-button-${index}`
-                    }}
-                  >
-                    <MenuItem onClick={() => handleEditCompany(company, index)}>Edit</MenuItem>
-                    <MenuItem onClick={() => handleOpenConfirmDialog(company, index)}>
-                      {company?.isActive ? 'Deactivate' : 'Activate'}
-                    </MenuItem>
-                  </Menu>
-                </TableCell>
-              </TableRow>
-            ))}
+        {progress ? <CircularProgress /> : null} 
+        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+          <TableContainer>
+            <Table className='dataTable'>
+              <TableHead>
+                <TableRow>
+                  <TableCell style={{ minWidth: '100px' }}>Code</TableCell>
+                  <TableCell style={{ minWidth: '200px' }}>Name</TableCell>
+                  <TableCell style={{ minWidth: '250px' }}>Description</TableCell>
+                  <TableCell style={{ width: '100px' }}></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                { companyList.map((company, index) => (
+                  <TableRow key={index}>
+                    <TableCell>
+                          {company.companyCode}
+                    </TableCell>
+                    <TableCell>
+                          {company.name}
+                    </TableCell>
+                    <TableCell>
+                      {company.description}
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        id={`basic-button-${index}`}
+                        aria-controls={`basic-menu-${index}`}
+                        aria-haspopup="true"
+                        onClick={() => handleMenuOpen(index)}
+                      >
+                        <BiDotsVerticalRounded />
+                      </Button>
+                      <Menu
+                        id={`basic-menu-${index}`}
+                        anchorEl={openStates[index] ? document.getElementById(`basic-button-${index}`) : null}
+                        open={openStates[index] || false}
+                        onClose={() => handleMenuClose(index)}
+                        MenuListProps={{
+                          'aria-labelledby': `basic-button-${index}`
+                        }}
+                      >
+                        <MenuItem onClick={() => handleEditCompany(company, index)}>Edit</MenuItem>
+                        <MenuItem onClick={() => handleOpenConfirmDialog(company, index)}>
+                          {company?.isActive ? 'Deactivate' : 'Activate'}
+                        </MenuItem>
+                      </Menu>
+                    </TableCell>
+                  </TableRow>
+                ))}
 
-          </TableBody>
+              </TableBody>
 
 
-          {/* <TableFooter>
-            <TableRow>
-              <TablePagination
-                rowsPerPageOptions={[5, 10, 25]}
-                count={roles.length}
-                rowsPerPage={rowsPerPage}
-                page={currentPage}
-                onPageChange={handlePageChange}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-              />
-            </TableRow>
-          </TableFooter> */}
-        </Table> 
+              {/* <TableFooter>
+                <TableRow>
+                  <TablePagination
+                    rowsPerPageOptions={[5, 10, 25]}
+                    count={roles.length}
+                    rowsPerPage={rowsPerPage}
+                    page={currentPage}
+                    onPageChange={handlePageChange}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                  />
+                </TableRow>
+              </TableFooter> */}
+            </Table> 
+          </TableContainer>
     
-        <Stack spacing={2} sx={{ margin: "20px 0 0", flexDirection: "row-reverse" }}>
-          <Pagination count={totalPages} color="primary" page={currentPage} onChange={handlePageChange} />
-        </Stack>
+          <Stack spacing={2} sx={{ margin: "20px 0 0", flexDirection: "row-reverse" }}>
+            <Pagination count={totalPages} color="primary" page={currentPage} onChange={handlePageChange} />
+          </Stack>
+
+        </Paper>
       </div>
 
       <Dialog open={openConfirmDialog}>

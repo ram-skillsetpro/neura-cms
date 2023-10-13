@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import style from './Authorities.module.scss';
-import { Table, TableCell, TableHead, TableRow, TableBody, IconButton, TableFooter, TablePagination, Drawer } from '@mui/material'; 
+import { Table, TableCell, TableHead, TableRow, TableBody, IconButton, TablePagination, Drawer, Paper, TableContainer, Chip } from '@mui/material'; 
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import CreateAuthority from './CreateAuthority';
 import fetcher from '../../utils/fetcher';
@@ -63,59 +63,64 @@ const Authorities = () => {
     <>  
       <div className='headingRow'>
         <h1>Authorities</h1>
+        <button className='btn btn-primary' onClick={() => setPanelState(true)}>Add New Authority</button>
       </div> 
 
       <div className='whiteContainer'>
         <div className='mb-3 d-flex justify-content-between align-items-center'>
           <div className='tableSearchFilter'>
             <input type='text' className='form-control' placeholder='Search Authority' />
-          </div>
-          <button className='btn btn-primary' onClick={() => setPanelState(true)}>Add New Authority</button>
+          </div> 
         </div>
 
-        <Table className='dataTable'>
-          <TableHead>
-            <TableRow>
-              <TableCell>Title</TableCell>
-              <TableCell>Description</TableCell> 
-              <TableCell>Status</TableCell>
-              <TableCell></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            { displayAuthorities.map((item, index) => (
-              <TableRow key={index}>
-                <TableCell>
-                      {item.name}
-                </TableCell>
-                <TableCell>
-                      {item.description}
-                </TableCell> 
-                <TableCell>
-                  {item.status ? 'Active' : 'Inactive'}
-                </TableCell>
-                <TableCell>
-                  <IconButton onClick={() => handleAuthorityEdit(item)} aria-label="Edit" className={style.editBtn}>
-                    <BorderColorIcon />
-                </IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
+        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+          <TableContainer>
+            <Table className='dataTable'>
+              <TableHead>
+                <TableRow>
+                  <TableCell style={{ width: '200px' }}>Title</TableCell>
+                  <TableCell style={{ minWidth: '250px' }}>Description</TableCell> 
+                  <TableCell style={{ width: '100px' }}>Status</TableCell>
+                  <TableCell style={{ width: '100px' }}></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                { displayAuthorities.map((item, index) => (
+                  <TableRow key={index}>
+                    <TableCell>
+                          {item.name}
+                    </TableCell>
+                    <TableCell>
+                          {item.description}
+                    </TableCell> 
+                    <TableCell>
+                      {item.status ? 
+                        <Chip label="Active" color="success" size="small" /> 
+                        : 
+                        <Chip label="Inactive" color="error" size="small" /> 
+                      } 
+                    </TableCell>
+                    <TableCell>
+                      <IconButton onClick={() => handleAuthorityEdit(item)} aria-label="Edit" className={style.editBtn}>
+                        <BorderColorIcon />
+                    </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody> 
+            </Table>
+          </TableContainer>
 
-          <TableFooter>
-            <TableRow>
-              <TablePagination
-                  rowsPerPageOptions={[5, 10, 25]}
-                  count={authorities.length}
-                  rowsPerPage={rowsPerPage}
-                  page={currentPage}
-                  onPageChange={handlePageChange}
-                  onRowsPerPageChange={handleChangeRowsPerPage}
-                />
-              </TableRow>
-            </TableFooter>
-        </Table>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={authorities.length}
+            rowsPerPage={rowsPerPage}
+            page={currentPage}
+            onPageChange={handlePageChange}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </Paper>
       </div> 
 
 
