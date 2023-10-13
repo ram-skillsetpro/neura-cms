@@ -9,7 +9,6 @@ export const PageUrls = {
     INDEX: '/',
     LOGIN: '/login',
     ROLES: '/roles',
-    COMPANY_CREATE: '/company/create',
     COMPANY: '/company',
     USER: '/user',
     CONTRACT_CREATE: '/contract/create',
@@ -32,7 +31,6 @@ export const AUTHORITY = {
 };
 
 export const AUTHORITY_ROUT_MAP = [
-    { route_regx: PageUrls.COMPANY_CREATE, authority: [AUTHORITY.UPDATE_DEMO_USER] },
     { route_regx: PageUrls.COMPANY, authority: [AUTHORITY.UPDATE_DEMO_USER] },
     { route_regx: PageUrls.USER, authority: [AUTHORITY.UPDATE_DEMO_USER] },
     { route_regx: PageUrls.CONTRACT_CREATE, authority: [AUTHORITY.CLAUSE_PROMPT_MANAGEMENT] },

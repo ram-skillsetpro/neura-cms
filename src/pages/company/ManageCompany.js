@@ -23,9 +23,7 @@ import {
 } from '@mui/material'
 import { BiDotsVerticalRounded } from 'react-icons/bi'
 import fetcher from '../../utils/fetcher'
-import CreateCompany from './Create';
-import CloseIcon from '@mui/icons-material/Close';
-import CreateCompanyNew from './CreateCompany';
+import CreateCompany from './CreateCompany';
 
 const ManageCompany = () => {
 
@@ -37,7 +35,6 @@ const ManageCompany = () => {
   const [dialogProgress, setDialogProgress] = useState(false);
   const [openStates, setOpenStates] = useState(Array(30).fill(false));
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
-  const [openCompanyDialog, setOpenCompanyDialog] = useState(false);
   const [panelState, setPanelState] = useState(false);
 
 
@@ -72,7 +69,7 @@ const ManageCompany = () => {
   const handleEditCompany = (company, index) => {
     handleMenuClose(index);
     setCompany(company);
-    setOpenCompanyDialog(true);
+    setPanelState(true);
   }
 
   const handleOpenConfirmDialog = (company, index) => {
@@ -81,10 +78,10 @@ const ManageCompany = () => {
     setOpenConfirmDialog(true);
   };
 
-  const handleCloseCompanyDialog = () => {
+  const handleCloseEvent = () => {
     setCompany(null);
-    setOpenCompanyDialog(false);
     fetchCompanyList(currentPage);
+    setPanelState(false);
   };
 
   const handlePageChange = (event, page) => {
@@ -112,10 +109,6 @@ const ManageCompany = () => {
     fetchCompanyList(currentPage);
   }, [currentPage]);
 
-
-  const handleCloseEvent = () => { 
-    setPanelState(false);
-  };
 
   return (
     <>
@@ -204,16 +197,6 @@ const ManageCompany = () => {
         </Stack>
       </div>
 
-      
-      
-      <Dialog open={openCompanyDialog}>
-        <DialogContent>
-          <CreateCompany submitCallback={handleCloseCompanyDialog} company={company} />
-        </DialogContent>
-          <IconButton className='close-button' onClick={handleCloseCompanyDialog}><CloseIcon/></IconButton>
-      </Dialog>
-
-      
       <Dialog open={openConfirmDialog}>
       { dialogProgress ? <CircularProgress /> : null }
         <DialogContent>
@@ -239,7 +222,7 @@ const ManageCompany = () => {
         >
 
           {/* NOTE: please rename as "CreateCompany" */}
-          <CreateCompanyNew closeEvent={handleCloseEvent} />
+          <CreateCompany closeEvent={handleCloseEvent} company={company} />
         </Drawer>
 
 

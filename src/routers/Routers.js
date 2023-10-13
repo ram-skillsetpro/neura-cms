@@ -4,7 +4,6 @@ import { canAccessTheRouteWithUserAuthorities, isAuthenticated, isRestrictedRout
 import Layout from "../components/layout/Layout";  // Import the Layout HOC
 import Login from "../pages/Login";
 import { Index } from "../pages/Index";
-import CreateCompany from "../pages/company/Create";
 import ManageCompany from "../pages/company/ManageCompany";
 import ManageUser from "../pages/user/ManageUser";
 import CreateContract from "../pages/contract/Create";
@@ -12,7 +11,6 @@ import ManageContract from "../pages/contract/ManageContract";
 import CreateClause from "../pages/clause/CreateClause";
 import ManageClause from "../pages/clause/ManageClause";
 import ClausePrompt from "../pages/clause/ClausePrompt";
-import AddClausePrompt from "../pages/clause/AddClausePrompt";
 import { NoMatch } from "../pages/NoMatch";
 import Roles from "../pages/roles/Roles";
 import { PageUrls } from "../utils/constants";
@@ -38,7 +36,6 @@ const Routers = () => {
           <Route path={PageUrls.ROLES} element={<PrivateRoute element={<Layout> <Roles /> </Layout>} />} />
           <Route path={PageUrls.AUTHORITIES} element={<PrivateRoute element={<Layout> <Authorities /> </Layout>} />} />
           
-          <Route path={PageUrls.COMPANY_CREATE} element={<PrivateRoute element={<Layout> <CreateCompany /> </Layout>} />} />
           <Route path={PageUrls.COMPANY} element={<PrivateRoute element={<Layout> <ManageCompany /> </Layout>} />} />
           <Route path={PageUrls.USER} element={<PrivateRoute element={<Layout> <ManageUser /> </Layout>} />} />
           <Route path={PageUrls.CONTRACT_CREATE} element={<PrivateRoute element={<Layout> <CreateContract /> </Layout>} />} />

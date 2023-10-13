@@ -5,63 +5,89 @@ import fetcher from '../../utils/fetcher'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-const CreateCompanyNew = ({closeEvent}) => {   
+const CreateCompany = ({closeEvent, company}) => {   
+    
+    const [formData, setFormData] = useState({
+        companyDescription: company?.description || '',
+        companyName: company?.name || '',
+        id: company?.id || ''
+    });
+
+    const validationSchema = Yup.object().shape({
+        companyDescription: Yup.string().required('Company description is required'),
+        companyName: Yup.string().required('Company name is required')
+    });
+
+    const handleSubmit = async (values) => {
+        try {
+            if (company?.id) {
+                const cmpRes = await fetcher.get(`cms/company-details?companyId=${company.id}`);
+                cmpRes.response.description = values.companyDescription;
+                cmpRes.response.name = values.companyName;
+                await fetcher.post('cms/edit-company', cmpRes.response);
+            } else {
+                await fetcher.post('cms/create-company', values);
+            }
+        } catch (err) {
+            console.log(err);
+        } finally {
+            closeEvent();
+        }
+    }
+
+    const formik = useFormik({
+        initialValues: formData,
+        validationSchema: validationSchema,
+        onSubmit: handleSubmit,
+    });
+
+    useEffect(() => {
+    }, []);
+    
     return(
         <>
             <div className="createMainTitle">
-                <h2>Create Company</h2>
+                <h2>{company ? 'Edit Company' : 'Create Company'}</h2>
                 <IconButton onClick={closeEvent}>
                     <CloseIcon />
                 </IconButton>
             </div>
 
-            <form>
+            <form onSubmit={formik.handleSubmit}>
                 <div className="createSection mb-3"> 
-                    <h3 className="createSubTitle">General</h3 > 
                     
                     <section className="createFormSection">
                         <div className='form-group'>
                             <label className='label-control'>Company name<span>*</span></label>
                             <input
-                                name="name" 
+                                name="companyName"
+                                onChange={formik.handleChange}
+                                value={formik.values.companyName}
                                 type="text"
                                 className="form-control"
-                            /> 
+                            />
+                            { formik.touched.companyName && formik.errors.companyName && (
+                                <div>{formik.errors.companyName}</div>
+                            )} 
                         </div>
 
                         <div className='form-group'>
                             <label className='label-control'>Company Description</label>
                             <textarea
-                                name="description" 
+                                name="companyDescription"
+                                onChange={formik.handleChange}
+                                value={formik.values.companyDescription}
                                 className="form-control"
-                            ></textarea> 
-                        </div>
-
-                        <div className='form-group m-0'>
-                            <label className='label-control'>Company Status</label> 
-                            <RadioGroup
-                                row
-                                aria-labelledby="demo-row-radio-buttons-group-label"
-                                name="status" 
-                            >
-                                <FormControlLabel
-                                    value="1"
-                                    control={<Radio sx={{'& .MuiSvgIcon-root': { fontSize: 18, }}} />}
-                                    label="Active"
-                                />
-                                <FormControlLabel
-                                    value="0"
-                                    control={<Radio sx={{'& .MuiSvgIcon-root': { fontSize: 18, }}} />}
-                                    label="Inactive"
-                                />
-                            </RadioGroup>
+                            ></textarea>
+                            { formik.touched.companyDescription && formik.errors.companyDescription && (
+                                <div>{formik.errors.companyDescription}</div>
+                            )} 
                         </div>
                     </section>
                 </div>
                 
 
                 <div className='d-flex justify-content-end'>
-                    {/* <button className='btn btn-danger mr-auto'>Delete Role</button> */}
                     <button className='btn btn-outline-primary mr-2'>Cancel</button>
                     <button type="submit" className='btn btn-primary'>Save Company</button>
                 </div>
@@ -71,4 +97,4 @@ const CreateCompanyNew = ({closeEvent}) => {
     )
 }
 
-export default CreateCompanyNew;
+export default CreateCompany;
