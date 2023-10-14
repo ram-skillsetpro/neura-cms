@@ -72,6 +72,15 @@ const CreateCompany = ({closeEvent, company}) => {
                         </div>
 
                         <div className='form-group'>
+                            <label className='label-control'>Company Logo</label>
+                            <input
+                                name="companyLogo" 
+                                type="file"
+                                className="form-control"
+                            />
+                        </div>
+
+                        <div className='form-group'>
                             <label className='label-control'>Company Description</label>
                             <textarea
                                 name="companyDescription"

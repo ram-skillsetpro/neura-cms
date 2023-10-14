@@ -83,7 +83,7 @@ const CreateRole = ({closeEvent, role}) => {
     return(
         <>
             <div className="createMainTitle">
-                <h2>Create Role</h2>
+                <h2>{role ? 'Edit Role' : 'Create Role'}</h2>
                 <IconButton onClick={closeEvent}>
                     <CloseIcon />
                 </IconButton>
@@ -173,7 +173,7 @@ const CreateRole = ({closeEvent, role}) => {
 
             <div className='d-flex justify-content-end'>
                 {/* <button className='btn btn-danger mr-auto'>Delete Role</button> */}
-                <button className='btn btn-outline-primary mr-2'>Cancel</button>
+                <button className='btn btn-outline-primary mr-2' onClick={closeEvent}>Cancel</button>
                 <button type="submit" className='btn btn-primary'>Save Role</button>
             </div>
             </form>
