@@ -104,7 +104,7 @@ const CreateRole = ({closeEvent, role}) => {
                             className="form-control"
                         />
                         { formik.touched.name && formik.errors.name && (
-                            <div>{formik.errors.name}</div>
+                            <div className='errorMsg'>{formik.errors.name}</div>
                         )}
                     </div>
 
@@ -117,7 +117,7 @@ const CreateRole = ({closeEvent, role}) => {
                             className="form-control h_90"
                         ></textarea>
                         { formik.touched.description && formik.errors.description && (
-                            <div>{formik.errors.description}</div>
+                            <div className='errorMsg'>{formik.errors.description}</div>
                         )}
                     </div>
 
@@ -166,7 +166,7 @@ const CreateRole = ({closeEvent, role}) => {
                         )}
                     </div>
                     {formik.touched.authorities && formik.errors.authorities && (
-                        <div>{formik.errors.authorities}</div>
+                        <div className='errorMsg'>{formik.errors.authorities}</div>
                     )}
                 </section>
             </div>

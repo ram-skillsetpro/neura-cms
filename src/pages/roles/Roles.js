@@ -63,7 +63,7 @@ const Roles = () => {
     <>  
       <div className='headingRow'>
         <h1>Roles</h1>
-        <button className='btn btn-primary' onClick={() => setPanelState(true)}>Add New Role</button>
+        <button className='btn btn-primary' onClick={() => setPanelState(true)}>Create Role</button>
       </div> 
 
       <div className='whiteContainer'>

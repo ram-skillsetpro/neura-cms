@@ -115,7 +115,7 @@ const ManageCompany = () => {
     <>
       <div className='headingRow'>
         <h1>Manage Company</h1>
-        <button className='btn btn-primary' onClick={() => setPanelState(true)}>Add Company</button>
+        <button className='btn btn-primary' onClick={() => setPanelState(true)}>Create Company</button>
       </div>
 
 

@@ -67,7 +67,7 @@ const CreateCompany = ({closeEvent, company}) => {
                                 className="form-control"
                             />
                             { formik.touched.companyName && formik.errors.companyName && (
-                                <div>{formik.errors.companyName}</div>
+                                <div className='errorMsg'>{formik.errors.companyName}</div>
                             )} 
                         </div>
 
@@ -89,7 +89,7 @@ const CreateCompany = ({closeEvent, company}) => {
                                 className="form-control"
                             ></textarea>
                             { formik.touched.companyDescription && formik.errors.companyDescription && (
-                                <div>{formik.errors.companyDescription}</div>
+                                <div className='errorMsg'>{formik.errors.companyDescription}</div>
                             )} 
                         </div>
                     </section>

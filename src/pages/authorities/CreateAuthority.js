@@ -62,7 +62,7 @@ const CreateAuthority = ({closeEvent, authority}) => {
                                 className="form-control"
                             />
                             { formik.touched.name && formik.errors.name && (
-                                <div>{formik.errors.name}</div>
+                                <div className='errorMsg'>{formik.errors.name}</div>
                             )}
                         </div>
 
@@ -75,7 +75,7 @@ const CreateAuthority = ({closeEvent, authority}) => {
                                 className="form-control"
                             ></textarea>
                             { formik.touched.description && formik.errors.description && (
-                                <div>{formik.errors.description}</div>
+                                <div className='errorMsg'>{formik.errors.description}</div>
                             )}
                         </div>
 
