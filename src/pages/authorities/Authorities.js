@@ -63,7 +63,7 @@ const Authorities = () => {
     <>  
       <div className='headingRow'>
         <h1>Authorities</h1>
-        <button className='btn btn-primary' onClick={() => setPanelState(true)}>Add New Authority</button>
+        <button className='btn btn-primary' onClick={() => setPanelState(true)}>Create Authority</button>
       </div> 
 
       <div className='whiteContainer'>

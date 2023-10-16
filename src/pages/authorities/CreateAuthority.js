@@ -42,71 +42,71 @@ const CreateAuthority = ({closeEvent, authority}) => {
     return(
         <>
             <div className="createMainTitle">
-                <h2>Create Authority</h2>
+                <h2>{authority ? 'Edit Authority' : 'Create Authority' }</h2>
                 <IconButton onClick={closeEvent}>
                     <CloseIcon />
                 </IconButton>
             </div>
 
             <form onSubmit={formik.handleSubmit}>
-            <div className="createSection mb-3"> 
-                <h3 className="createSubTitle">General</h3 > 
-                <section className="createFormSection">
-                    <div className='form-group'>
-                        <label className='label-control'>Title<span>*</span></label>
-                        <input
-                            name="name"
-                            onChange={formik.handleChange}
-                            value={formik.values.name}
-                            type="text"
-                            className="form-control"
-                        />
-                        { formik.touched.name && formik.errors.name && (
-                            <div>{formik.errors.name}</div>
-                        )}
-                    </div>
-
-                    <div className='form-group'>
-                        <label className='label-control'>Description</label>
-                        <textarea
-                            name="description"
-                            onChange={formik.handleChange}
-                            value={formik.values.description}
-                            className="form-control"
-                        ></textarea>
-                        { formik.touched.description && formik.errors.description && (
-                            <div>{formik.errors.description}</div>
-                        )}
-                    </div>
-
-                    <div className='form-group m-0'>
-                        <label className='label-control'>Authority Status</label> 
-                        <RadioGroup
-                            row
-                            aria-labelledby="demo-row-radio-buttons-group-label"
-                            name="status"
-                            value={formik.values.status}
-                            onChange={formik.handleChange}
-                        >
-                            <FormControlLabel
-                                value="1"
-                                control={<Radio sx={{'& .MuiSvgIcon-root': { fontSize: 18, }}} />}
-                                label="Active"
+                <div className="createSection mb-3"> 
+                    <h3 className="createSubTitle">General</h3 > 
+                    <section className="createFormSection">
+                        <div className='form-group'>
+                            <label className='label-control'>Title<span>*</span></label>
+                            <input
+                                name="name"
+                                onChange={formik.handleChange}
+                                value={formik.values.name}
+                                type="text"
+                                className="form-control"
                             />
-                            <FormControlLabel
-                                value="0"
-                                control={<Radio sx={{'& .MuiSvgIcon-root': { fontSize: 18, }}} />}
-                                label="Inactive"
-                            />
-                        </RadioGroup>
-                    </div>
-                </section>
-            </div> 
+                            { formik.touched.name && formik.errors.name && (
+                                <div className='errorMsg'>{formik.errors.name}</div>
+                            )}
+                        </div>
 
-            <div className='d-flex justify-content-end'>
-                <button className='btn btn-outline-primary mr-2'>Authority</button>
-                <button type="submit" className='btn btn-primary'>Save Authority</button>
-            </div>
+                        <div className='form-group'>
+                            <label className='label-control'>Description</label>
+                            <textarea
+                                name="description"
+                                onChange={formik.handleChange}
+                                value={formik.values.description}
+                                className="form-control"
+                            ></textarea>
+                            { formik.touched.description && formik.errors.description && (
+                                <div className='errorMsg'>{formik.errors.description}</div>
+                            )}
+                        </div>
+
+                        <div className='form-group m-0'>
+                            <label className='label-control'>Authority Status</label> 
+                            <RadioGroup
+                                row
+                                aria-labelledby="demo-row-radio-buttons-group-label"
+                                name="status"
+                                value={formik.values.status}
+                                onChange={formik.handleChange}
+                            >
+                                <FormControlLabel
+                                    value="1"
+                                    control={<Radio sx={{'& .MuiSvgIcon-root': { fontSize: 18, }}} />}
+                                    label="Active"
+                                />
+                                <FormControlLabel
+                                    value="0"
+                                    control={<Radio sx={{'& .MuiSvgIcon-root': { fontSize: 18, }}} />}
+                                    label="Inactive"
+                                />
+                            </RadioGroup>
+                        </div>
+                    </section>
+                </div> 
+
+                <div className='d-flex justify-content-end'>
+                    <button className='btn btn-outline-primary mr-2' onClick={closeEvent}>Cancel</button>
+                    <button type="submit" className='btn btn-primary'>Save Authority</button>
+                </div>
             </form>
             
         </>

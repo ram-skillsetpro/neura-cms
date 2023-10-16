@@ -8,12 +8,18 @@
     .sidebar{
         width: 240px;
         flex: 0 0 auto;
+        position: fixed;
+        top: 64px;
+        bottom: 0;
+        left: 0;
     }
     .viewArea{
         flex: 1;
         padding: 24px;
+        margin-left: 240px;
         @include mdScreen {
             flex: inherit;
+            margin: 0;
             width: 100%;
             padding: 20px 16px;
         }

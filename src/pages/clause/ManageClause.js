@@ -15,15 +15,18 @@ import {
   Dialog,
   DialogContent,
   DialogActions,
-  IconButton
+  IconButton,
+  Drawer
 } from '@mui/material'
 import { BiDotsVerticalRounded } from 'react-icons/bi'
 import fetcher from '../../utils/fetcher'
 import CloseIcon from '@mui/icons-material/Close';
 import CreateClause from './CreateClause';
+import CreateClauseNew from './CreateClauseNew';
 
 const ManageClause = () => {
 
+  const [panelState, setPanelState] = useState(false);
   const [clauseList, setClauseList] = useState([]);
   const [clause, setClause] = useState(null);
   const [progress, setProgress] = useState(false);
@@ -99,60 +102,79 @@ const ManageClause = () => {
     fetchClauseList();
   }, []);
 
+  const handleCloseEvent = () => { 
+    setPanelState(false);
+  };
+
   return (
     <>
-      <Typography variant="h3" className='page-heading'>
-      Manage Clause
-      </Typography>
-      {progress ? <CircularProgress /> : null}
-      <TableContainer sx={{ maxHeight: "calc(100vh - 230px)" }} component={Paper}>
-      <Table stickyHeader>
-        <TableHead>
-          <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell>Description</TableCell>
-            <TableCell></TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          { clauseList.map((clause, index) => (
-            <TableRow key={index}>
-              <TableCell>
-                    {clause.name}
-              </TableCell>
-              <TableCell>
-                {clause.desc}
-              </TableCell>
-              <TableCell>
-                <Button
-                  id={`basic-button-${index}`}
-                  aria-controls={`basic-menu-${index}`}
-                  aria-haspopup="true"
-                  onClick={() => handleMenuOpen(index)}
-                >
-                  <BiDotsVerticalRounded />
-                </Button>
-                <Menu
-                  id={`basic-menu-${index}`}
-                  anchorEl={openStates[index] ? document.getElementById(`basic-button-${index}`) : null}
-                  open={openStates[index] || false}
-                  onClose={() => handleMenuClose(index)}
-                  MenuListProps={{
-                    'aria-labelledby': `basic-button-${index}`
-                  }}
-                >
-                  <MenuItem onClick={() => handleEditClause(clause, index)}>Edit</MenuItem>
-                  <MenuItem onClick={() => handleOpenConfirmDialog(clause, index)}>
-                    {clause?.is_active ? 'Deactivate' : 'Activate'}
-                  </MenuItem>
-                </Menu>
-              </TableCell>
-            </TableRow>
-          ))}
+      <div className='headingRow'>
+        <h1>Manage Clause</h1>
+        <button className='btn btn-primary' onClick={() => setPanelState(true)}>Create Clause</button>
+      </div>   
 
-        </TableBody>
-      </Table>
-    </TableContainer>
+
+      <div className='whiteContainer'>
+        <div className='mb-3 d-flex justify-content-between align-items-center'>
+          <div className='tableSearchFilter'>
+            <input type='text' className='form-control' placeholder='Search Clause' />
+          </div>
+        </div>
+
+        {progress ? <CircularProgress /> : null}
+        
+        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+          <TableContainer>
+            <Table className='dataTable'>
+              <TableHead>
+                <TableRow>
+                  <TableCell style={{ width: '250px' }}>Name</TableCell>
+                  <TableCell style={{ minWidth: '300px' }}>Description</TableCell>
+                  <TableCell style={{ width: '100px' }}></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                { clauseList.map((clause, index) => (
+                  <TableRow key={index}>
+                    <TableCell>
+                          {clause.name}
+                    </TableCell>
+                    <TableCell>
+                      {clause.desc}
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        id={`basic-button-${index}`}
+                        aria-controls={`basic-menu-${index}`}
+                        aria-haspopup="true"
+                        onClick={() => handleMenuOpen(index)}
+                      >
+                        <BiDotsVerticalRounded />
+                      </Button>
+                      <Menu
+                        id={`basic-menu-${index}`}
+                        anchorEl={openStates[index] ? document.getElementById(`basic-button-${index}`) : null}
+                        open={openStates[index] || false}
+                        onClose={() => handleMenuClose(index)}
+                        MenuListProps={{
+                          'aria-labelledby': `basic-button-${index}`
+                        }}
+                      >
+                        <MenuItem onClick={() => handleEditClause(clause, index)}>Edit</MenuItem>
+                        <MenuItem onClick={() => handleOpenConfirmDialog(clause, index)}>
+                          {clause?.is_active ? 'Deactivate' : 'Activate'}
+                        </MenuItem>
+                      </Menu>
+                    </TableCell>
+                  </TableRow>
+                ))}
+
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Paper>
+      </div>
+      
       
       <Dialog open={openClauseDialog}>
         <DialogContent>
@@ -172,6 +194,19 @@ const ManageClause = () => {
         </DialogActions>
       </Dialog>
 
+
+      {/* Create Clause panel */}
+      <Drawer
+        anchor="right"
+        open={panelState}
+        onClose={handleCloseEvent}
+        PaperProps={{ 
+          sx: {width: {xs: '100%', sm: '500px'}},
+          style: { backgroundColor: '#f5f5f5', padding: '16px' } 
+        }} 
+      >
+        <CreateClauseNew closeEvent={handleCloseEvent} />
+      </Drawer>
     </>
   );
 

@@ -83,7 +83,7 @@ const CreateRole = ({closeEvent, role}) => {
     return(
         <>
             <div className="createMainTitle">
-                <h2>Create Role</h2>
+                <h2>{role ? 'Edit Role' : 'Create Role'}</h2>
                 <IconButton onClick={closeEvent}>
                     <CloseIcon />
                 </IconButton>
@@ -104,7 +104,7 @@ const CreateRole = ({closeEvent, role}) => {
                             className="form-control"
                         />
                         { formik.touched.name && formik.errors.name && (
-                            <div>{formik.errors.name}</div>
+                            <div className='errorMsg'>{formik.errors.name}</div>
                         )}
                     </div>
 
@@ -117,7 +117,7 @@ const CreateRole = ({closeEvent, role}) => {
                             className="form-control h_90"
                         ></textarea>
                         { formik.touched.description && formik.errors.description && (
-                            <div>{formik.errors.description}</div>
+                            <div className='errorMsg'>{formik.errors.description}</div>
                         )}
                     </div>
 
@@ -166,14 +166,14 @@ const CreateRole = ({closeEvent, role}) => {
                         )}
                     </div>
                     {formik.touched.authorities && formik.errors.authorities && (
-                        <div>{formik.errors.authorities}</div>
+                        <div className='errorMsg'>{formik.errors.authorities}</div>
                     )}
                 </section>
             </div>
 
             <div className='d-flex justify-content-end'>
                 {/* <button className='btn btn-danger mr-auto'>Delete Role</button> */}
-                <button className='btn btn-outline-primary mr-2'>Cancel</button>
+                <button className='btn btn-outline-primary mr-2' onClick={closeEvent}>Cancel</button>
                 <button type="submit" className='btn btn-primary'>Save Role</button>
             </div>
             </form>

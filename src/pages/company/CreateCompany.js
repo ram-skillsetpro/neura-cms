@@ -67,8 +67,17 @@ const CreateCompany = ({closeEvent, company}) => {
                                 className="form-control"
                             />
                             { formik.touched.companyName && formik.errors.companyName && (
-                                <div>{formik.errors.companyName}</div>
+                                <div className='errorMsg'>{formik.errors.companyName}</div>
                             )} 
+                        </div>
+
+                        <div className='form-group'>
+                            <label className='label-control'>Company Logo</label>
+                            <input
+                                name="companyLogo" 
+                                type="file"
+                                className="form-control"
+                            />
                         </div>
 
                         <div className='form-group'>
@@ -80,7 +89,7 @@ const CreateCompany = ({closeEvent, company}) => {
                                 className="form-control"
                             ></textarea>
                             { formik.touched.companyDescription && formik.errors.companyDescription && (
-                                <div>{formik.errors.companyDescription}</div>
+                                <div className='errorMsg'>{formik.errors.companyDescription}</div>
                             )} 
                         </div>
                     </section>
@@ -88,7 +97,7 @@ const CreateCompany = ({closeEvent, company}) => {
                 
 
                 <div className='d-flex justify-content-end'>
-                    <button className='btn btn-outline-primary mr-2'>Cancel</button>
+                    <button className='btn btn-outline-primary mr-2' onClick={closeEvent}>Cancel</button>
                     <button type="submit" className='btn btn-primary'>Save Company</button>
                 </div>
             </form>

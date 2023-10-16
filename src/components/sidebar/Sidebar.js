@@ -14,6 +14,9 @@ import BalanceIcon from '@mui/icons-material/Balance';
 import {PageUrls } from "../../utils/constants";
 import { IconButton } from '@mui/material';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
+import ChecklistIcon from '@mui/icons-material/Checklist';
+import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
+import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 
 const Sidebar = ({closeEvent}) => {
   const authority = userAuthority().map(authority => authority.name);
@@ -31,11 +34,11 @@ const Sidebar = ({closeEvent}) => {
     }
     if(authority.includes(AUTHORITY.CLAUSE_PROMPT_MANAGEMENT)){
       setNavs(prevNavs => [...prevNavs, 
-        {url: PageUrls.CONTRACT_CREATE, title: 'Contract Create', icon: <InboxIcon />}, 
-        {url: PageUrls.CONTRACT, title: 'Contract Master', icon: <InboxIcon />},
-        {url: PageUrls.CLAUSE_CREATE, title: 'Clause Create', icon: <InboxIcon />},
-        {url: PageUrls.CLAUSE, title: 'Clause Master', icon: <InboxIcon />},
-        {url: PageUrls.CLAUSE_PROMPT, title: 'Clause Prompt', icon: <InboxIcon />},
+        // {url: PageUrls.CONTRACT_CREATE, title: 'Contract Create', icon: <InboxIcon />}, 
+        {url: PageUrls.CONTRACT, title: 'Contract Master', icon: <ChecklistIcon />},
+        // {url: PageUrls.CLAUSE_CREATE, title: 'Clause Create', icon: <InboxIcon />},
+        {url: PageUrls.CLAUSE, title: 'Clause Master', icon: <LocalLibraryIcon />},
+        {url: PageUrls.CLAUSE_PROMPT, title: 'Clause Prompt', icon: <AutoStoriesIcon />},
       ]);
     }
   },[])

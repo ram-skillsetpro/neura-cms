@@ -115,7 +115,7 @@ const ManageCompany = () => {
     <>
       <div className='headingRow'>
         <h1>Manage Company</h1>
-        <button className='btn btn-primary' onClick={() => setPanelState(true)}>Add Company</button>
+        <button className='btn btn-primary' onClick={() => setPanelState(true)}>Create Company</button>
       </div>
 
 
@@ -178,23 +178,18 @@ const ManageCompany = () => {
                   </TableRow>
                 ))}
 
-              </TableBody>
-
-
-              {/* <TableFooter>
-                <TableRow>
-                  <TablePagination
-                    rowsPerPageOptions={[5, 10, 25]}
-                    count={roles.length}
-                    rowsPerPage={rowsPerPage}
-                    page={currentPage}
-                    onPageChange={handlePageChange}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                  />
-                </TableRow>
-              </TableFooter> */}
+              </TableBody> 
             </Table> 
           </TableContainer>
+
+          {/* <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            count={roles.length}
+            rowsPerPage={rowsPerPage}
+            page={currentPage}
+            onPageChange={handlePageChange}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          /> */}
     
           <Stack spacing={2} sx={{ margin: "20px 0 0", flexDirection: "row-reverse" }}>
             <Pagination count={totalPages} color="primary" page={currentPage} onChange={handlePageChange} />
