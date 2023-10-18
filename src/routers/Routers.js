@@ -6,7 +6,6 @@ import Login from "../pages/Login";
 import { Index } from "../pages/Index";
 import ManageCompany from "../pages/company/ManageCompany";
 import ManageUser from "../pages/user/ManageUser";
-import CreateContract from "../pages/contract/Create";
 import ManageContract from "../pages/contract/ManageContract";
 import CreateClause from "../pages/clause/CreateClause";
 import ManageClause from "../pages/clause/ManageClause";
@@ -38,7 +37,6 @@ const Routers = () => {
           
           <Route path={PageUrls.COMPANY} element={<PrivateRoute element={<Layout> <ManageCompany /> </Layout>} />} />
           <Route path={PageUrls.USER} element={<PrivateRoute element={<Layout> <ManageUser /> </Layout>} />} />
-          <Route path={PageUrls.CONTRACT_CREATE} element={<PrivateRoute element={<Layout> <CreateContract /> </Layout>} />} />
           <Route path={PageUrls.CONTRACT} element={<PrivateRoute element={<Layout> <ManageContract /> </Layout>} />} />
           <Route path={PageUrls.CLAUSE_CREATE} element={<PrivateRoute element={<Layout> <CreateClause /> </Layout>} />} />
           <Route path={PageUrls.CLAUSE} element={<PrivateRoute element={<Layout> <ManageClause /> </Layout>} />} />

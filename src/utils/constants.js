@@ -11,7 +11,6 @@ export const PageUrls = {
     ROLES: '/roles',
     COMPANY: '/company',
     USER: '/user',
-    CONTRACT_CREATE: '/contract/create',
     CONTRACT: '/contract',
     CLAUSE_CREATE: '/clause/create',
     CLAUSE: '/clause',
@@ -33,7 +32,6 @@ export const AUTHORITY = {
 export const AUTHORITY_ROUT_MAP = [
     { route_regx: PageUrls.COMPANY, authority: [AUTHORITY.UPDATE_DEMO_USER] },
     { route_regx: PageUrls.USER, authority: [AUTHORITY.UPDATE_DEMO_USER] },
-    { route_regx: PageUrls.CONTRACT_CREATE, authority: [AUTHORITY.CLAUSE_PROMPT_MANAGEMENT] },
     { route_regx: PageUrls.CONTRACT, authority: [AUTHORITY.CLAUSE_PROMPT_MANAGEMENT] },
     { route_regx: PageUrls.CLAUSE_CREATE, authority: [AUTHORITY.CLAUSE_PROMPT_MANAGEMENT] },
     { route_regx: PageUrls.CLAUSE, authority: [AUTHORITY.CLAUSE_PROMPT_MANAGEMENT] },

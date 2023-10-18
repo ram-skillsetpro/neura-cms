@@ -15,26 +15,25 @@ import {
   Dialog,
   DialogContent,
   DialogActions,
-  IconButton,
-  Drawer
+  TablePagination,
+  Drawer,
+  Chip
 } from '@mui/material'
 import { BiDotsVerticalRounded } from 'react-icons/bi'
 import fetcher from '../../utils/fetcher'
-import CloseIcon from '@mui/icons-material/Close';
-import CreateContract from './Create';
-import CreateContractNew from './CreateContract';
+import CreateContract from './CreateContract';
 
 const ManageContract = () => {
 
   const [panelState, setPanelState] = useState(false);
   const [contractList, setContractList] = useState([]);
+  const [displayContracts, setDisplayContracts] = useState([]);
   const [contract, setContract] = useState(null);
   const [progress, setProgress] = useState(false);
-  const [dialogProgress, setDialogProgress] = useState(false);
   const [openStates, setOpenStates] = useState(Array(30).fill(false));
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
-  const [openContractDialog, setOpenContractDialog] = useState(false);
-
+  const [currentPage, setCurrentPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const fetchContractList = async () => {
     try {
@@ -66,14 +65,8 @@ const ManageContract = () => {
   const handleEditContract = (contract, index) => {
     handleMenuClose(index);
     setContract(contract);
-    setOpenContractDialog(true);
+    setPanelState(true);
   }
-
-  const handleCloseContractDialog = () => {
-    setContract(null);
-    setOpenContractDialog(false);
-    fetchContractList();
-  };
 
   const handleOpenConfirmDialog = (contract, index) => {
     handleMenuClose(index);
@@ -98,13 +91,36 @@ const ManageContract = () => {
     }
   };
 
+  const handlePageChange = (event, newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setCurrentPage(0);
+  };
+
+  const fetchDisplayedContracts = () => {
+    const displayedContracts = contractList.slice(
+      currentPage * rowsPerPage,
+      currentPage * rowsPerPage + rowsPerPage
+    );
+    setDisplayContracts(displayedContracts);
+  }
+
+  const handleCloseEvent = () => { 
+    setContract(null);
+    fetchContractList();
+    setPanelState(false);
+  };
+
   useEffect(() => {
     fetchContractList();
   }, []);
 
-  const handleCloseEvent = () => { 
-    setPanelState(false);
-  };
+  useEffect(() => {
+    fetchDisplayedContracts();
+  }, [currentPage, contractList, rowsPerPage]);
 
   return (
     <>
@@ -128,17 +144,25 @@ const ManageContract = () => {
                 <TableRow>
                   <TableCell style={{ width: '250px' }}>Name</TableCell>
                   <TableCell style={{ minWidth: '300px' }}>Description</TableCell>
+                  <TableCell style={{ width: '100px' }}>Status</TableCell>
                   <TableCell style={{ width: '100px' }}></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                { contractList.map((contract, index) => (
+                { displayContracts.map((contract, index) => (
                   <TableRow key={index}>
                     <TableCell>
                           {contract.name}
                     </TableCell>
                     <TableCell>
                       {contract.desc}
+                    </TableCell>
+                    <TableCell>
+                      {contract.is_active ? 
+                        <Chip label="Active" color="success" size="small" /> 
+                        : 
+                        <Chip label="Inactive" color="error" size="small" /> 
+                      } 
                     </TableCell>
                     <TableCell>
                       <Button
@@ -169,20 +193,20 @@ const ManageContract = () => {
 
               </TableBody>
             </Table>
-          </TableContainer> 
+          </TableContainer>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={contractList.length}
+            rowsPerPage={rowsPerPage}
+            page={currentPage}
+            onPageChange={handlePageChange}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          /> 
         </Paper>
       </div>
-      
-      
-      <Dialog open={openContractDialog}>
-        <DialogContent>
-            <CreateContract submitCallback={handleCloseContractDialog} contract={contract} />
-        </DialogContent>
-          <IconButton className='close-button' onClick={handleCloseContractDialog}><CloseIcon/></IconButton>
-      </Dialog>
 
       <Dialog open={openConfirmDialog}>
-      { dialogProgress ? <CircularProgress /> : null }
         <DialogContent>
           <Typography componebt="p">Are you sure you want to  {contract?.is_active ? ( 'Deactivate') : ( 'Activate' )}</Typography>
         </DialogContent>
@@ -203,13 +227,11 @@ const ManageContract = () => {
           style: { backgroundColor: '#f5f5f5', padding: '16px' } 
         }} 
       >
-        <CreateContractNew closeEvent={handleCloseEvent} />
+        <CreateContract closeEvent={handleCloseEvent} contract={contract}/>
       </Drawer>
 
     </>
   );
-
-
 
 }
 

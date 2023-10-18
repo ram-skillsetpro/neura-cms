@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import { Checkbox, FormControlLabel, IconButton, Radio, RadioGroup } from '@mui/material';
-import fetcher from '../../utils/fetcher'
+import fetcher from '../../utils/fetcher';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 

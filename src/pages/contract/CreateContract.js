@@ -1,10 +1,47 @@
 import React, { useEffect, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
-import { Checkbox, FormControlLabel, IconButton, Radio, RadioGroup } from '@mui/material'; 
+import { Checkbox, FormControlLabel, IconButton, Radio, RadioGroup } from '@mui/material';
+import fetcher from '../../utils/fetcher';
+import { useFormik } from 'formik';
+import * as Yup from 'yup'; 
 
-// NOTE:- Please rename with "CreateContract"
+const CreateContract = ({closeEvent, contract}) => {
+    
+    const [formData, setFormData] = useState({
+        desc: contract?.desc || '',
+        name: contract?.name || '',
+        id: contract?.id || '',
+        is_active: contract?.is_active || ''
+    });
 
-const CreateContractNew = ({closeEvent, contract}) => {    
+    const validationSchema = Yup.object().shape({
+        desc: Yup.string().required('Contract description is required'),
+        name: Yup.string().required('Contract name is required')
+    });
+
+    const handleSubmit = async (values) => {
+        try {
+            if (contract?.id) {
+                await fetcher.post(`cms/edit-contract-type`, values);
+            } else {
+                await fetcher.post('cms/add-contract-type', values);
+            }
+        } catch (err) {
+            console.log(err);
+        } finally {
+            closeEvent();
+        }
+    }
+
+    const formik = useFormik({
+        initialValues: formData,
+        validationSchema: validationSchema,
+        onSubmit: handleSubmit
+    });
+
+    useEffect(() => {
+    }, []);
+
     return(
         <>
             <div className="createMainTitle">
@@ -14,50 +51,36 @@ const CreateContractNew = ({closeEvent, contract}) => {
                 </IconButton>
             </div>
 
-            <form>
+            <form onSubmit={formik.handleSubmit}>
                 <div className="createSection mb-3">  
                     <section className="createFormSection">
                         <div className='form-group'>
                             <label className='label-control'>Contract Name<span>*</span></label>
                             <input
-                                name="contractName" 
+                                name="name"
+                                onChange={formik.handleChange}
+                                value={formik.values.name}
                                 type="text"
                                 className="form-control"
-                            /> 
-
-                            <div className='errorMsg'>Error Message here...</div>  
+                            />
+                            { formik.touched.name && formik.errors.name && (
+                                <div className='errorMsg'>{formik.errors.name}</div>
+                            )}
                         </div>
  
 
                         <div className='form-group'>
                             <label className='label-control'>Contract Description</label>
                             <textarea
-                                name="contractDescription" 
+                                name="desc"
+                                onChange={formik.handleChange}
+                                value={formik.values.desc}
                                 className="form-control"
                             ></textarea>
-                            <div className='errorMsg'>Error Message here...</div>
+                            { formik.touched.desc && formik.errors.desc && (
+                                <div className='errorMsg'>{formik.errors.desc}</div>
+                            )}
                         </div>
-
-
-                    <div className='form-group m-0'>
-                        <label className='label-control'>Contract Status</label> 
-                        <RadioGroup
-                            row
-                            aria-labelledby="demo-row-radio-buttons-group-label"
-                            name="status"
-                        >
-                            <FormControlLabel
-                                value="1"
-                                control={<Radio sx={{'& .MuiSvgIcon-root': { fontSize: 18, }}} />}
-                                label="Activate"
-                            />
-                            <FormControlLabel
-                                value="0"
-                                control={<Radio sx={{'& .MuiSvgIcon-root': { fontSize: 18, }}} />}
-                                label="Deactivate"
-                            />
-                        </RadioGroup>
-                    </div>
                     </section>
                 </div>
                 
@@ -72,4 +95,4 @@ const CreateContractNew = ({closeEvent, contract}) => {
     )
 }
 
-export default CreateContractNew;
+export default CreateContract;
