@@ -1,28 +1,12 @@
-import {
-    Box,
-    Button,
-    Input, CircularProgress, Paper, TextField} from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import CloseIcon from '@mui/icons-material/Close';
+import { Checkbox, FormControlLabel, IconButton, Radio, RadioGroup } from '@mui/material'; 
+import fetcher from '../../utils/fetcher';
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import fetcher from '../../utils/fetcher'
-import { useNavigate } from 'react-router-dom';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import SnackBar from "../../components/SnackBar";
+import * as Yup from 'yup'; 
 
-const CreateClause = ({ submitCallback, clause }) => {
-    const navigate = useNavigate();
-    const [progress, setProgress] = useState(false);
-    const [snackbar, setSnackbar] = useState({
-        show: false,
-        status: "",
-        message: "",
-      });
-      const toggleSnackbar = (value) => {
-        setSnackbar(value);
-      };
-    
+const CreateClause = ({closeEvent, clause}) => {
+
     const [formData, setFormData] = useState({
         desc: clause?.desc || '',
         name: clause?.name || '',
@@ -35,32 +19,17 @@ const CreateClause = ({ submitCallback, clause }) => {
         name: Yup.string().required('Clause name is required')
     });
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prevFormData) => ({
-            ...prevFormData,
-            [name]: value
-        }));
-    };
-
     const handleSubmit = async (values) => {
         try {
-            setProgress(true);
             if (clause?.id) {
                 await fetcher.post(`cms/edit-clause-type`, values);
             } else {
                 await fetcher.post('cms/add-clause-type', values);
             }
-            setSnackbar({
-                show: true,
-                status: 'success',
-                message: 'Saved successfully'
-            });
         } catch (err) {
             console.log(err);
         } finally {
-            setProgress(false);
-            submitCallback();
+            closeEvent();
         }
     }
 
@@ -73,57 +42,54 @@ const CreateClause = ({ submitCallback, clause }) => {
     useEffect(() => {
     }, []);
 
+    return(
+        <>
+            <div className="createMainTitle">
+                <h2>{clause ? 'Edit Clause' : 'Create Clause'}</h2>
+                <IconButton onClick={closeEvent}>
+                    <CloseIcon />
+                </IconButton>
+            </div>
 
-    return (
-        <Container maxWidth="xs" component={Paper}>
-        {progress ? <CircularProgress /> : null}
-       
-        <Box component="form" sx={{ mt: 1 }} className='form-bx'>
-        <Typography component="h3">
-          Create Clause
-        </Typography>
-            <TextField
-                fullWidth
-                label="Clause Description"
-                name="desc"
-                placeholder='Clause Description'
-                autoFocus
-                onChange={formik.handleChange}
-                value={formik.values.desc}
-                variant="outlined" 
-                size="small"
-            />
-            {formik.touched.desc && formik.errors.desc && (
-                <div>{formik.errors.desc}</div>
-            )}
-            <TextField
-                fullWidth
-                name="name"
-                label="Clause Name"
-                placeholder='Clause Name'
-                onChange={formik.handleChange}
-                value={formik.values.name}
-                variant="outlined" 
-                size="small"
-            />
-            {formik.touched.name && formik.errors.name && (
-                <div>{formik.errors.name}</div>
-            )}
-            <Button
-                type="button"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-                onClick={formik.handleSubmit}
-            >
-                Save
-            </Button>
-        </Box>
-        <SnackBar {...snackbar} onClose={toggleSnackbar} />
-        </Container>
-        
+            <form onSubmit={formik.handleSubmit}>
+                <div className="createSection mb-3">  
+                    <section className="createFormSection">
+                        <div className='form-group'>
+                            <label className='label-control'>Clause Name<span>*</span></label>
+                            <input
+                                name="name"
+                                onChange={formik.handleChange}
+                                value={formik.values.name}
+                                type="text"
+                                className="form-control"
+                            />
+                            { formik.touched.name && formik.errors.name && (
+                                <div className='errorMsg'>{formik.errors.name}</div>
+                            )}  
+                        </div>
+ 
+                        <div className='form-group'>
+                            <label className='label-control'>Clause Description</label>
+                            <textarea
+                                name="desc"
+                                onChange={formik.handleChange}
+                                value={formik.values.desc}
+                                className="form-control"
+                            ></textarea>
+                            { formik.touched.desc && formik.errors.desc && (
+                                <div className='errorMsg'>{formik.errors.desc}</div>
+                            )}
+                        </div>
+                    </section>
+                </div>
+                
+                <div className='d-flex justify-content-end'>
+                    <button className='btn btn-outline-primary mr-2' onClick={closeEvent}>Cancel</button>
+                    <button type="submit" className='btn btn-primary'>Save Clause</button>
+                </div>
+            </form>
+        </>
     )
 }
 
 export default CreateClause;
-

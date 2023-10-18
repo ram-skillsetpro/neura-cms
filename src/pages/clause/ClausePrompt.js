@@ -15,15 +15,12 @@ import {
   Dialog,
   DialogContent,
   DialogActions,
-  IconButton,
   Chip,
   Drawer
 } from '@mui/material'
 import { BiDotsVerticalRounded } from 'react-icons/bi'
 import fetcher from '../../utils/fetcher'
-import CloseIcon from '@mui/icons-material/Close';
-import AddClausePrompt from './AddClausePrompt';
-import CreateClausePromptNew from './CreateClausePromptNew';
+import CreateClausePrompt from './CreateClausePrompt';
 
 const ClausePrompt = () => {
 
@@ -34,8 +31,6 @@ const ClausePrompt = () => {
   const [dialogProgress, setDialogProgress] = useState(false);
   const [openStates, setOpenStates] = useState(Array(30).fill(false));
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
-  const [openClauseDialog, setOpenClauseDialog] = useState(false);
-
 
   const fetchClausePromptsList = async () => {
     try {
@@ -68,20 +63,14 @@ const ClausePrompt = () => {
     handleMenuClose(index);
     const newCP = {clauseid: clause.clauseid, companyid: clause.companyid}
     setClause(newCP);
-    setOpenClauseDialog(true);
+    setPanelState(true);
   }
 
   const handleEditClausePrompt = (clause, index) => {
     handleMenuClose(index);
     setClause(clause);
-    setOpenClauseDialog(true);
+    setPanelState(true);
   }
-
-  const handleCloseClauseDialog = () => {
-    setClause(null);
-    setOpenClauseDialog(false);
-    fetchClausePromptsList();
-  };
 
   const handleOpenConfirmDialog = (clause, index) => {
     handleMenuClose(index);
@@ -108,17 +97,18 @@ const ClausePrompt = () => {
 
   useEffect(() => {
     fetchClausePromptsList();
-  }, []); 
+  }, []);
 
   const handleCloseEvent = () => { 
     setPanelState(false);
+    fetchClausePromptsList();
   };
 
   return (
     <>
       <div className='headingRow'>
         <h1>Manage Clause Prompt</h1> 
-        <button className='btn btn-primary' onClick={() => setPanelState(true)}>Create Clause Prompt</button>
+        {/* <button className='btn btn-primary' onClick={() => setPanelState(true)}>Create Clause Prompt</button> */}
       </div>    
 
 
@@ -187,14 +177,6 @@ const ClausePrompt = () => {
           </TableContainer>
         </Paper>
       </div>
-      
-      
-      <Dialog open={openClauseDialog}>
-        <DialogContent>
-            <AddClausePrompt submitCallback={handleCloseClauseDialog} clause={clause} />
-        </DialogContent>
-          <IconButton className='close-button' onClick={handleCloseClauseDialog}><CloseIcon/></IconButton>
-      </Dialog>
 
       <Dialog open={openConfirmDialog}>
       { dialogProgress ? <CircularProgress /> : null }
@@ -218,14 +200,10 @@ const ClausePrompt = () => {
           style: { backgroundColor: '#f5f5f5', padding: '16px' } 
         }} 
       >
-        <CreateClausePromptNew closeEvent={handleCloseEvent} />
+        <CreateClausePrompt closeEvent={handleCloseEvent} clause={clause}/>
       </Drawer>
-
     </>
   );
-
-
-
 }
 
 export default ClausePrompt;

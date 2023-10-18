@@ -16,13 +16,12 @@ import {
   DialogContent,
   DialogActions,
   IconButton,
-  Drawer
+  Drawer,
+  Chip
 } from '@mui/material'
 import { BiDotsVerticalRounded } from 'react-icons/bi'
 import fetcher from '../../utils/fetcher'
-import CloseIcon from '@mui/icons-material/Close';
 import CreateClause from './CreateClause';
-import CreateClauseNew from './CreateClauseNew';
 
 const ManageClause = () => {
 
@@ -66,7 +65,7 @@ const ManageClause = () => {
   const handleEditClause = (clause, index) => {
     handleMenuClose(index);
     setClause(clause);
-    setOpenClauseDialog(true);
+    setPanelState(true);
   }
 
   const handleCloseClauseDialog = () => {
@@ -103,6 +102,8 @@ const ManageClause = () => {
   }, []);
 
   const handleCloseEvent = () => { 
+    setClause(null);
+    fetchClauseList();
     setPanelState(false);
   };
 
@@ -130,6 +131,7 @@ const ManageClause = () => {
                 <TableRow>
                   <TableCell style={{ width: '250px' }}>Name</TableCell>
                   <TableCell style={{ minWidth: '300px' }}>Description</TableCell>
+                  <TableCell style={{ width: '100px' }}>Status</TableCell>
                   <TableCell style={{ width: '100px' }}></TableCell>
                 </TableRow>
               </TableHead>
@@ -141,6 +143,13 @@ const ManageClause = () => {
                     </TableCell>
                     <TableCell>
                       {clause.desc}
+                    </TableCell>
+                    <TableCell>
+                      {clause.is_active ? 
+                        <Chip label="Active" color="success" size="small" /> 
+                        : 
+                        <Chip label="Inactive" color="error" size="small" /> 
+                      } 
                     </TableCell>
                     <TableCell>
                       <Button
@@ -174,14 +183,6 @@ const ManageClause = () => {
           </TableContainer>
         </Paper>
       </div>
-      
-      
-      <Dialog open={openClauseDialog}>
-        <DialogContent>
-            <CreateClause submitCallback={handleCloseClauseDialog} clause={clause} />
-        </DialogContent>
-          <IconButton className='close-button' onClick={handleCloseClauseDialog}><CloseIcon/></IconButton>
-      </Dialog>
 
       <Dialog open={openConfirmDialog}>
       { dialogProgress ? <CircularProgress /> : null }
@@ -205,7 +206,7 @@ const ManageClause = () => {
           style: { backgroundColor: '#f5f5f5', padding: '16px' } 
         }} 
       >
-        <CreateClauseNew closeEvent={handleCloseEvent} />
+        <CreateClause closeEvent={handleCloseEvent} clause={clause}/>
       </Drawer>
     </>
   );
