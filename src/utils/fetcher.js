@@ -3,7 +3,7 @@ import { isLoggedin, getToken } from './authGuard';
 
 const apiClient = axios.create({
   // Can set any default configurations here, such as base URL, headers, etc.
-  baseURL: 'http://204.236.168.121:9090/v1/',
+  baseURL: process.env.REACT_APP_API_BASE_URL,
 })
 
 apiClient.interceptors.response.use(
