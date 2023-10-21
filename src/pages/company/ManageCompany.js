@@ -20,7 +20,8 @@ import {
   Drawer,
   TableFooter,
   TablePagination,
-  TableContainer
+  TableContainer,
+  Chip
 } from '@mui/material'
 import { BiDotsVerticalRounded } from 'react-icons/bi'
 import fetcher from '../../utils/fetcher'
@@ -37,7 +38,6 @@ const ManageCompany = () => {
   const [openStates, setOpenStates] = useState(Array(30).fill(false));
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [panelState, setPanelState] = useState(false);
-
 
   const fetchCompanyList = async (page) => {
     try {
@@ -136,6 +136,7 @@ const ManageCompany = () => {
                   <TableCell style={{ minWidth: '100px' }}>Code</TableCell>
                   <TableCell style={{ minWidth: '200px' }}>Name</TableCell>
                   <TableCell style={{ minWidth: '250px' }}>Description</TableCell>
+                  <TableCell style={{ width: '100px' }}>Status</TableCell>
                   <TableCell style={{ width: '100px' }}></TableCell>
                 </TableRow>
               </TableHead>
@@ -150,6 +151,13 @@ const ManageCompany = () => {
                     </TableCell>
                     <TableCell>
                       {company.description}
+                    </TableCell>
+                    <TableCell>
+                      {company.isActive ? 
+                        <Chip label="Active" color="success" size="small" /> 
+                        : 
+                        <Chip label="Inactive" color="error" size="small" /> 
+                      } 
                     </TableCell>
                     <TableCell>
                       <Button

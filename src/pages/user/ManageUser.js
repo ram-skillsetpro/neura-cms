@@ -186,7 +186,6 @@ const ManageUser = () => {
             <Table className='dataTable'>
               <TableHead>
                 <TableRow>
-                  <TableCell style={{ minWidth: '200px' }}>Name</TableCell>
                   <TableCell style={{ minWidth: '200px' }}>Email</TableCell>
                   <TableCell style={{ minWidth: '200px' }}>User Name</TableCell>
                   <TableCell style={{ minWidth: '200px' }}>Company Name</TableCell>
@@ -196,9 +195,6 @@ const ManageUser = () => {
               <TableBody>
                 { userList.map((user, index) => (
                   <TableRow key={index}>
-                    <TableCell>
-                          {user.lastName}
-                    </TableCell>
                     <TableCell>
                           {user.email}
                     </TableCell>
@@ -238,7 +234,6 @@ const ManageUser = () => {
               <Table className='dataTable'>
               <TableHead>
                 <TableRow>
-                  <TableCell>Name</TableCell>
                   <TableCell>Email</TableCell>
                   <TableCell>User Name</TableCell>
                   <TableCell>Company Name</TableCell>
@@ -248,9 +243,6 @@ const ManageUser = () => {
               <TableBody>
                 { userList.map((user, index) => (
                   <TableRow key={index}>
-                    <TableCell>
-                          {user.lastName}
-                    </TableCell>
                     <TableCell>
                           {user.email}
                     </TableCell>

@@ -15,10 +15,13 @@ import fetcher from '../utils/fetcher'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { isAuthenticated } from '../utils/authGuard';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 const Login = () => {
   const navigate = useNavigate();
   const isAuthentic = isAuthenticated();
+  const [showPassword, setShowPassword] = useState(false);
 
   const [formData, setFormData] = useState({
     emailId: '',
@@ -59,6 +62,10 @@ const Login = () => {
     validationSchema: validationSchema,
     onSubmit: handleSubmit,
   });
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   useEffect(() => {
     if (isAuthentic) {
@@ -106,11 +113,19 @@ const Login = () => {
             fullWidth
             name="password"
             label="Password"
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             onChange={formik.handleChange}
             value={formik.values.password}
             size="small"
           />
+          <Button
+            type="button"
+            variant="text"
+            style={{ minWidth: '30px', padding: 0 }}
+            onClick={togglePasswordVisibility}
+          >
+            {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+          </Button>
           {formik.touched.password && formik.errors.password && (
             <div>{formik.errors.password}</div>
           )}
