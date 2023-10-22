@@ -165,7 +165,7 @@ table td{padding: 10px 16px;}
 }
 .form-control{
   font-size: 12px;
-  padding: 10px 16px;
+  padding: 12px 16px;
   border-color: rgba($black, 0.1);
   height: auto;
   &:focus {  
@@ -254,7 +254,8 @@ table td{padding: 10px 16px;}
   }
 
   //Tabs CSS
-  .css-z0j9vg-MuiPaper-root-MuiTabs-root{
+  .css-z0j9vg-MuiPaper-root-MuiTabs-root,
+  .MuiTabs-root{
     @include borderRadius(0);
     @include boxShadow(none);
     border-bottom: $lightGrey solid 1px;
