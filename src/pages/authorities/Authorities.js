@@ -10,8 +10,10 @@ const Authorities = () => {
   const [authorities, setAuthorities] = useState([]);
   const [authority, setAuthority] = useState(null);
   const [displayAuthorities, setDisplayAuthorities] = useState([]);
+  const [count, setCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [searchInput, setSearchInput] = useState('');
 
 
   const fetchAuthorities = async () => {
@@ -24,10 +26,20 @@ const Authorities = () => {
   };
 
   const fetchDisplayedAuthorities = () => {
+    if (searchInput) {
+      const filteredAuthorities = authorities.filter((authority) =>
+        authority.name.toLowerCase().includes(searchInput.toLowerCase())
+      );
+      setCount(filteredAuthorities.length);
+      setDisplayAuthorities(filteredAuthorities.slice(currentPage * rowsPerPage, currentPage * rowsPerPage + rowsPerPage));
+      return;
+    }
+
     const displayedAuthorities = authorities.slice(
       currentPage * rowsPerPage,
       currentPage * rowsPerPage + rowsPerPage
     );
+    setCount(authorities.length);
     setDisplayAuthorities(displayedAuthorities);
   }
 
@@ -51,13 +63,18 @@ const Authorities = () => {
     setPanelState(true);
   };
 
+  const filterAuthorities = (txt) => {
+    setCurrentPage(0);
+    setSearchInput(txt);
+  };
+
   useEffect(() => {
     fetchAuthorities();
   }, []);
 
   useEffect(() => {
     fetchDisplayedAuthorities();
-  }, [currentPage, authorities, rowsPerPage]);
+  }, [searchInput, currentPage, authorities, rowsPerPage]);
 
   return (
     <>  
@@ -69,7 +86,7 @@ const Authorities = () => {
       <div className='whiteContainer'>
         <div className='mb-3 d-flex justify-content-between align-items-center'>
           <div className='tableSearchFilter'>
-            <input type='text' className='form-control' placeholder='Search Authority' />
+            <input type='text' className='form-control' placeholder='Search Authority' onChange={(e) => filterAuthorities(e.target.value)}/>
           </div> 
         </div>
 
@@ -114,7 +131,7 @@ const Authorities = () => {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={authorities.length}
+            count={count}
             rowsPerPage={rowsPerPage}
             page={currentPage}
             onPageChange={handlePageChange}

@@ -10,8 +10,10 @@ const Roles = () => {
   const [roles, setRoles] = useState([]);
   const [role, setRole] = useState(null);
   const [displayRoles, setDisplayRoles] = useState([]);
+  const [count, setCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [searchInput, setSearchInput] = useState('');
 
 
   const fetchRoles = async () => {
@@ -24,10 +26,20 @@ const Roles = () => {
   };
 
   const fetchDisplayedRoles = () => {
+    if (searchInput) {
+      const filteredRoles = roles.filter((role) =>
+        role.name.toLowerCase().includes(searchInput.toLowerCase())
+      );
+      setCount(filteredRoles.length);
+      setDisplayRoles(filteredRoles.slice(currentPage * rowsPerPage, currentPage * rowsPerPage + rowsPerPage));
+      return;
+    }
+
     const displayedRoles = roles.slice(
       currentPage * rowsPerPage,
       currentPage * rowsPerPage + rowsPerPage
     );
+    setCount(roles.length);
     setDisplayRoles(displayedRoles);
   }
 
@@ -51,13 +63,18 @@ const Roles = () => {
     setPanelState(true);
   };
 
+  const filterRoles = (txt) => {
+    setCurrentPage(0);
+    setSearchInput(txt);
+  };
+
   useEffect(() => {
     fetchRoles();
   }, []);
 
   useEffect(() => {
     fetchDisplayedRoles();
-  }, [currentPage, roles, rowsPerPage]);
+  }, [searchInput, currentPage, roles, rowsPerPage]);
 
   return (
     <>  
@@ -69,7 +86,7 @@ const Roles = () => {
       <div className='whiteContainer'>
         <div className='mb-3 d-flex justify-content-between align-items-center'>
           <div className='tableSearchFilter'>
-            <input type='text' className='form-control' placeholder='Search Roles' />
+            <input type='text' className='form-control' placeholder='Search Roles' onChange={(e) => filterRoles(e.target.value)}/>
           </div>
           {/* <button className='btn btn-primary' onClick={() => setPanelState(true)}>Add New Role</button> */}
         </div>
@@ -119,7 +136,7 @@ const Roles = () => {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={roles.length}
+            count={count}
             rowsPerPage={rowsPerPage}
             page={currentPage}
             onPageChange={handlePageChange}
