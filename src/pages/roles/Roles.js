@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import style from './Roles.module.scss';
-import { Table, TableCell, TableHead, TableRow, TableBody, IconButton, TablePagination, Drawer, Chip, Paper, TableContainer } from '@mui/material'; 
+import { Table, TableCell, TableHead, TableRow, TableBody, IconButton, TablePagination, Drawer, Chip, Paper, TableContainer, Dialog,
+  DialogActions,
+  DialogContent, Button } from '@mui/material'; 
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import CreateRole from './CreateRole';
 import fetcher from '../../utils/fetcher';
@@ -14,7 +16,7 @@ const Roles = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [searchInput, setSearchInput] = useState('');
-
+  const [openAuthViewDialog, setOpenAuthViewDialog] = useState(false);
 
   const fetchRoles = async () => {
     try {
@@ -68,6 +70,16 @@ const Roles = () => {
     setSearchInput(txt);
   };
 
+  const handleOpenViewAuth = (role) => {
+    setRole(role);
+    setOpenAuthViewDialog(true);
+  };
+
+  const handleCloseViewAuth = () => {
+    setRole(null);
+    setOpenAuthViewDialog(false);
+  };
+
   useEffect(() => {
     fetchRoles();
   }, []);
@@ -113,7 +125,7 @@ const Roles = () => {
                           {role.description}
                     </TableCell>
                     <TableCell>
-                      {role?.authCount}
+                      <Button onClick={() => handleOpenViewAuth(role)}>{role?.authorityCount}</Button>
                     </TableCell>
                     <TableCell>
                       {role.status ? 
@@ -158,6 +170,19 @@ const Roles = () => {
         >
           <CreateRole closeEvent={handleCloseEvent} role={role}/>
         </Drawer>
+
+        <Dialog open={openAuthViewDialog}>
+          <DialogContent>
+          <ul>
+            {role?.authorities?.map((item, index) => (
+              <li key={index}>{item.name}</li>
+            ))}
+          </ul>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseViewAuth}>Close</Button>
+          </DialogActions>
+        </Dialog>
     </>
   );
 
