@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import style from './Roles.module.scss';
 import { Table, TableCell, TableHead, TableRow, TableBody, IconButton, TablePagination, Drawer, Chip, Paper, TableContainer, Dialog,
   DialogActions,
-  DialogContent, Button } from '@mui/material'; 
+  DialogContent, Button, DialogTitle } from '@mui/material'; 
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import CreateRole from './CreateRole';
 import fetcher from '../../utils/fetcher';
+import CloseIcon from '@mui/icons-material/Close';
 
 const Roles = () => {
   const [panelState, setPanelState] = useState(false);
@@ -171,17 +172,30 @@ const Roles = () => {
           <CreateRole closeEvent={handleCloseEvent} role={role}/>
         </Drawer>
 
-        <Dialog open={openAuthViewDialog}>
-          <DialogContent>
-          <ul>
-            {role?.authorities?.map((item, index) => (
-              <li key={index}>{item.name}</li>
-            ))}
-          </ul>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseViewAuth}>Close</Button>
-          </DialogActions>
+        <Dialog className={style.authListModal} open={openAuthViewDialog}>
+          <DialogTitle className={style.authModalHead}>
+            Authorities
+          </DialogTitle>
+          <IconButton
+            aria-label="close" 
+            onClick={handleCloseViewAuth}
+            sx={{
+              position: 'absolute',
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+          
+          <DialogContent className={style.authlistBox}>
+            <ol>
+              {role?.authorities?.map((item, index) => (
+                <li key={index}>{item.name}</li>
+              ))}
+            </ol>
+          </DialogContent> 
         </Dialog>
     </>
   );

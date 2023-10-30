@@ -8,3 +8,30 @@
         color: $primaryColor;
     }
 }
+ 
+.authModalHead{
+    font-size: 16px;
+    padding: 12px 24px;
+    font-weight: 600;
+}
+.authlistBox{
+    width: 400px;
+    overflow-y: auto;
+    min-height: 150px;
+    max-height: 50vh;
+    padding: 16px 24px!important;
+    border-top: 1px solid $lightGrey;
+    border-bottom: 1px solid $lightGrey;
+    @include xsScreen {
+        width: inherit;
+    }
+    ol{
+        padding: 0;
+        margin: 0;
+        li{
+            font-size: 12px;
+            margin-bottom: 7px;
+            margin-left: 14px;
+        }
+    }
+}
