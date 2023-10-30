@@ -1,14 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {
   Button,
-  TableContainer,
-  Table,
-  TableCell,
-  TableHead,
-  TableRow,
-  Typography,
-  TableBody,
-  Menu,
+  TableContainer, 
+  Typography, 
   MenuItem,
   Pagination,
   Stack,
@@ -21,14 +15,18 @@ import {
   Select, 
   Tabs,
   Tab,
-  Paper
-} from '@mui/material';
-import { BiDotsVerticalRounded } from 'react-icons/bi';
+  Paper,
+  Drawer
+} from '@mui/material'; 
 import fetcher from '../../utils/fetcher';
 import SnackBar from "../../components/SnackBar";
+import TablePendingLeads from './TablePendingLeads';
+import TableDemoLeads from './TableDemoLeads';
+import TableClients from './TableClients';
+import CreateLead from './CreateLead';
 
-const ManageUser = () => {
-
+const ManageLeads = () => {
+  const [panelState, setPanelState] = useState(false);
   const [userList, setUserList] = useState([]);
   const [companyList, setCompanyList] = useState([]);
   const [user, setUser] = useState(null);
@@ -160,130 +158,57 @@ const ManageUser = () => {
     fetchCompanyList();
   }, [currentPage, currentUserTab]);
 
+  const handleCloseEvent = () => { 
+    setPanelState(false);
+  };
+
   return (
     <> 
       <div className='headingRow'>
-        <h1>Manage User</h1>
+        <h1>Manage Leads</h1>
+        <button className='btn btn-primary' onClick={() => setPanelState(true)}>Create Lead</button>
       </div>
       
 
       <div className='whiteContainer'>
         <div className='mb-3 d-flex justify-content-between align-items-center'>
           <div className='tableSearchFilter'>
-            <input type='text' className='form-control' placeholder='Search User' />
+            <input type='text' className='form-control' placeholder='Search Leads' />
           </div>
         </div>
 
-        {progress ? <CircularProgress /> : null}
+        
         <Tabs value={currentUserTab} onChange={handleUserTabChange} style={{marginBottom:"5px"}}>
-          <Tab label='Unapproved User' /> 
-          <Tab label='Approved User' /> 
+          <Tab label='Pending Leads' /> 
+          <Tab label='Demo Leads' /> 
+          <Tab label='Clients' /> 
         </Tabs>
 
-        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-          <TableContainer>
+        { progress ? 
+          <div className='text-center py-4'>
+            <CircularProgress />
+          </div> 
+          : 
+          <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+            <TableContainer>
               {currentUserTab === 0 && (
-            <Table className='dataTable'>
-              <TableHead>
-                <TableRow>
-                  <TableCell style={{ minWidth: '200px' }}>Email</TableCell>
-                  <TableCell style={{ minWidth: '200px' }}>User Name</TableCell>
-                  <TableCell style={{ minWidth: '200px' }}>Company Name</TableCell>
-                  <TableCell style={{ width: '100px' }}></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                { userList.map((user, index) => (
-                  <TableRow key={index}>
-                    <TableCell>
-                          {user.email}
-                    </TableCell>
-                    <TableCell>
-                      {user.userName}
-                    </TableCell>
-                    <TableCell>
-                      {user.companyName}
-                    </TableCell>
-                    <TableCell>
-                      <Button
-                        id={`basic-button-${index}`}
-                        aria-controls={`basic-menu-${index}`}
-                        aria-haspopup="true"
-                        onClick={() => handleMenuOpen(index)}
-                      >
-                        <BiDotsVerticalRounded />
-                      </Button>
-                      <Menu
-                        id={`basic-menu-${index}`}
-                        anchorEl={openStates[index] ? document.getElementById(`basic-button-${index}`) : null}
-                        open={openStates[index] || false}
-                        onClose={() => handleMenuClose(index)}
-                        MenuListProps={{
-                          'aria-labelledby': `basic-button-${index}`
-                        }}
-                      >
-                        <MenuItem onClick={() => handleOpenUserCompanyMapDialog(user, index)}>Activate</MenuItem>
-                      </Menu>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-            )}
-            { currentUserTab === 1 && (
-              <Table className='dataTable'>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Email</TableCell>
-                  <TableCell>User Name</TableCell>
-                  <TableCell>Company Name</TableCell>
-                  <TableCell></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                { userList.map((user, index) => (
-                  <TableRow key={index}>
-                    <TableCell>
-                          {user.email}
-                    </TableCell>
-                    <TableCell>
-                      {user.userName}
-                    </TableCell>
-                    <TableCell>
-                      {user.companyName}
-                    </TableCell>
-                    <TableCell>
-                      <Button
-                        id={`basic-button-${index}`}
-                        aria-controls={`basic-menu-${index}`}
-                        aria-haspopup="true"
-                        onClick={() => handleMenuOpen(index)}
-                      >
-                        <BiDotsVerticalRounded />
-                      </Button>
-                      <Menu
-                        id={`basic-menu-${index}`}
-                        anchorEl={openStates[index] ? document.getElementById(`basic-button-${index}`) : null}
-                        open={openStates[index] || false}
-                        onClose={() => handleMenuClose(index)}
-                        MenuListProps={{
-                          'aria-labelledby': `basic-button-${index}`
-                        }}
-                      >
-                        <MenuItem onClick={() => handleOpenConfirmDialog(user, index)}>Deactivate</MenuItem>
-                      </Menu>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-            )}
-          </TableContainer> 
+                <TablePendingLeads userList={userList} />
+              )}
 
-          <Stack spacing={2} sx={{ margin: "20px 0 0", flexDirection: "row-reverse" }}>
-            <Pagination count={totalPages} color="primary" page={currentPage} onChange={handlePageChange} />
-          </Stack>
-        </Paper>
+              { currentUserTab === 1 && (
+                <TableDemoLeads userList={userList} />
+              )}
+
+              { currentUserTab === 2 && (
+                <TableClients />
+              )}
+            </TableContainer> 
+
+            <Stack spacing={2} sx={{ margin: "20px 0 0", flexDirection: "row-reverse" }}>
+              <Pagination count={totalPages} color="primary" page={currentPage} onChange={handlePageChange} />
+            </Stack>
+          </Paper>
+        }
       </div>
       
 
@@ -325,6 +250,20 @@ const ManageUser = () => {
         </DialogActions>
       </Dialog>
       <SnackBar {...snackbar} onClose={toggleSnackbar} />
+
+
+      {/* Create Lead panel */}
+      <Drawer
+          anchor="right"
+          open={panelState}
+          onClose={handleCloseEvent}
+          PaperProps={{ 
+            sx: {width: {xs: '100%', sm: '500px'}},
+            style: { backgroundColor: '#f5f5f5', padding: '16px' } 
+          }} 
+        >
+          <CreateLead closeEvent={handleCloseEvent} />
+        </Drawer>
     </>
   );
 
@@ -332,4 +271,4 @@ const ManageUser = () => {
 
 }
 
-export default ManageUser;
+export default ManageLeads;

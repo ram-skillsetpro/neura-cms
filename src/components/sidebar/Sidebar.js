@@ -26,7 +26,7 @@ const Sidebar = ({closeEvent}) => {
     if(authority.includes(AUTHORITY.UPDATE_DEMO_USER)){
       setNavs(prevNavs => [...prevNavs, 
         {url: PageUrls.COMPANY, title: 'Manage Company', icon: <BusinessSharpIcon /> },
-        {url: PageUrls.USER, title: 'Manage User', icon: <PeopleOutlineSharpIcon />},
+        {url: PageUrls.LEADS, title: 'Manage Leads', icon: <PeopleOutlineSharpIcon />},
         {url: PageUrls.ROLES, title: 'Roles', icon: <BalanceIcon />, active:true},
         {url: PageUrls.AUTHORITIES, title: 'Authorities', icon: <Badge />}, 
         {url: PageUrls.REPORTS, title: 'Reports', icon: <Assignment />}, 

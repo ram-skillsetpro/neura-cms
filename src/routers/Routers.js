@@ -5,7 +5,7 @@ import Layout from "../components/layout/Layout";  // Import the Layout HOC
 import Login from "../pages/login/Login";
 import { Index } from "../pages/Index";
 import ManageCompany from "../pages/company/ManageCompany";
-import ManageUser from "../pages/user/ManageUser";
+import ManageLeads from "../pages/leads/ManageLeads";
 import ManageContract from "../pages/contract/ManageContract";
 import ManageClause from "../pages/clause/ManageClause";
 import ClausePrompt from "../pages/clause/ClausePrompt";
@@ -35,7 +35,7 @@ const Routers = () => {
           <Route path={PageUrls.AUTHORITIES} element={<PrivateRoute element={<Layout> <Authorities /> </Layout>} />} />
           
           <Route path={PageUrls.COMPANY} element={<PrivateRoute element={<Layout> <ManageCompany /> </Layout>} />} />
-          <Route path={PageUrls.USER} element={<PrivateRoute element={<Layout> <ManageUser /> </Layout>} />} />
+          <Route path={PageUrls.LEADS} element={<PrivateRoute element={<Layout> <ManageLeads /> </Layout>} />} />
           <Route path={PageUrls.CONTRACT} element={<PrivateRoute element={<Layout> <ManageContract /> </Layout>} />} />
           <Route path={PageUrls.CLAUSE} element={<PrivateRoute element={<Layout> <ManageClause /> </Layout>} />} />
           <Route path={PageUrls.CLAUSE_PROMPT} element={<PrivateRoute element={<Layout> <ClausePrompt /> </Layout>} />} />

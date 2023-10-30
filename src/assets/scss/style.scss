@@ -47,12 +47,20 @@ table td{padding: 10px 16px;}
 }
 .form-control{
   font-size: 12px;
-  padding: 12px 16px;
+  padding: 14px 16px;
   border-color: rgba($black, 0.1);
   height: auto;
   &:focus {  
     border-color: rgba($primaryColor,0.3); 
     box-shadow: none;
+  }
+}
+
+.customAutoField{
+  .MuiOutlinedInput-root{
+    padding-top: 8px!important;
+    padding-bottom: 8px!important;
+    font-size: 12px;
   }
 }
 
@@ -252,4 +260,12 @@ table td{padding: 10px 16px;}
     }
   }
 
+}
+
+.editBtn{
+  svg{
+      width: 18px;
+      height: 18px;
+      color: $primaryColor;
+  }
 }

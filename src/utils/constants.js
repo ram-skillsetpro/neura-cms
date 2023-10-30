@@ -10,7 +10,7 @@ export const PageUrls = {
     LOGIN: '/login',
     ROLES: '/roles',
     COMPANY: '/company',
-    USER: '/user',
+    LEADS: '/leads',
     CONTRACT: '/contract',
     CLAUSE: '/clause',
     CLAUSE_PROMPT: '/clause-prompt',

@@ -2,7 +2,6 @@
 @import './../../assets/scss/variables';
 
 .layoutWrapper{
-    display: flex;
     min-height: 100vh;
     padding-top: 64px;
     .sidebar{
@@ -13,8 +12,7 @@
         bottom: 0;
         left: 0;
     }
-    .viewArea{
-        flex: 1;
+    .viewArea{ 
         padding: 24px;
         margin-left: 240px;
         @include mdScreen {
