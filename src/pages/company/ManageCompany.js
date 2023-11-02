@@ -127,83 +127,100 @@ const ManageCompany = () => {
         </div>
 
 
-        {progress ? <CircularProgress /> : null} 
-        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-          <TableContainer>
-            <Table className='dataTable'>
-              <TableHead>
-                <TableRow>
-                  <TableCell style={{ minWidth: '100px' }}>Code</TableCell>
-                  <TableCell style={{ minWidth: '200px' }}>Name</TableCell>
-                  <TableCell style={{ minWidth: '250px' }}>Description</TableCell>
-                  <TableCell style={{ width: '100px' }}>Status</TableCell>
-                  <TableCell style={{ width: '100px' }}></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                { companyList.map((company, index) => (
-                  <TableRow key={index}>
-                    <TableCell>
-                          {company.companyCode}
-                    </TableCell>
-                    <TableCell>
-                          {company.name}
-                    </TableCell>
-                    <TableCell>
-                      {company.description}
-                    </TableCell>
-                    <TableCell>
-                      {company.isActive ? 
-                        <Chip label="Active" color="success" size="small" /> 
-                        : 
-                        <Chip label="Inactive" color="error" size="small" /> 
-                      } 
-                    </TableCell>
-                    <TableCell>
-                      <Button
-                        id={`basic-button-${index}`}
-                        aria-controls={`basic-menu-${index}`}
-                        aria-haspopup="true"
-                        onClick={() => handleMenuOpen(index)}
-                      >
-                        <BiDotsVerticalRounded />
-                      </Button>
-                      <Menu
-                        id={`basic-menu-${index}`}
-                        anchorEl={openStates[index] ? document.getElementById(`basic-button-${index}`) : null}
-                        open={openStates[index] || false}
-                        onClose={() => handleMenuClose(index)}
-                        MenuListProps={{
-                          'aria-labelledby': `basic-button-${index}`
-                        }}
-                      >
-                        <MenuItem onClick={() => handleEditCompany(company, index)}>Edit</MenuItem>
-                        <MenuItem onClick={() => handleOpenConfirmDialog(company, index)}>
-                          {company?.isActive ? 'Deactivate' : 'Activate'}
-                        </MenuItem>
-                      </Menu>
-                    </TableCell>
+        { progress ? 
+          <div className='text-center py-4'>
+            <CircularProgress /> 
+          </div>
+          :  
+          <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+            <TableContainer>
+              <Table className='dataTable'>
+                <TableHead>
+                  <TableRow>
+                    {/* <TableCell style={{ minWidth: '100px' }}>Code</TableCell> */}
+                    {/* <TableCell style={{ minWidth: '250px' }}>Description</TableCell> */}
+                    <TableCell style={{ minWidth: '250px' }}>Company Name</TableCell>
+                    <TableCell style={{ minWidth: '200px' }}>Logo</TableCell>
+                    <TableCell style={{ minWidth: '200px' }}>Contact Name</TableCell>
+                    <TableCell style={{ minWidth: '200px' }}>Email</TableCell>
+                    <TableCell style={{ minWidth: '200px' }}>Phone No.</TableCell>
+                    <TableCell style={{ minWidth: '200px' }}>Demo Expiry</TableCell>
+                    <TableCell style={{ minWidth: '200px' }}>Package Name</TableCell>
+                    <TableCell style={{ minWidth: '200px' }}>Package Expiry Date</TableCell> 
+                    <TableCell style={{ width: '100px' }}>Status</TableCell>
+                    <TableCell style={{ width: '100px' }}></TableCell>
                   </TableRow>
-                ))}
+                </TableHead>
+                <TableBody>
+                  { companyList.map((company, index) => (
+                    <TableRow key={index}>
+                      {/* <TableCell>
+                            {company.companyCode}
+                      </TableCell>
+                      <TableCell>
+                        {company.description}
+                      </TableCell> */}
+                      <TableCell>{company.name}</TableCell>
+                      <TableCell> </TableCell>
+                      <TableCell> </TableCell>
+                      <TableCell> </TableCell>
+                      <TableCell> </TableCell>
+                      <TableCell> </TableCell>
+                      <TableCell> </TableCell>
+                      <TableCell> </TableCell>
+                      <TableCell>
+                        {company.isActive ? 
+                          <Chip label="Active" color="success" size="small" /> 
+                          : 
+                          <Chip label="Inactive" color="error" size="small" /> 
+                        } 
+                      </TableCell>
+                      <TableCell>
+                        <Button
+                          id={`basic-button-${index}`}
+                          aria-controls={`basic-menu-${index}`}
+                          aria-haspopup="true"
+                          onClick={() => handleMenuOpen(index)}
+                        >
+                          <BiDotsVerticalRounded />
+                        </Button>
+                        <Menu
+                          id={`basic-menu-${index}`}
+                          anchorEl={openStates[index] ? document.getElementById(`basic-button-${index}`) : null}
+                          open={openStates[index] || false}
+                          onClose={() => handleMenuClose(index)}
+                          MenuListProps={{
+                            'aria-labelledby': `basic-button-${index}`
+                          }}
+                        >
+                          <MenuItem onClick={() => handleEditCompany(company, index)}>Edit</MenuItem>
+                          <MenuItem onClick={() => handleOpenConfirmDialog(company, index)}>
+                            {company?.isActive ? 'Deactivate' : 'Activate'}
+                          </MenuItem>
+                        </Menu>
+                      </TableCell>
+                    </TableRow>
+                  ))}
 
-              </TableBody> 
-            </Table> 
-          </TableContainer>
+                </TableBody> 
+              </Table> 
+            </TableContainer>
 
-          {/* <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            count={roles.length}
-            rowsPerPage={rowsPerPage}
-            page={currentPage}
-            onPageChange={handlePageChange}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          /> */}
-    
-          <Stack spacing={2} sx={{ margin: "20px 0 0", flexDirection: "row-reverse" }}>
-            <Pagination count={totalPages} color="primary" page={currentPage} onChange={handlePageChange} />
-          </Stack>
+            {/* <TablePagination
+              rowsPerPageOptions={[5, 10, 25]}
+              count={roles.length}
+              rowsPerPage={rowsPerPage}
+              page={currentPage}
+              onPageChange={handlePageChange}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            /> */}
+      
+            <Stack spacing={2} sx={{ margin: "20px 0 0", flexDirection: "row-reverse" }}>
+              <Pagination count={totalPages} color="primary" page={currentPage} onChange={handlePageChange} />
+            </Stack>
 
-        </Paper>
+          </Paper>
+        }
       </div>
 
       <Dialog open={openConfirmDialog}>
@@ -225,7 +242,7 @@ const ManageCompany = () => {
           open={panelState}
           onClose={handleCloseEvent}
           PaperProps={{ 
-            sx: {width: {xs: '100%', sm: '500px'}},
+            sx: {width: {xs: '100%', sm: '700px'}},
             style: { backgroundColor: '#f5f5f5', padding: '16px' } 
           }} 
         >
