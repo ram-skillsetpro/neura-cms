@@ -57,6 +57,9 @@ table td{padding: 10px 16px;}
   &.h_120{
     height: 120px;
   }
+  &[type="file"]{
+    padding: 11px 16px;
+  }
 }
 
 .customAutoField{

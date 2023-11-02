@@ -5,14 +5,14 @@ import BorderColorIcon from '@mui/icons-material/BorderColor';
 const TableClients = () => {
     return(
         <>
-            <Table>
+            <Table className='dataTable'>
                 <TableHead>
                     <TableRow>
                         <TableCell style={{ minWidth: '200px' }}>Company Logo</TableCell>
                         <TableCell style={{ minWidth: '200px' }}>Company Name</TableCell>
                         <TableCell style={{ minWidth: '200px' }}>Contact Name</TableCell>
                         <TableCell style={{ minWidth: '200px' }}>Email</TableCell>
-                        <TableCell style={{ minWidth: '200px' }}>Mobile</TableCell>
+                        <TableCell style={{ minWidth: '200px' }}>Phone No.</TableCell>
                         <TableCell style={{ minWidth: '200px' }}>Package Name</TableCell>
                         <TableCell style={{ minWidth: '200px' }}>Package Start Date</TableCell>
                         <TableCell style={{ minWidth: '200px' }}>Package End Date</TableCell>

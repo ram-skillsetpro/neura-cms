@@ -8,8 +8,10 @@ const TablePendingLeads = ({userList}) => {
             <Table className='dataTable'>
                 <TableHead>
                     <TableRow>
+                        <TableCell style={{ minWidth: '200px' }}>Company Name</TableCell>
                         <TableCell style={{ minWidth: '200px' }}>Contact Name</TableCell>
                         <TableCell style={{ minWidth: '200px' }}>Email</TableCell>
+                        <TableCell style={{ minWidth: '200px' }}>Phone No.</TableCell>
                         <TableCell style={{ minWidth: '200px' }}>Pending from Days</TableCell>
                         <TableCell style={{ width: '100px' }}></TableCell>
                     </TableRow>
@@ -17,9 +19,11 @@ const TablePendingLeads = ({userList}) => {
                 <TableBody>
                     { userList.map((user, index) => (
                     <TableRow key={index}>
-                        <TableCell>{user.userName}</TableCell>
-                        <TableCell>{user.email}</TableCell>
                         <TableCell>{user.companyName}</TableCell>
+                        <TableCell>{user.email}</TableCell>
+                        <TableCell></TableCell>
+                        <TableCell>{user.userName}</TableCell>
+                        <TableCell></TableCell>
                         <TableCell>
                             <IconButton aria-label="Edit" className="editBtn">
                                 <BorderColorIcon />

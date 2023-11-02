@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
-import { Checkbox, FormControlLabel, IconButton, Radio, RadioGroup } from '@mui/material';
+import { Autocomplete, Checkbox, FormControlLabel, IconButton, Radio, RadioGroup, TextField } from '@mui/material';
 import fetcher from '../../utils/fetcher';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -43,6 +43,12 @@ const CreateCompany = ({closeEvent, company}) => {
 
     useEffect(() => {
     }, []);
+
+    const packages = [
+        { label: 'Package 1', id: ''},
+        { label: 'Package 2', id: '' },
+        { label: 'Package 3', id: '' },
+    ]
     
     return(
         <>
@@ -57,27 +63,103 @@ const CreateCompany = ({closeEvent, company}) => {
                 <div className="createSection mb-3"> 
                     
                     <section className="createFormSection">
-                        <div className='form-group'>
-                            <label className='label-control'>Company name<span>*</span></label>
-                            <input
-                                name="companyName"
-                                onChange={formik.handleChange}
-                                value={formik.values.companyName}
-                                type="text"
-                                className="form-control"
-                            />
-                            { formik.touched.companyName && formik.errors.companyName && (
-                                <div className='errorMsg'>{formik.errors.companyName}</div>
-                            )} 
-                        </div>
+                        <div className='row'>
+                            <div className='col-md-6'>
+                                <div className='form-group'>
+                                    <label className='label-control'>Company name<span>*</span></label>
+                                    <input
+                                        name="companyName"
+                                        onChange={formik.handleChange}
+                                        value={formik.values.companyName}
+                                        type="text"
+                                        className="form-control"
+                                    />
+                                    { formik.touched.companyName && formik.errors.companyName && (
+                                        <div className='errorMsg'>{formik.errors.companyName}</div>
+                                    )} 
+                                </div>
+                            </div> 
+                            
+                            <div className='col-md-6'> 
+                                <div className='form-group'>
+                                    <label className='label-control'>Company Logo</label>
+                                    <input
+                                        name="companyLogo" 
+                                        type="file"
+                                        className="form-control"
+                                    />
+                                </div>
+                            </div>
 
-                        <div className='form-group'>
-                            <label className='label-control'>Company Logo</label>
-                            <input
-                                name="companyLogo" 
-                                type="file"
-                                className="form-control"
-                            />
+
+                            <div className='col-md-6'> 
+                                <div className='form-group'>
+                                    <label className='label-control'>Contact name<span>*</span></label>
+                                    <input
+                                        name="contactName" 
+                                        type="text"
+                                        className="form-control"
+                                    />
+                                    {/* <div className='errorMsg'>Error Message here...</div> */}
+                                </div>
+                            </div>
+
+                            <div className='col-md-6'>
+                                <div className='form-group'>
+                                    <label className='label-control'>Email</label>
+                                    <input
+                                        name="email" 
+                                        type="text"
+                                        className="form-control"
+                                    /> 
+                                </div>
+                            </div>
+
+                            <div className='col-md-6'>
+                                <div className='form-group'>
+                                    <label className='label-control'>Phone No.</label>
+                                    <input
+                                        name="Phone" 
+                                        type="text"
+                                        className="form-control"
+                                    /> 
+                                </div>
+                            </div>
+
+                            <div className='col-md-6'>
+                                <div className='form-group'>
+                                    <label className='label-control'>Website</label>
+                                    <input
+                                        name="website" 
+                                        type="text"
+                                        className="form-control"
+                                    /> 
+                                </div>
+                            </div>
+
+
+                            <div className='col-md-6'>
+                                <div className='form-group'>
+                                    <label className='label-control'>Package Name</label>
+                                    <div className="customAutoField">
+                                        <Autocomplete
+                                            disablePortal
+                                            id="combo-box-demo"
+                                            options={packages} 
+                                            className="customAutoField"
+                                            renderInput={(params) => <TextField {...params} />}
+                                        /> 
+                                    </div>
+                                </div> 
+                            </div>
+
+                            <div className='col-md-6'>
+                                <div className='form-group'>
+                                    <label className='label-control'>Package Start Date</label>
+                                    Date picker here...
+                                    {/* <DatePicker label="Basic date picker" /> */}
+                                </div> 
+                            </div>
                         </div>
 
                         <div className='form-group'>

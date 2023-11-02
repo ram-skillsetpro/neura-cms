@@ -12,7 +12,7 @@ const TableDemoLeads = ({userList}) => {
                         <TableCell style={{ minWidth: '200px' }}>Company Name</TableCell>
                         <TableCell style={{ minWidth: '200px' }}>Contact Name</TableCell>
                         <TableCell style={{ minWidth: '200px' }}>Email</TableCell>
-                        <TableCell style={{ minWidth: '200px' }}>Mobile</TableCell> 
+                        <TableCell style={{ minWidth: '200px' }}>Phone No.</TableCell> 
                         <TableCell style={{ minWidth: '200px' }}>Start Date</TableCell>
                         <TableCell style={{ minWidth: '200px' }}>End Date</TableCell>
                         <TableCell style={{ minWidth: '200px' }}>Status</TableCell>
