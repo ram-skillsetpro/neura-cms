@@ -13,6 +13,8 @@ import { NoMatch } from "../pages/NoMatch";
 import Roles from "../pages/roles/Roles";
 import { PageUrls } from "../utils/constants";
 import Authorities from "../pages/authorities/Authorities";
+import Reports from "../pages/reports/Reports";
+import ReportDetail from "../pages/report-detail/ReportDetail";
 
 
 function PrivateRoute({ element }) {
@@ -32,13 +34,14 @@ const Routers = () => {
           <Route path={PageUrls.LOGIN} element={<Login />} />
           <Route path={PageUrls.INDEX} element={<PrivateRoute element={<Layout> <Index /> </Layout>} />} />
           <Route path={PageUrls.ROLES} element={<PrivateRoute element={<Layout> <Roles /> </Layout>} />} />
-          <Route path={PageUrls.AUTHORITIES} element={<PrivateRoute element={<Layout> <Authorities /> </Layout>} />} />
-          
+          <Route path={PageUrls.AUTHORITIES} element={<PrivateRoute element={<Layout> <Authorities /> </Layout>} />} /> 
           <Route path={PageUrls.COMPANY} element={<PrivateRoute element={<Layout> <ManageCompany /> </Layout>} />} />
           <Route path={PageUrls.LEADS} element={<PrivateRoute element={<Layout> <ManageLeads /> </Layout>} />} />
           <Route path={PageUrls.CONTRACT} element={<PrivateRoute element={<Layout> <ManageContract /> </Layout>} />} />
           <Route path={PageUrls.CLAUSE} element={<PrivateRoute element={<Layout> <ManageClause /> </Layout>} />} />
           <Route path={PageUrls.CLAUSE_PROMPT} element={<PrivateRoute element={<Layout> <ClausePrompt /> </Layout>} />} />
+          <Route path={PageUrls.REPORTS} element={<PrivateRoute element={<Layout> <Reports /> </Layout>} />} />
+          <Route path={PageUrls.REPORT_DETAIL} element={<PrivateRoute element={<Layout> <ReportDetail /> </Layout>} />} />
           <Route path={PageUrls.UNAUTHORIZED} element={<Layout> <NoMatch /> </Layout>} />
           <Route path="*" element={<NoMatch />} />
         </Routes>

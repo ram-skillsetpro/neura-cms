@@ -54,6 +54,9 @@ table td{padding: 10px 16px;}
     border-color: rgba($primaryColor,0.3); 
     box-shadow: none;
   }
+  &.h_120{
+    height: 120px;
+  }
 }
 
 .customAutoField{
@@ -103,6 +106,10 @@ table td{padding: 10px 16px;}
     outline: none;
     border-color: $primaryColor_v2!important;
     background-color: $primaryColor_v2!important;
+  }
+  &:disabled, &:disabled:focus {
+    background-color: rgba(0,0,0,0.25)!important;
+    border: none;
   }
 }
 
@@ -208,6 +215,9 @@ table td{padding: 10px 16px;}
       color: $grey_v4;
       padding: 12px 12px;
       border-color: $lightGrey_v1;
+      a{
+        color: $primaryColor;
+      }
     }
   } 
 }

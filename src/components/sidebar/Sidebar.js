@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import style from './Sidebar.module.scss'; 
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { AUTHORITY } from "../../utils/constants";
-import {userAuthority } from "../../utils/authGuard";
-import CorporateFare from '@mui/icons-material/CorporateFare';
+import {userAuthority } from "../../utils/authGuard"; 
 import Assignment from '@mui/icons-material/Assessment';
-import Badge from '@mui/icons-material/Badge';
-import DomainAdd from '@mui/icons-material/DomainAdd';
+import Badge from '@mui/icons-material/Badge'; 
 import BusinessSharpIcon from '@mui/icons-material/BusinessSharp'
-import PeopleOutlineSharpIcon from '@mui/icons-material/PeopleOutlineSharp';
-import InboxIcon from '@mui/icons-material/Inbox'
+import PeopleOutlineSharpIcon from '@mui/icons-material/PeopleOutlineSharp'; 
 import BalanceIcon from '@mui/icons-material/Balance';
 import {PageUrls } from "../../utils/constants";
 import { IconButton } from '@mui/material';

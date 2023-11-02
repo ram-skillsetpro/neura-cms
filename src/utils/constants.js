@@ -16,7 +16,8 @@ export const PageUrls = {
     CLAUSE_PROMPT: '/clause-prompt',
     UNAUTHORIZED: '/unauthorized',
     AUTHORITIES: '/authorities',
-    REPORTS: '/reports'
+    REPORTS: '/reports',
+    REPORT_DETAIL: '/report-detail'
 };
 
 export const AUTHORITY = {
