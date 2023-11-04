@@ -14,7 +14,8 @@ import Roles from "../pages/roles/Roles";
 import { PageUrls } from "../utils/constants";
 import Authorities from "../pages/authorities/Authorities";
 import Reports from "../pages/reports/Reports";
-import ReportDetail from "../pages/report-detail/ReportDetail";
+import Tickets from "../pages/tickets/Tickets";
+import TicketDetail from "../pages/ticket-detail/TicketDetail";
 
 
 function PrivateRoute({ element }) {
@@ -41,7 +42,8 @@ const Routers = () => {
           <Route path={PageUrls.CLAUSE} element={<PrivateRoute element={<Layout> <ManageClause /> </Layout>} />} />
           <Route path={PageUrls.CLAUSE_PROMPT} element={<PrivateRoute element={<Layout> <ClausePrompt /> </Layout>} />} />
           <Route path={PageUrls.REPORTS} element={<PrivateRoute element={<Layout> <Reports /> </Layout>} />} />
-          <Route path={PageUrls.REPORT_DETAIL} element={<PrivateRoute element={<Layout> <ReportDetail /> </Layout>} />} />
+          <Route path={PageUrls.TICKETS} element={<PrivateRoute element={<Layout> <Tickets /> </Layout>} />} />
+          <Route path={PageUrls.TICKET_DETAIL} element={<PrivateRoute element={<Layout> <TicketDetail /> </Layout>} />} />
           <Route path={PageUrls.UNAUTHORIZED} element={<Layout> <NoMatch /> </Layout>} />
           <Route path="*" element={<NoMatch />} />
         </Routes>

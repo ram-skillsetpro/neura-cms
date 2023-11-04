@@ -14,6 +14,7 @@ import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import ChecklistIcon from '@mui/icons-material/Checklist';
 import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
+import ArticleIcon from '@mui/icons-material/Article';
 
 const Sidebar = ({closeEvent}) => {
   const authority = userAuthority().map(authority => authority.name);
@@ -24,6 +25,7 @@ const Sidebar = ({closeEvent}) => {
       setNavs(prevNavs => [...prevNavs, 
         {url: PageUrls.COMPANY, title: 'Manage Company', icon: <BusinessSharpIcon /> },
         {url: PageUrls.LEADS, title: 'Manage Leads', icon: <PeopleOutlineSharpIcon />},
+        {url: PageUrls.TICKETS, title: 'Tickets', icon: <ArticleIcon />}, 
         {url: PageUrls.ROLES, title: 'Roles', icon: <BalanceIcon />, active:true},
         {url: PageUrls.AUTHORITIES, title: 'Authorities', icon: <Badge />}, 
         {url: PageUrls.REPORTS, title: 'Reports', icon: <Assignment />}, 

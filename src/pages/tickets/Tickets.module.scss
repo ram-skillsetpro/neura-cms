@@ -1,0 +1,53 @@
+@import '../../assets/scss/mixins';
+@import '../../assets/scss/variables';
+
+.ticketTopDetails{
+    margin-bottom: 24px;
+    @include smScreen {
+        margin-bottom: 0px;
+        [class*="col"]{
+            margin-bottom: 24px;
+        }
+    }
+}
+
+.ticketTopArt{
+    background-color: $white;
+    padding: 20px;
+    @include boxShadow(0 0 10px rgba(0,0,0,0.05));
+    @include borderRadius(8px);
+    display: flex;
+    align-items: center;
+    @include smScreen{
+        min-height: 100%;
+    }
+    .ticketTxt{
+        flex: 1;
+        margin-right: 16px;
+        @include smScreen {
+            text-align: center;
+            margin-right: 0;
+        }
+        h3{
+            font-size: 24px;
+            font-weight: 700;
+            color: $black;
+            margin-bottom: 8px;
+        }
+        p{
+            font-size: 11px;
+            color: $grey_v4;
+            font-weight: 500;
+            text-transform: uppercase;
+            margin-bottom: 0px;
+        }
+    }
+
+    .ticketIcon {
+        width: 32px;
+        flex: 0 0 auto;
+        @include smScreen{
+            display: none;
+        }
+    }
+}

@@ -5,9 +5,10 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
-import style from './ReportDetail.module.scss';
+import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
+import style from './TicketDetail.module.scss';
 
-const ReportDetail = () => {
+const TicketDetail = () => {
     const [expanded, setExpanded] = React.useState(false);
 
     const handleChange = (panel) => (event, isExpanded) => {
@@ -16,18 +17,23 @@ const ReportDetail = () => {
     return(
         <>
             <div className='headingRow'>
-                <h1>Report Detail Title here... </h1>
+                <h1>Ticket Detail Title here... </h1>
+
+                <div className={style.timerBox}>
+                    <AccessAlarmIcon />
+                    <span>02:45</span>
+                </div>
             </div> 
 
-            <div className={style.reportContainer}>
+            <div className={style.ticketContainer}>
                 <object 
                     data="https://media.geeksforgeeks.org/wp-content/cdn-uploads/20210101201653/PDF.pdf" 
                     width="100%"     
                     height="500"
-                    className={style.reportPDF}> 
+                    className={style.ticketPDF}> 
                 </object> 
 
-                <section className={style.reportDetailForm}>
+                <section className={style.ticketDetailForm}>
                     <div className={style.accBox}>
                         <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
                             <AccordionSummary
@@ -51,7 +57,7 @@ const ReportDetail = () => {
                                     />
                                 </div>
                                 
-                                <div className={style.repActionBtn}>
+                                <div className={style.ticActionBtn}>
                                     {/* QA Action Button */}
                                     {/* <button className='btn btn-success'>Verify</button>  */}
 
@@ -95,7 +101,7 @@ const ReportDetail = () => {
                                     />
                                 </div>
                                 
-                                <div className={style.repActionBtn}>
+                                <div className={style.ticActionBtn}>
                                     {/* QA Action Button */}
                                     {/* <button className='btn btn-success'>Verify</button>  */}
 
@@ -122,7 +128,7 @@ const ReportDetail = () => {
                                     <textarea className="form-control h_120"></textarea>
                                 </div>
                                 
-                                <div className={style.repActionBtn}>
+                                <div className={style.ticActionBtn}>
                                     {/* QA Action Button */}
                                     {/* <button className='btn btn-success'>Verify</button>  */}
 
@@ -144,4 +150,4 @@ const ReportDetail = () => {
     )
 }
 
-export default ReportDetail;
+export default TicketDetail;
