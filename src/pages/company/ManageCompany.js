@@ -26,6 +26,7 @@ import {
 import { BiDotsVerticalRounded } from 'react-icons/bi'
 import fetcher from '../../utils/fetcher'
 import CreateCompany from './CreateCompany';
+import { longToDate } from '../../utils/utility';
 
 const ManageCompany = () => {
 
@@ -42,7 +43,7 @@ const ManageCompany = () => {
   const fetchCompanyList = async (page) => {
     try {
       setProgress(true);
-      const cmpres = await fetcher.post(`cms/list-all-company?pgn=${page}`);
+      const cmpres = await fetcher.post(`cms/list-all-company/${page}`);
       setCompanyList(cmpres.response.result);
       setTotalPages(Math.ceil(cmpres.response.totct / cmpres.response.perpg));
     } catch (error) {
@@ -161,13 +162,13 @@ const ManageCompany = () => {
                         {company.description}
                       </TableCell> */}
                       <TableCell>{company.name}</TableCell>
+                      <TableCell></TableCell>
+                      <TableCell>{company.companyUser}</TableCell>
+                      <TableCell>{company.companyEmail}</TableCell>
+                      <TableCell>{company.companyPhone}</TableCell>
                       <TableCell> </TableCell>
                       <TableCell> </TableCell>
-                      <TableCell> </TableCell>
-                      <TableCell> </TableCell>
-                      <TableCell> </TableCell>
-                      <TableCell> </TableCell>
-                      <TableCell> </TableCell>
+                      <TableCell>{longToDate(company.packageEndDate)}</TableCell>
                       <TableCell>
                         {company.isActive ? 
                           <Chip label="Active" color="success" size="small" /> 

@@ -1,6 +1,7 @@
 import React from "react";
 import { IconButton, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import BorderColorIcon from '@mui/icons-material/BorderColor';
+import { daysDifference } from "../../utils/utility";
 
 const TablePendingLeads = ({userList}) => {
     return(
@@ -20,10 +21,10 @@ const TablePendingLeads = ({userList}) => {
                     { userList.map((user, index) => (
                     <TableRow key={index}>
                         <TableCell>{user.companyName}</TableCell>
-                        <TableCell>{user.email}</TableCell>
-                        <TableCell></TableCell>
                         <TableCell>{user.userName}</TableCell>
-                        <TableCell></TableCell>
+                        <TableCell>{user.email}</TableCell>
+                        <TableCell>{user.phone}</TableCell>
+                        <TableCell>{daysDifference(user.createdOn)}</TableCell>
                         <TableCell>
                             <IconButton aria-label="Edit" className="editBtn">
                                 <BorderColorIcon />

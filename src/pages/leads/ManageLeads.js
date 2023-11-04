@@ -57,12 +57,16 @@ const ManageLeads = () => {
   const fetchUserList = async (page) => {
     try {
       setProgress(true);
-      if (currentUserTab) {
-        const res = await fetcher.get(`cms/approved-demo-users?pgn=${page}`);
+      if (currentUserTab === 1) {
+        const res = await fetcher.get(`cms/approved-leads/demo/${page}`);
+        setUserList(res.response.result);
+        setTotalPages(Math.ceil(res.response.totct / res.response.perpg));
+      } else if (currentUserTab === 2) {
+        const res = await fetcher.get(`cms/approved-leads/client/${page}`);
         setUserList(res.response.result);
         setTotalPages(Math.ceil(res.response.totct / res.response.perpg));
       } else {
-        const res = await fetcher.get(`cms/unapproved-demo-users?pgn=${page}`);
+        const res = await fetcher.get(`cms/unapproved-leads/${page}`);
         setUserList(res.response.result);
         setTotalPages(Math.ceil(res.response.totct / res.response.perpg));
       }
@@ -200,7 +204,7 @@ const ManageLeads = () => {
               )}
 
               { currentUserTab === 2 && (
-                <TableClients />
+                <TableClients userList={userList}n/>
               )}
             </TableContainer> 
 

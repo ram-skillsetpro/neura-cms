@@ -1,6 +1,7 @@
 import React from "react";
-import { IconButton, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import { IconButton, Table, TableBody, TableCell, TableHead, TableRow, Chip } from "@mui/material";
 import BorderColorIcon from '@mui/icons-material/BorderColor';
+import { longToDate } from '../../utils/utility';
 
 const TableDemoLeads = ({userList}) => {
     return(
@@ -27,10 +28,16 @@ const TableDemoLeads = ({userList}) => {
                         <TableCell>{user.companyName}</TableCell>
                         <TableCell>{user.userName}</TableCell>
                         <TableCell>{user.email}</TableCell>
-                        <TableCell> </TableCell>
-                        <TableCell> </TableCell>
-                        <TableCell> </TableCell>
-                        <TableCell> </TableCell> 
+                        <TableCell>{user.phone} </TableCell>
+                        <TableCell>{longToDate(user.packageStartDate)}</TableCell>
+                        <TableCell>{longToDate(user.packageEndDate)}</TableCell>
+                        <TableCell>
+                            {user.status ? 
+                                <Chip label="Active" color="success" size="small" /> 
+                                : 
+                                <Chip label="Inactive" color="error" size="small" /> 
+                            }
+                        </TableCell>
                         <TableCell>
                             <IconButton aria-label="Edit" className="editBtn">
                                 <BorderColorIcon />
