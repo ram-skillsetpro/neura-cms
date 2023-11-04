@@ -7,11 +7,21 @@ import * as Yup from 'yup';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import SnackBar from "../../components/SnackBar";
 
 const CreateLead = ({closeEvent, lead, companyList, packageList}) => {
 
     const [companies, setCompanies] = useState([]);
     const [packages, setPackages] = useState([]);
+
+    const [snackbar, setSnackbar] = useState({
+        show: false,
+        status: "",
+        message: "",
+      });
+    const toggleSnackbar = (value) => {
+        setSnackbar(value);
+    };
 
     const [formData, setFormData] = useState({
         companyId: lead?.companyId || '',
@@ -25,7 +35,15 @@ const CreateLead = ({closeEvent, lead, companyList, packageList}) => {
 
     const handleSubmit = async (values) => {
         try {
-            await fetcher.post('/cms/create-lead', values);
+            const res = await fetcher.post('/cms/create-lead', values);
+            if (res.status !== 200) {
+                setSnackbar({
+                  show: true,
+                  status: 'error',
+                  message: res?.response || res?.message
+                });
+                return;
+            }
             closeEvent();
         } catch (err) {
             console.log(err);
@@ -156,7 +174,7 @@ const CreateLead = ({closeEvent, lead, companyList, packageList}) => {
                                 <DatePicker
                                     name="packageStartDate"
                                     value={formik.values.packageStartDate}
-                                    onChange={(date) => formik.setFieldValue('packageStartDate', date)}
+                                    onChange={(date) => formik.setFieldValue('packageStartDate', date.getTime() / 1000)}
                                     onBlur={formik.handleBlur}
                                     renderInput={(params) => <TextField {...params} />}
                                 />
@@ -195,6 +213,8 @@ const CreateLead = ({closeEvent, lead, companyList, packageList}) => {
                     <button type="submit" className='btn btn-primary'>Save Lead</button>
                 </div>
             </form>
+            <SnackBar {...snackbar} onClose={toggleSnackbar} />
+
         </>
     )
 }

@@ -52,6 +52,7 @@ const ManageLeads = () => {
   const handleUserTabChange = (e, tabIndex) => {
     setUserList([]);
     setCurrentPage(1);
+    setTotalPages(1);
     setCurrentUserTab(tabIndex);
   };
 

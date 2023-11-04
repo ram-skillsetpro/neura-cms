@@ -30,6 +30,7 @@ import { longToDate } from '../../utils/utility';
 
 const ManageCompany = () => {
 
+  const [packageList, setPackageList] = useState([]);
   const [companyList, setCompanyList] = useState([]);
   const [company, setCompany] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -50,6 +51,15 @@ const ManageCompany = () => {
       console.log(error);
     } finally {
       setProgress(false);
+    }
+  };
+
+  const fetchPackageList = async () => {
+    try {
+      const res = await fetcher.get(`/packages-list`);
+      setPackageList(res.response);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -107,9 +117,19 @@ const ManageCompany = () => {
     }
   };
 
+  const getPackageName = (id) => {
+    const obj = packageList.find(i => i.id === id);
+    return obj ? obj.name : '';
+  };
+
+
   useEffect(() => {
     fetchCompanyList(currentPage);
   }, [currentPage]);
+
+  useEffect(() => {
+    fetchPackageList();
+  }, []);
 
 
   return (
@@ -167,7 +187,7 @@ const ManageCompany = () => {
                       <TableCell>{company.companyEmail}</TableCell>
                       <TableCell>{company.companyPhone}</TableCell>
                       <TableCell> </TableCell>
-                      <TableCell> </TableCell>
+                      <TableCell>{getPackageName(company.packageId)}</TableCell>
                       <TableCell>{longToDate(company.packageEndDate)}</TableCell>
                       <TableCell>
                         {company.isActive ? 
