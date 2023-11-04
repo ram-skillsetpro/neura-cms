@@ -1,14 +1,14 @@
 @import '../../assets/scss/mixins';
 @import '../../assets/scss/variables';
 
-.reportContainer{
+.ticketContainer{
     display: flex;
-    .reportPDF{
+    .ticketPDF{
         flex: 1;
         height: calc(100vh - 150px); 
         margin-right: 24px;
     }
-    .reportDetailForm{
+    .ticketDetailForm{
         width:300px;
         flex: 0 0 auto;
         .accBox {
@@ -30,12 +30,27 @@
     }
 }
 
-.repActionBtn{
+.ticActionBtn{
     display: flex;
     justify-content: end;
     gap: 8px;
     [class*="btn"]{
         font-size: 12px;
         padding: 4px 12px;
+    }
+}
+
+.timerBox {
+    border: $primaryColor solid 1px;
+    color: $primaryColor;
+    padding: 8px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    @include borderRadius(50px);
+    span{
+        padding-top: 2px;
+        margin-left: 8px;
     }
 }

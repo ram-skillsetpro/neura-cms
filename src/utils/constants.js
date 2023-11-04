@@ -10,7 +10,8 @@ export const PageUrls = {
     UNAUTHORIZED: '/unauthorized',
     AUTHORITIES: '/authorities',
     REPORTS: '/reports',
-    REPORT_DETAIL: '/report-detail'
+    TICKETS: '/tickets',
+    TICKET_DETAIL: '/ticket-detail'
 };
 
 export const AUTHORITY = {

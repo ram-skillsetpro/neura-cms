@@ -114,15 +114,24 @@ const CreateCompany = ({closeEvent, company}) => {
                                     /> 
                                 </div>
                             </div>
-
+                             
                             <div className='col-md-6'>
                                 <div className='form-group'>
                                     <label className='label-control'>Phone No.</label>
-                                    <input
-                                        name="Phone" 
-                                        type="text"
-                                        className="form-control"
-                                    /> 
+                                    <div className='row no-gutters phoneNumberField'>
+                                        <div className="col w65">
+                                            <select className='form-control px-2'>
+                                                <option>+91</option>
+                                            </select>
+                                        </div>
+                                        <div className="col">
+                                            <input
+                                                name="Phone" 
+                                                type="text"
+                                                className="form-control"
+                                            /> 
+                                        </div>
+                                    </div> 
                                 </div>
                             </div>
 

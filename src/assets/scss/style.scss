@@ -50,6 +50,7 @@ table td{padding: 10px 16px;}
   padding: 14px 16px;
   border-color: rgba($black, 0.1);
   height: auto;
+  @include borderRadius(5px);
   &:focus {  
     border-color: rgba($primaryColor,0.3); 
     box-shadow: none;
@@ -67,6 +68,24 @@ table td{padding: 10px 16px;}
     padding-top: 8px!important;
     padding-bottom: 8px!important;
     font-size: 12px;
+  }
+}
+
+//Form number field
+.phoneNumberField{
+  .w65{
+    width: 65px;
+    flex: 0 0 auto;
+  }
+  select.form-control{
+    border-right: none;
+    height: 48px;
+    @include borderRadius(5px 0 0 5px);
+  }
+  input.form-control{
+    border-left: none;
+    height: 48px;
+    @include borderRadius(0 5px 5px 0);
   }
 }
 
@@ -185,6 +204,13 @@ table td{padding: 10px 16px;}
   }
 }
 
+//Circular Paginaiton
+.css-wjh20t-MuiPagination-ul {
+  margin-bottom: 20px!important;
+  .css-1to7aaw-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected{
+    background-color: $primaryColor!important;
+  }
+}
 
 .tableSearchFilter{
   @include smScreen{
