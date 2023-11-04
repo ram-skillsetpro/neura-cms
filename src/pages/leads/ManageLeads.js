@@ -29,6 +29,7 @@ const ManageLeads = () => {
   const [panelState, setPanelState] = useState(false);
   const [userList, setUserList] = useState([]);
   const [companyList, setCompanyList] = useState([]);
+  const [packageList, setPackageList] = useState([]);
   const [user, setUser] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -63,8 +64,10 @@ const ManageLeads = () => {
         setTotalPages(Math.ceil(res.response.totct / res.response.perpg));
       } else if (currentUserTab === 2) {
         const res = await fetcher.get(`cms/approved-leads/client/${page}`);
-        setUserList(res.response.result);
-        setTotalPages(Math.ceil(res.response.totct / res.response.perpg));
+        if (res?.status === 200) {
+          setUserList(res.response.result);
+          setTotalPages(Math.ceil(res.response.totct / res.response.perpg));
+        }
       } else {
         const res = await fetcher.get(`cms/unapproved-leads/${page}`);
         setUserList(res.response.result);
@@ -81,6 +84,15 @@ const ManageLeads = () => {
     try {
       const res = await fetcher.get(`/company-list`);
       setCompanyList(res.response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchPackageList = async () => {
+    try {
+      const res = await fetcher.get(`/packages-list`);
+      setPackageList(res.response);
     } catch (error) {
       console.log(error);
     }
@@ -159,8 +171,12 @@ const ManageLeads = () => {
 
   useEffect(() => {
     fetchUserList(currentPage);
-    fetchCompanyList();
   }, [currentPage, currentUserTab]);
+
+  useEffect(() => {
+    fetchCompanyList();
+    fetchPackageList();
+  }, []);
 
   const handleCloseEvent = () => { 
     setPanelState(false);
@@ -266,7 +282,7 @@ const ManageLeads = () => {
             style: { backgroundColor: '#f5f5f5', padding: '16px' } 
           }} 
         >
-          <CreateLead closeEvent={handleCloseEvent} />
+          <CreateLead closeEvent={handleCloseEvent} companyList={companyList} lead={null} packageList={packageList} />
         </Drawer>
     </>
   );

@@ -1,24 +1,62 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Autocomplete, FormControlLabel, IconButton, Radio, RadioGroup, TextField } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
-// import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import fetcher from "../../utils/fetcher";
+import { useFormik, Field } from 'formik';
+import * as Yup from 'yup';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-const CreateLead = ({closeEvent}) => {
-    const companies = [
-        { label: 'Accenture', id: ''},
-        { label: 'Cognizant', id: '' },
-        { label: 'Infosys', id: '' },
-        { label: 'TCS', id: '' },
-        { label: 'SAP', id: '' },
-        { label: "Capgemini", id: '' },
-        { label: 'IBM', id: '' },
-    ]
+const CreateLead = ({closeEvent, lead, companyList, packageList}) => {
 
-    const packages = [
-        { label: 'Package 1', id: ''},
-        { label: 'Package 2', id: '' },
-        { label: 'Package 3', id: '' },
-    ]
+    const [companies, setCompanies] = useState([]);
+    const [packages, setPackages] = useState([]);
+
+    const [formData, setFormData] = useState({
+        companyId: lead?.companyId || '',
+        email: lead?.email || '',
+        isLeadActive: lead?.isLeadActive || 1,
+        name: lead?.name || '',
+        packageId: lead?.packageId || '',
+        packageStartDate: lead?.packageStartDate || null,
+        phone: lead?.phone || ''
+    });
+
+    const handleSubmit = async (values) => {
+        try {
+            await fetcher.post('/cms/create-lead', values);
+            closeEvent();
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    const validationSchema = Yup.object().shape({
+        name: Yup.string().required('Name is required'),
+        email: Yup.string().email('Invalid email address').required('Email is required'),
+        phone: Yup.string().required('Phone is required'),
+        companyId: Yup.string().required('Company is required'),
+        packageId: Yup.string().required('Package is required'),
+        packageStartDate: Yup.date().required('Package start date is required')
+    });
+    
+    const formik = useFormik({
+        initialValues: formData,
+        validationSchema: validationSchema,
+        onSubmit: handleSubmit,
+    });
+
+    useEffect(() => {
+        setCompanies(companyList.map(i => ({
+            label: i.name,
+            id: i.id
+          })));
+        setPackages(packageList.map(i => ({
+            label: i.name,
+            id: i.id
+          })));
+      }, []);
     return(
         <>
             <div className="createMainTitle">
@@ -28,7 +66,7 @@ const CreateLead = ({closeEvent}) => {
                 </IconButton>
             </div>
 
-            <form>
+            <form onSubmit={formik.handleSubmit}>
                 <div className="createSection mb-3"> 
                     <h3 className="createSubTitle">General</h3 > 
                     
@@ -36,40 +74,61 @@ const CreateLead = ({closeEvent}) => {
                         <div className='form-group'>
                             <label className='label-control'>Contact Name<span>*</span></label>
                             <input
-                                name="name" 
+                                name="name"
+                                onChange={formik.handleChange}
+                                value={formik.values.name}
                                 type="text"
                                 className="form-control"
                             />
-                            <div className='errorMsg'>Error Message here...</div> 
-                        </div> 
+                            { formik.touched.name && formik.errors.name && (
+                                <div className='errorMsg'>{formik.errors.name}</div>
+                            )}
+                        </div>
 
                         <div className='form-group'>
                             <label className='label-control'>Email<span>*</span></label>
                             <input
-                                name="name" 
+                                name="email"
+                                onChange={formik.handleChange}
+                                value={formik.values.email}
                                 type="text"
                                 className="form-control"
                             />
-                        </div> 
+                            { formik.touched.email && formik.errors.email && (
+                                <div className='errorMsg'>{formik.errors.email}</div>
+                            )}
+                        </div>
+
 
                         <div className='form-group'>
-                            <label className='label-control'>Mobile<span>*</span></label>
+                            <label className='label-control'>Phone<span>*</span></label>
                             <input
-                                name="name" 
+                                name="phone"
+                                onChange={formik.handleChange}
+                                value={formik.values.phone}
                                 type="text"
                                 className="form-control"
                             />
-                        </div> 
+                            { formik.touched.phone && formik.errors.phone && (
+                                <div className='errorMsg'>{formik.errors.phone}</div>
+                            )}
+                        </div>
 
                         <div className='form-group'>
                             <label className='label-control'>Company</label>
                             <div className="customAutoField">
-                                <Autocomplete
-                                    disablePortal
-                                    id="combo-box-demo"
-                                    options={companies}
-                                    renderInput={(params) => <TextField {...params} />}
-                                />
+                            <Autocomplete
+                                options={companies}
+                                getOptionLabel={(option) => option.label}
+                                value={companies.find(company => company.id === formik.values.companyId)}
+                                onChange={(_, newValue) => {
+                                formik.setFieldValue('companyId', newValue ? newValue.id : '');
+                                }}
+                                renderInput={(params) => <TextField {...params} />}
+                            />
+                            {formik.touched.companyId && formik.errors.companyId && (
+                                <div className="errorMsg">{formik.errors.companyId}</div>
+                            )}
                             </div>
                         </div> 
 
@@ -77,19 +136,34 @@ const CreateLead = ({closeEvent}) => {
                             <label className='label-control'>Package Name</label>
                             <div className="customAutoField">
                                 <Autocomplete
-                                    disablePortal
-                                    id="combo-box-demo"
-                                    options={packages} 
-                                    className="customAutoField"
+                                    options={packages}
+                                    getOptionLabel={(option) => option.label}
+                                    value={packages.find(i => i.id === formik.values.packageId)}
+                                    onChange={(_, newValue) => {
+                                    formik.setFieldValue('packageId', newValue ? newValue.id : '');
+                                    }}
                                     renderInput={(params) => <TextField {...params} />}
-                                /> 
+                                />
+                                {formik.touched.packageId && formik.errors.packageId && (
+                                    <div className="errorMsg">{formik.errors.packageId}</div>
+                                )}
                             </div>
                         </div> 
 
                         <div className='form-group'>
                             <label className='label-control'>Package Start Date</label>
-                            Date picker here...
-                            {/* <DatePicker label="Basic date picker" /> */}
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <DatePicker
+                                    name="packageStartDate"
+                                    value={formik.values.packageStartDate}
+                                    onChange={(date) => formik.setFieldValue('packageStartDate', date)}
+                                    onBlur={formik.handleBlur}
+                                    renderInput={(params) => <TextField {...params} />}
+                                />
+                            </LocalizationProvider>
+                            {formik.touched.packageStartDate && formik.errors.packageStartDate && (
+                                <div className="errorMsg">{formik.errors.packageStartDate}</div>
+                            )}
                         </div> 
 
                         <div className='form-group m-0'>
@@ -97,7 +171,9 @@ const CreateLead = ({closeEvent}) => {
                             <RadioGroup
                                 row
                                 aria-labelledby="demo-row-radio-buttons-group-label"
-                                name="status" 
+                                name="isLeadActive"
+                                value={formik.values.isLeadActive}
+                                onChange={formik.handleChange}
                             >
                                 <FormControlLabel
                                     value="1"
@@ -113,10 +189,8 @@ const CreateLead = ({closeEvent}) => {
                         </div>
                     </section>
                 </div>
-                 
 
                 <div className='d-flex justify-content-end'>
-                    {/* <button className='btn btn-danger mr-auto'>Delete Lead</button> */}
                     <button className='btn btn-outline-primary mr-2' onClick={closeEvent}>Cancel</button>
                     <button type="submit" className='btn btn-primary'>Save Lead</button>
                 </div>
