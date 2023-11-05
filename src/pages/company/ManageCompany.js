@@ -269,7 +269,7 @@ const ManageCompany = () => {
         >
 
           {/* NOTE: please rename as "CreateCompany" */}
-          <CreateCompany closeEvent={handleCloseEvent} company={company} />
+          <CreateCompany closeEvent={handleCloseEvent} company={company} packageList={packageList} />
         </Drawer>
 
 

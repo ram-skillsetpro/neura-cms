@@ -29,12 +29,13 @@ const CreateLead = ({closeEvent, lead, companyList, packageList}) => {
         isLeadActive: lead?.isLeadActive || 1,
         name: lead?.name || '',
         packageId: lead?.packageId || '',
-        packageStartDate: lead?.packageStartDate || null,
+        packageStartDate: lead?.packageStartDate * 1000 || null,
         phone: lead?.phone || ''
     });
 
     const handleSubmit = async (values) => {
         try {
+            values.packageStartDate = values.packageStartDate / 1000;
             const res = await fetcher.post('/cms/create-lead', values);
             if (res.status !== 200) {
                 setSnackbar({
@@ -174,7 +175,7 @@ const CreateLead = ({closeEvent, lead, companyList, packageList}) => {
                                 <DatePicker
                                     name="packageStartDate"
                                     value={formik.values.packageStartDate}
-                                    onChange={(date) => formik.setFieldValue('packageStartDate', date.getTime() / 1000)}
+                                    onChange={(date) => formik.setFieldValue('packageStartDate', date.getTime())}
                                     onBlur={formik.handleBlur}
                                     renderInput={(params) => <TextField {...params} />}
                                 />
