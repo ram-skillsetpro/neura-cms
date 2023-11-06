@@ -11,7 +11,8 @@ export const PageUrls = {
     AUTHORITIES: '/authorities',
     REPORTS: '/reports',
     TICKETS: '/tickets',
-    TICKET_DETAIL: '/ticket-detail'
+    TICKET_DETAIL: '/ticket-detail',
+    DASHBOARD: '/dashboard'
 };
 
 export const AUTHORITY = {
