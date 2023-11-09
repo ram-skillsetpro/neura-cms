@@ -27,7 +27,6 @@ const Sidebar = ({closeEvent}) => {
         {url: PageUrls.DASHBOARD, title: 'Dashboard', icon: <DashboardIcon /> },
         {url: PageUrls.COMPANY, title: 'Manage Company', icon: <BusinessSharpIcon /> },
         {url: PageUrls.LEADS, title: 'Manage Leads', icon: <PeopleOutlineSharpIcon />},
-        {url: PageUrls.TICKETS, title: 'Tickets', icon: <ArticleIcon />}, 
         {url: PageUrls.ROLES, title: 'Roles', icon: <BalanceIcon />, active:true},
         {url: PageUrls.AUTHORITIES, title: 'Authorities', icon: <Badge />}, 
         {url: PageUrls.REPORTS, title: 'Reports', icon: <Assignment />}, 
@@ -40,6 +39,11 @@ const Sidebar = ({closeEvent}) => {
         // {url: PageUrls.CLAUSE_CREATE, title: 'Clause Create', icon: <InboxIcon />},
         {url: PageUrls.CLAUSE, title: 'Clause Master', icon: <LocalLibraryIcon />},
         {url: PageUrls.CLAUSE_PROMPT, title: 'Clause Prompt', icon: <AutoStoriesIcon />},
+      ]);
+    }
+    if(authority.includes(AUTHORITY.USER_QC) || authority.includes(AUTHORITY.USER_DE)){
+      setNavs(prevNavs => [...prevNavs, 
+        {url: PageUrls.TICKETS, title: 'Tickets', icon: <ArticleIcon />}
       ]);
     }
   },[])

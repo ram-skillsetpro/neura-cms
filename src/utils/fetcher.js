@@ -74,5 +74,16 @@ const fetcher = {
     const response = await apiClient.put(endpoint, data, { headers })
     return response.data;	
   },
+  putFile: async function (externalUrl, file) {
+    const response = await axios.put(externalUrl, file, {
+      headers: {
+        'Content-Type': file.type,
+      },
+    });
+    return response.data;
+  },
+
+
+
 }
 export default fetcher

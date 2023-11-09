@@ -8,14 +8,14 @@ export const formatDate = (date) => {
 export const longToDate = (timestamp) => {
     const date = new Date(timestamp * 1000);
     const monthNames = [
-        'January', 'February', 'March', 'April', 'May', 'June',
-        'July', 'August', 'September', 'October', 'November', 'December'
+        'Jan', 'Feb', 'March', 'April', 'May', 'June',
+        'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'
     ];
 
     const day = date.getDate();
     const month = monthNames[date.getMonth()];
     const year = date.getFullYear();
-    return `${month} ${day}, ${year}`;
+    return `${day} ${month}, ${year}`;
 }
 
 export const daysDifference = (timestamp) => {
