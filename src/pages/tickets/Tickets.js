@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Chip, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { Link } from 'react-router-dom';
 import {PageUrls } from "../../utils/constants";
@@ -11,9 +11,27 @@ import SentimentSatisfiedIcon from '@mui/icons-material/SentimentSatisfied';
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import CloseIcon from '@mui/icons-material/Close';
 import LockIcon from '@mui/icons-material/Lock';
+import fetcher from '../../utils/fetcher';
+import { longToDate, daysDifference } from '../../utils/utility';
+import { hasAuthority } from '../../utils/authGuard';
+import { AUTHORITY } from "../../utils/constants";
 
 
 const Tickets = () => {
+    const [tickets, setTickets] = useState([]);
+
+    const fetchTickets = async () => {
+        try {
+          const res = await fetcher.get(`/deqc/inbox`);
+          setTickets(res.response);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+    useEffect(() => {
+        fetchTickets();
+    }, []);
     const TicketItems = [
         {label: 'Assigned Tickets', value: '39', color: '#FFA500', icon: <SentimentSatisfiedIcon sx={{ fontSize: 32, color: '#FFA500' }} /> },
         {label: 'Closed Tickets', value: '21', color: '#0F962D', icon: <SentimentSatisfiedAltIcon sx={{ fontSize: 32, color: '#0F962D' }} /> },
@@ -41,51 +59,34 @@ const Tickets = () => {
                                     <TableCell style={{ minWidth: '150px' }}>ID</TableCell>
                                     <TableCell style={{ minWidth: '150px' }}>Client</TableCell>
                                     <TableCell style={{ minWidth: '150px' }}>Type</TableCell>
-                                    <TableCell style={{ minWidth: '150px' }}>Verified By</TableCell>
+                                    { hasAuthority(AUTHORITY.USER_DE) ? <TableCell style={{ minWidth: '150px' }}>Verified By</TableCell> : null }
                                     <TableCell style={{ minWidth: '150px' }}>Created Date</TableCell>
                                     <TableCell style={{ minWidth: '150px' }}>Pending Since</TableCell> 
                                     <TableCell style={{ width: '150px' }}></TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                <TableRow>
-                                    <TableCell><Link to={PageUrls.TICKET_DETAIL}>ID_12345</Link></TableCell>
-                                    <TableCell>Delhivery Inc.</TableCell>
-                                    <TableCell>NDA</TableCell>
-                                    <TableCell>Shauket</TableCell>
-                                    <TableCell>12 Oct, 2023</TableCell>
-                                    <TableCell>23 Days</TableCell>
-                                    <TableCell> 
-                                        <Link to={PageUrls.TICKET_DETAIL} className="mr-3">
-                                            <EditNoteIcon />
-                                        </Link>
-                                        <Link to='/' className="mr-3">
-                                            <LockIcon />
-                                        </Link> 
-                                        <Link to="/">
-                                            <CloseIcon />
-                                        </Link>
-                                    </TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell><Link to={PageUrls.TICKET_DETAIL}>ID_12345</Link></TableCell>
-                                    <TableCell>Delhivery Inc.</TableCell>
-                                    <TableCell>NDA</TableCell>
-                                    <TableCell>Shauket</TableCell>
-                                    <TableCell>12 Oct, 2023</TableCell>
-                                    <TableCell>23 Days</TableCell>
-                                    <TableCell> 
-                                        <Link to={PageUrls.TICKET_DETAIL} className="mr-3">
-                                            <EditNoteIcon />
-                                        </Link>
-                                        <Link to='/' className="mr-3">
-                                            <LockIcon />
-                                        </Link> 
-                                        <Link to="/">
-                                            <CloseIcon />
-                                        </Link>
-                                    </TableCell>
-                                </TableRow>
+                                { tickets.map((ticket, index) => (
+                                    <TableRow key={index}>
+                                        <TableCell><Link to={PageUrls.TICKET_DETAIL}>{ticket.id}</Link></TableCell>
+                                        <TableCell>{ticket.companyName}</TableCell>
+                                        <TableCell>{ticket.contractType}</TableCell>
+                                        { hasAuthority(AUTHORITY.USER_DE) ? <TableCell>Shauket</TableCell> : null }
+                                        <TableCell>{longToDate(ticket.createdDate)}</TableCell>
+                                        <TableCell>{daysDifference(ticket.createdDate)} Days</TableCell>
+                                        <TableCell> 
+                                            <Link to={PageUrls.TICKET_DETAIL} className="mr-3">
+                                                <EditNoteIcon />
+                                            </Link>
+                                            <Link to='/' className="mr-3">
+                                                <LockIcon />
+                                            </Link> 
+                                            <Link to="/">
+                                                <CloseIcon />
+                                            </Link>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
                             </TableBody>
                         </Table>
                     </TableContainer>

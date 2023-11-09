@@ -13,6 +13,7 @@ const CreateCompany = ({closeEvent, company, packageList}) => {
 
     const [packages, setPackages] = useState([]);
     const [formInitialized, setFormInitialized] = useState(false);
+    const [logoFile, setLogoFile] = useState(null);
     const [formData, setFormData] = useState({
         description: company?.description || '',
         email: company?.email || '',
@@ -45,7 +46,7 @@ const CreateCompany = ({closeEvent, company, packageList}) => {
         packageStartDate: Yup.string().required('Package start date is required'),
         phone: Yup.string().required('Phone is required'),
         user: Yup.string().required('Contact name is required'),
-        website: Yup.string().required('Website is required'),
+        website: Yup.string().required('Website is required'),     
     });
 
     const handleSubmit = async (values) => {
@@ -55,14 +56,14 @@ const CreateCompany = ({closeEvent, company, packageList}) => {
             if (company?.id) {
                 const cmpRes = await fetcher.get(`cms/company-details?companyId=${company.id}`);
                 cmpRes.response.description = values.description;
-                cmpRes.response.email = values.email;
+                cmpRes.response.companyEmail = values.email;
                 cmpRes.response.isPackageActive = values.isPackageActive;
                 cmpRes.response.logo = values.logo;
                 cmpRes.response.name = values.name;
                 cmpRes.response.packageId = values.packageId;
                 cmpRes.response.packageStartDate = values.packageStartDate;
-                cmpRes.response.phone = values.phone;
-                cmpRes.response.user = values.user;
+                cmpRes.response.companyPhone = values.phone;
+                cmpRes.response.companyUser = values.user;
                 cmpRes.response.website = values.website;
                 res = await fetcher.post('cms/edit-company', cmpRes.response);
             } else {
@@ -93,12 +94,32 @@ const CreateCompany = ({closeEvent, company, packageList}) => {
         onSubmit: handleSubmit,
     });
 
+    const handleLogoFileChange = async (event) => {
+        try {
+            const file = event.target.files[0];
+            const data = {'companyName': formik.values.name};
+            if (formik.values.name) {
+                data['companyId'] = formik.values.id;
+            }
+            const res = await fetcher.post(`cms/create-company-logo?extension=${file.name.split('.').pop()}`, data);
+
+            if (res.status === 200) {
+                await fetcher.putFile(res.response, file);
+                formik.setFieldValue('logo', res.response.split('?')[0]);
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
     useEffect(() => {
+        console.log(company);
         setPackages(packageList.map(i => ({
             label: i.name,
             id: i.id
         })));
         setFormInitialized(true);
+        formik.setTouched(true);
     }, []);
 
     return(
@@ -139,6 +160,7 @@ const CreateCompany = ({closeEvent, company, packageList}) => {
                                             name="companyLogo" 
                                             type="file"
                                             className="form-control"
+                                            onChange={handleLogoFileChange}
                                         />
                                         { formik.touched.logo && formik.errors.logo && (
                                             <div className='errorMsg'>{formik.errors.logo}</div>
@@ -284,7 +306,7 @@ const CreateCompany = ({closeEvent, company, packageList}) => {
 
                     <div className='d-flex justify-content-end'>
                         <button className='btn btn-outline-primary mr-2' onClick={closeEvent}>Cancel</button>
-                        <button type="submit" className='btn btn-primary'>Save Company</button>
+                        <button type="submit" className='btn btn-primary' disabled={!formik.isValid}>Save Company</button>
                     </div>
                 </form>
             )}
