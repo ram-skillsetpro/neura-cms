@@ -15,6 +15,7 @@ import ChecklistIcon from '@mui/icons-material/Checklist';
 import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import ArticleIcon from '@mui/icons-material/Article';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 
 const Sidebar = ({closeEvent}) => {
   const authority = userAuthority().map(authority => authority.name);
@@ -22,7 +23,8 @@ const Sidebar = ({closeEvent}) => {
   
   useEffect(() => {
     if(authority.includes(AUTHORITY.UPDATE_DEMO_USER)){
-      setNavs(prevNavs => [...prevNavs, 
+      setNavs(prevNavs => [...prevNavs,
+        {url: PageUrls.DASHBOARD, title: 'Dashboard', icon: <DashboardIcon /> },
         {url: PageUrls.COMPANY, title: 'Manage Company', icon: <BusinessSharpIcon /> },
         {url: PageUrls.LEADS, title: 'Manage Leads', icon: <PeopleOutlineSharpIcon />},
         {url: PageUrls.ROLES, title: 'Roles', icon: <BalanceIcon />, active:true},
