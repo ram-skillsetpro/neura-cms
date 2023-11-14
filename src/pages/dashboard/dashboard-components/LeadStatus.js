@@ -1,5 +1,4 @@
 import React from "react";
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import style from './../Dashboard.module.scss';
 
 const LeadStatus = () => {
@@ -10,13 +9,28 @@ const LeadStatus = () => {
                     <h2>Lead Status </h2>
                 </div>
                 
-                <div className={style.winLossBox}>
-                    Lead Status here...
-                </div>
+                <div className={style.leadStatusBox}>
+                    <article className={`${style.leadStatusBar} ${style.allBar}`} style={{width: '100%'}}>
+                        <span>All Leads</span>
+                        <strong>29</strong>
+                    </article>
 
-                {/* <div className={style.buttonLink}>
-                    <button className="btn btn-default">All Demos <KeyboardArrowRightIcon /></button>
-                </div> */}
+                    <article className={`${style.leadStatusBar} ${style.demoBar}`} style={{width: '55%'}}>
+                        <span>Demo</span>
+                        <strong>15</strong>
+                    </article>
+
+                    <article className={`${style.leadStatusBar} ${style.trialBar}`} style={{width: '35%'}}>
+                        <span>Trial</span>
+                        <strong>10</strong>
+                    </article>
+
+                    <article className={`${style.leadStatusBar} ${style.closedBar}`} style={{width: '10%'}}>
+                        <span>Closed</span>
+                        <strong>4</strong>
+                    </article>
+                </div>
+ 
             </section>
         </>
     )

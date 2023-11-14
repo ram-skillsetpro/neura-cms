@@ -11,12 +11,15 @@ const WinLoss = () => {
                 </div>
                 
                 <div className={style.winLossBox}>
-                        Win loss - Progress bar here...
+                    <div className={`${style.winPercentVal} ${style.green}`}>84%</div>
+                    <div className={style.progressBar}> 
+                        <span style={{width: '84%'}}></span>
+                    </div>
                 </div>
 
-                {/* <div className={style.buttonLink}>
+                <div className={style.buttonLink}>
                     <button className="btn btn-default">All Demos <KeyboardArrowRightIcon /></button>
-                </div> */}
+                </div>
             </section>
         </>
     )

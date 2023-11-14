@@ -7,6 +7,7 @@
     padding: 20px;
     @include boxShadow(0 0 10px rgba(0,0,0,0.05));
     @include borderRadius(8px);
+    min-height: 100%;
     .titleRow{
         display: flex;
         align-items: center;
@@ -155,6 +156,171 @@
             font-weight: 600;
             margin: 0 10px 10px 0;
             @include borderRadius(8px);
+        }
+    }
+}
+
+//Gen Lead Card Article
+.leadGenArticle{
+    h3{
+        font-size: 12px;
+        text-transform: uppercase;
+        color: $grey_v2;
+        margin-bottom: 12px;
+    }
+    .leadGenVal{
+        font-size: 18px;
+        font-weight: 700;
+        min-height: 28px;
+        margin-bottom: 2px;
+        img{
+            width: 24px;
+            height: 24px;
+            object-fit: cover;
+            @include borderRadius(100%);
+        }
+    }
+    .leadGenSubTitle{
+        font-size: 12px;
+        font-weight: 300;
+    }
+}
+
+//Notification
+.notificationListBox{
+    margin: -20px -20px 20px;
+    .notificationArticle{
+        display: flex;
+        padding: 20px;
+        border-bottom: rgba(0,0,0,0.05) solid 1px;
+        .notiArtImg{
+            width: 40px;
+            flex: 0 0 auto;
+            margin-right: 16px;
+            position: relative;
+            img{
+                width: 40px;
+                height: 40px;
+                display: block;
+                @include borderRadius(100%);
+            }
+            &.notiUserOnline::after{
+                border: $white solid 1px;
+                width: 8px;
+                height: 8px;
+                content: '';
+                display: block;
+                position: absolute;
+                top: 1px;
+                right: 1px;
+                background-color: $greenColor;
+                @include borderRadius(100%)
+            }
+        }
+        .notiArtCont{
+            h3{
+                font-size: 14px;
+                font-weight: 600;
+                margin-bottom: 4px;
+                color: $darkGrey_v3;
+            }
+            p{
+                font-size: 12px;
+                color: $grey_v5;
+                font-weight: 400;
+                margin: 0;
+                opacity: 0.7;
+            }
+        }
+
+        &.unreadNotification{
+            background-color: rgba($primaryColor, 0.05);
+            .notiArtCont{
+                h3{
+                    color: $black;
+                    font-weight: 700;
+                }
+                p{
+                    opacity: 1;
+                }
+            }
+        }
+    }
+}
+
+
+//Lead Status Section
+.leadStatusBox{
+    .leadStatusBar{
+        padding: 8px 12px;
+        font-size: 12px;
+        color: $black;
+        margin-bottom: 8px;
+        background-color: #ddd;
+        min-width: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        span{
+            font-weight: 400;
+        }
+        strong{
+            font-style: normal;
+            font-weight: 700;
+        }
+
+        &.allBar{
+            background: rgb(0,183,255);
+            background: linear-gradient(90deg, rgba(0,183,255,0.4) 0%, rgba(0,183,255,0) 100%);
+        }
+        &.demoBar{
+            background: rgb(37,205,37);
+            background: linear-gradient(90deg, rgba(37,205,37,0.4) 0%, rgba(37,205,37,0) 100%);
+        }
+        &.trialBar{
+            background: rgb(255,117,0);
+            background: linear-gradient(90deg, rgba(255,117,0,0.4) 0%, rgba(255,117,0,0) 100%);
+        }
+        &.closedBar{
+            background: rgb(255,104,105);
+            background: linear-gradient(90deg, rgba(255,104,105,0.4) 0%, rgba(255,104,105,0) 100%);
+        }
+    }
+}
+
+
+//Win loss Section
+.winLossBox{
+    .winPercentVal{
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        text-align: center;
+        &.green{
+            color: $greenColor ;
+        }
+        &.orange{
+            color: orange;
+        }
+        &.red{
+            color: $primaryColor;
+        }
+    }
+
+    .progressBar{
+        height: 10px;
+        background-color: $lightGrey;
+        @include borderRadius(20px);
+        overflow: hidden;
+        margin-bottom: 18px;
+        position: relative;
+        span{
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: inline-block;
+            height: 10px;
+            background-color: $greenColor;
         }
     }
 }

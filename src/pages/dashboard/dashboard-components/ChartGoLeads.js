@@ -1,14 +1,13 @@
 import React from "react";
 import style from './../Dashboard.module.scss';
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'; 
-import leadChart from '../../../assets/images/leadChart.png';
+import goLeadsChart from '../../../assets/images/goLeadsChart.png';
 
-const LeadGenerated = () => {  
+const ChartGoLeads = () => {  
     return(
         <>
             <section className={`${style.whiteBox}`}>
                 <div className={style.titleRow}>
-                    <h2>Leads Generated</h2>
+                    <h2>Geo Leads</h2>
                     <div className={style.sortDropdown}>
                         <select className="form-control">
                             <option>Weekly</option>
@@ -18,11 +17,11 @@ const LeadGenerated = () => {
                 </div>
  
                 <div className={style.graphArea}>
-                    <img src={leadChart} alt="" />
+                    <img src={goLeadsChart} alt="" />
                 </div>
             </section>        
         </>
     )
 }
 
-export default LeadGenerated;
+export default ChartGoLeads;

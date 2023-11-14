@@ -4,10 +4,14 @@ import ActiveTrials from './dashboard-components/ActiveTrials';
 import ScheduledDemos from './dashboard-components/ScheduledDemos';
 import DemoManagers from './dashboard-components/DemoManagers';
 import WinLoss from './dashboard-components/WinLoss';
-import LeadGenerated from './dashboard-components/LeadGenerated';
+import ChartLeadGenerated from './dashboard-components/ChartLeadGenerated';
 import NewLeads from './dashboard-components/NewLeads';
 import LeadStatus from './dashboard-components/LeadStatus';
 import Notifications from './dashboard-components/Notifications';
+import LeadGeneratedCard from './dashboard-components/LeadGeneratedCard';
+import userImg from '../../assets/images/profileImg.jpg'; 
+import ChartGoLeads from './dashboard-components/ChartGoLeads';
+import ChartLeadsWeekly from './dashboard-components/ChartLeadsWeekly';
 
 const Dashboard = () => {
     return(
@@ -27,7 +31,28 @@ const Dashboard = () => {
                         </div>
 
                         <div className='col-12 mb-4'>
-                            <LeadGenerated />
+                            <ChartLeadGenerated />
+                        </div>
+
+                        <div className='col-12 mb-4'>
+                            <div className='row'>
+                                <div className='col-4'>
+                                    <LeadGeneratedCard title="Top Month" subTitle="2023" value="September" />
+                                </div>
+                                <div className='col-4'>
+                                    <LeadGeneratedCard title="Top Week" subTitle="28 Leads" value="21-27 Nov"  />
+                                </div>
+                                <div className='col-4'>
+                                    <LeadGeneratedCard title="Top Demo Mgr" subTitle="Mohit Sethi" value="" image={userImg}  />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className='col-md-6'>
+                            <ChartGoLeads />
+                        </div>
+                        <div className='col-md-6'>
+                            <ChartLeadsWeekly />
                         </div>
                     </div>
                 </div>
