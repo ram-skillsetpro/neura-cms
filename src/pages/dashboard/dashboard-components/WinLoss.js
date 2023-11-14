@@ -18,7 +18,7 @@ const WinLoss = () => {
                 </div>
 
                 <div className={style.buttonLink}>
-                    <button className="btn btn-default">All Demos <KeyboardArrowRightIcon /></button>
+                    <button className="btn btn-default">All Leads <KeyboardArrowRightIcon /></button>
                 </div>
             </section>
         </>
