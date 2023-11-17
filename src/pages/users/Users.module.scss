@@ -1,0 +1,97 @@
+@import '../../assets/scss/mixins';
+@import '../../assets/scss/variables';
+
+
+.noUserData{
+    padding: 100px 0;
+    text-align: center;
+    color: rgba(0,0,0,0.7);
+    font-size: 12px;
+    p{
+        margin: 0;
+        span{
+            color: $primaryColor;
+            cursor: pointer;
+        }
+    }
+}
+
+
+.passProgress{
+    padding: 1px;
+    text-align: center;
+    color: $white;
+    font-size: 8px;
+    @include borderRadius(10px);
+    &.weekPass{
+        width: 33%;
+        background-color: $primaryColor;
+    }
+    &.medPass{
+        width: 66%;
+        background-color: orange;
+    }
+    &.strongPass{
+        width: 100%;
+        background-color: $greenColor;
+    }
+}
+
+.generateBtn{
+    padding: 0;
+    background-color: transparent;
+    border: none;
+    color: $primaryColor;
+    font-size: 12px;
+}
+
+.userTopDetails{
+    margin-bottom: 24px;
+    @include smScreen {
+        margin-bottom: 0px;
+        [class*="col"]{
+            margin-bottom: 24px;
+        }
+    }
+}
+
+.userTopArt{
+    background-color: $white;
+    padding: 20px;
+    @include boxShadow(0 0 10px rgba(0,0,0,0.05));
+    @include borderRadius(8px);
+    display: flex;
+    align-items: center;
+    @include smScreen{
+        min-height: 100%;
+    }
+    .userArtTxt{
+        flex: 1;
+        margin-right: 16px;
+        @include smScreen {
+            text-align: center;
+            margin-right: 0;
+        }
+        h3{
+            font-size: 24px;
+            font-weight: 700;
+            color: $black;
+            margin-bottom: 8px;
+        }
+        p{
+            font-size: 11px;
+            color: $grey_v4;
+            font-weight: 500;
+            text-transform: uppercase;
+            margin-bottom: 0px;
+        }
+    }
+
+    .userArtIcon {
+        width: 32px;
+        flex: 0 0 auto;
+        @include smScreen{
+            display: none;
+        }
+    }
+}
