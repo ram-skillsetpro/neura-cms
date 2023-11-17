@@ -12,7 +12,8 @@ export const PageUrls = {
     REPORTS: '/reports',
     TICKETS: '/tickets',
     TICKET_DETAIL: '/ticket-detail',
-    DASHBOARD: '/dashboard'
+    DASHBOARD: '/dashboard',
+    USERS: '/users'
 };
 
 export const AUTHORITY = {

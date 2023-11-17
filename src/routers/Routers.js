@@ -17,6 +17,7 @@ import Reports from "../pages/reports/Reports";
 import Tickets from "../pages/tickets/Tickets";
 import TicketDetail from "../pages/ticket-detail/TicketDetail";
 import Dashboard from "../pages/dashboard/Dashboard";
+import Users from "../pages/users/Users";
 
 
 function PrivateRoute({ element }) {
@@ -46,6 +47,7 @@ const Routers = () => {
           <Route path={PageUrls.TICKETS} element={<PrivateRoute element={<Layout> <Tickets /> </Layout>} />} />
           <Route path={PageUrls.TICKET_DETAIL} element={<PrivateRoute element={<Layout> <TicketDetail /> </Layout>} />} />
           <Route path={PageUrls.DASHBOARD} element={<PrivateRoute element={<Layout> <Dashboard /> </Layout>} />} />
+          <Route path={PageUrls.USERS} element={<PrivateRoute element={<Layout> <Users /> </Layout>} />} />
           <Route path={PageUrls.UNAUTHORIZED} element={<Layout> <NoMatch /> </Layout>} />
           <Route path="*" element={<NoMatch />} />
         </Routes>

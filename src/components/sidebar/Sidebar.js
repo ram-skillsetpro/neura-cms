@@ -30,6 +30,7 @@ const Sidebar = ({closeEvent}) => {
         {url: PageUrls.ROLES, title: 'Roles', icon: <BalanceIcon />, active:true},
         {url: PageUrls.AUTHORITIES, title: 'Authorities', icon: <Badge />}, 
         {url: PageUrls.REPORTS, title: 'Reports', icon: <Assignment />}, 
+        {url: PageUrls.USERS, title: 'Users', icon: <PeopleOutlineSharpIcon />}, 
       ]);
     }
     if(authority.includes(AUTHORITY.CLAUSE_PROMPT_MANAGEMENT)){
