@@ -59,7 +59,7 @@ const Tickets = () => {
                                     <TableCell style={{ minWidth: '150px' }}>ID</TableCell>
                                     <TableCell style={{ minWidth: '150px' }}>Client</TableCell>
                                     <TableCell style={{ minWidth: '150px' }}>Type</TableCell>
-                                    { hasAuthority(AUTHORITY.USER_DE) ? <TableCell style={{ minWidth: '150px' }}>Verified By</TableCell> : null }
+                                    { hasAuthority(AUTHORITY.USER_QC) ? <TableCell style={{ minWidth: '150px' }}>Verified By</TableCell> : null }
                                     <TableCell style={{ minWidth: '150px' }}>Created Date</TableCell>
                                     <TableCell style={{ minWidth: '150px' }}>Pending Since</TableCell> 
                                     <TableCell style={{ width: '150px' }}></TableCell>
@@ -68,14 +68,14 @@ const Tickets = () => {
                             <TableBody>
                                 { tickets.map((ticket, index) => (
                                     <TableRow key={index}>
-                                        <TableCell><Link to={PageUrls.TICKET_DETAIL}>{ticket.id}</Link></TableCell>
+                                        <TableCell><Link to={PageUrls.TICKET_DETAIL + `?id=${ticket.id}`}>{ticket.id}</Link></TableCell>
                                         <TableCell>{ticket.companyName}</TableCell>
                                         <TableCell>{ticket.contractType}</TableCell>
-                                        { hasAuthority(AUTHORITY.USER_DE) ? <TableCell>Shauket</TableCell> : null }
+                                        { hasAuthority(AUTHORITY.USER_QC) ? <TableCell>Shauket</TableCell> : null }
                                         <TableCell>{longToDate(ticket.createdDate)}</TableCell>
                                         <TableCell>{daysDifference(ticket.createdDate)} Days</TableCell>
                                         <TableCell> 
-                                            <Link to={PageUrls.TICKET_DETAIL} className="mr-3">
+                                            <Link to={ PageUrls.TICKET_DETAIL} className="mr-3">
                                                 <EditNoteIcon />
                                             </Link>
                                             <Link to='/' className="mr-3">

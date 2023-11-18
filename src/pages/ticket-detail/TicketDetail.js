@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -7,13 +7,29 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import style from './TicketDetail.module.scss';
+import { useSearchParams } from 'react-router-dom';
+import fetcher from '../../utils/fetcher';
 
 const TicketDetail = () => {
+    const [searchParams, setSearchParams] = useSearchParams()
     const [expanded, setExpanded] = React.useState(false);
 
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
     };
+
+    const openFile = async (id) => {
+        try {
+          const res = await fetcher.post(`deqc/open-assign?fileId=${id}`);
+          console.log(res);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+    useEffect(() => {
+        openFile(searchParams.get('id'));
+    }, []);
     return(
         <>
             <div className='headingRow'>

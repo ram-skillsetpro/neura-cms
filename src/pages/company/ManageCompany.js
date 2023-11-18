@@ -182,7 +182,7 @@ const ManageCompany = () => {
                         {company.description}
                       </TableCell> */}
                       <TableCell>{company.name}</TableCell>
-                      <TableCell></TableCell>
+                      <TableCell><img src={company.logo} alt="" /></TableCell>
                       <TableCell>{company.companyUser}</TableCell>
                       <TableCell>{company.companyEmail}</TableCell>
                       <TableCell>{company.companyPhone}</TableCell>

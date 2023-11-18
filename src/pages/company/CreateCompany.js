@@ -11,21 +11,22 @@ import SnackBar from "../../components/SnackBar";
 
 const CreateCompany = ({closeEvent, company, packageList}) => {   
 
+    const [countryList, setCountryList] = useState([]);
     const [packages, setPackages] = useState([]);
     const [formInitialized, setFormInitialized] = useState(false);
     const [logoFile, setLogoFile] = useState(null);
     const [formData, setFormData] = useState({
         description: company?.description || '',
-        email: company?.email || '',
-        isPackageActive: company?.isPackageActive || 0,
+        email: company?.companyEmail || '',
         logo: company?.logo || '',
         name: company?.name || '',
-        packageId: company?.packageId || '',
+        packageId: company?.packageId || 1,
         packageStartDate: company?.packageStartDate * 1000 || null,
-        phone: company?.phone || '',
-        user: company?.user || '',
+        phone: company?.companyPhone || '',
+        user: company?.companyUser || '',
         website: company?.website || '',
-        id: company?.id || ''
+        id: company?.id || '',
+        countryCode: company?.countryCode || '+91'
     });
 
     const [snackbar, setSnackbar] = useState({
@@ -37,16 +38,19 @@ const CreateCompany = ({closeEvent, company, packageList}) => {
         setSnackbar(value);
     };
 
+    const fetchCountryList = async () => {
+        const res = await fetcher.get(`country-list`);
+        setCountryList(res.response);
+    }
+
     const validationSchema = Yup.object().shape({
         description: Yup.string().required('Company description is required'),
         email: Yup.string().required('Email is required').email('Invalid email address'),
         logo: Yup.string().required('Company logo is required'),
         name: Yup.string().required('Company name is required'),
-        packageId: Yup.string().required('Package is required'),
-        packageStartDate: Yup.string().required('Package start date is required'),
         phone: Yup.string().required('Phone is required'),
         user: Yup.string().required('Contact name is required'),
-        website: Yup.string().required('Website is required'),     
+        website: Yup.string().required('Website is required')     
     });
 
     const handleSubmit = async (values) => {
@@ -57,11 +61,8 @@ const CreateCompany = ({closeEvent, company, packageList}) => {
                 const cmpRes = await fetcher.get(`cms/company-details?companyId=${company.id}`);
                 cmpRes.response.description = values.description;
                 cmpRes.response.companyEmail = values.email;
-                cmpRes.response.isPackageActive = values.isPackageActive;
                 cmpRes.response.logo = values.logo;
                 cmpRes.response.name = values.name;
-                cmpRes.response.packageId = values.packageId;
-                cmpRes.response.packageStartDate = values.packageStartDate;
                 cmpRes.response.companyPhone = values.phone;
                 cmpRes.response.companyUser = values.user;
                 cmpRes.response.website = values.website;
@@ -113,7 +114,7 @@ const CreateCompany = ({closeEvent, company, packageList}) => {
     };
 
     useEffect(() => {
-        console.log(company);
+        fetchCountryList();
         setPackages(packageList.map(i => ({
             label: i.name,
             id: i.id
@@ -206,9 +207,18 @@ const CreateCompany = ({closeEvent, company, packageList}) => {
                                         <label className='label-control'>Phone No.</label>
                                         <div className='row no-gutters phoneNumberField'>
                                             <div className="col w65">
-                                                <select className='form-control px-2'>
-                                                    <option>+91</option>
-                                                </select>
+                                            <select
+                                                name="countryCode"
+                                                onChange={formik.handleChange}
+                                                value={formik.values.countryCode}
+                                                className='form-control px-2'
+                                            >
+                                                {countryList.map((country, index) => (
+                                                    <option key={index} value={country.country_code}>
+                                                        {country.country_code}
+                                                    </option>
+                                                ))}
+                                            </select>
                                             </div>
                                             <div className="col">
                                                 <input
@@ -240,52 +250,7 @@ const CreateCompany = ({closeEvent, company, packageList}) => {
                                             <div className='errorMsg'>{formik.errors.website}</div>
                                         )}                        
                                     </div>
-                                </div>
-
-
-                                <div className='col-md-6'>
-                                    <div className='form-group'>
-                                        <label className='label-control'>Package Name</label>
-                                        <div className="customAutoField">
-                                            <Autocomplete
-                                                options={packages}
-                                                getOptionLabel={(option) => option.label}
-                                                value={packages.find(i => i.id === formik.values.packageId)}
-                                                onChange={(_, newValue) => {
-                                                        const pac = packageList.find(i => i.id === newValue?.id)?.isActive ? 1 : 0;
-                                                        formik.setFieldValue('isPackageActive', pac);
-                                                        formik.setFieldValue('packageId', newValue ? newValue.id : '');
-                                                    }
-                                                }
-                                                renderInput={(params) => <TextField {...params} />}
-                                            />
-                                            {formik.touched.packageId && formik.errors.packageId && (
-                                                <div className="errorMsg">{formik.errors.packageId}</div>
-                                            )} 
-                                        </div>
-                                    </div> 
-                                </div>
-
-                                <div className='col-md-6'>
-                                    <div className='form-group'>
-                                        <label className='label-control'>Package Start Date</label>
-                                        <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                            <DatePicker
-                                                name="packageStartDate"
-                                                value={formik.values.packageStartDate}
-                                                onChange={(date) => {
-                                                        formik.setFieldValue('packageStartDate', date.getTime())
-                                                    }
-                                                }
-                                                onBlur={formik.handleBlur}
-                                                renderInput={(params) => <TextField {...params} />}
-                                            />
-                                        </LocalizationProvider>
-                                        {formik.touched.packageStartDate && formik.errors.packageStartDate && (
-                                            <div className="errorMsg">{formik.errors.packageStartDate}</div>
-                                        )}
-                                    </div> 
-                                </div>
+                                </div>                                
                             </div>
 
                             <div className='form-group'>
