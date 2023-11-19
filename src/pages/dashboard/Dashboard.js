@@ -34,15 +34,15 @@ const Dashboard = () => {
                             <ChartLeadGenerated />
                         </div>
 
-                        <div className='col-12 mb-4'>
+                        <div className='col-12'>
                             <div className='row'>
-                                <div className='col-4'>
+                                <div className='col-sm-4 mb-4'>
                                     <LeadGeneratedCard title="Top Month" subTitle="2023" value="September" />
                                 </div>
-                                <div className='col-4'>
+                                <div className='col-sm-4 mb-4'>
                                     <LeadGeneratedCard title="Top Week" subTitle="28 Leads" value="21-27 Nov"  />
                                 </div>
-                                <div className='col-4'>
+                                <div className='col-sm-4 mb-4'>
                                     <LeadGeneratedCard title="Top Demo Mgr" subTitle="Mohit Sethi" value="" image={userImg}  />
                                 </div>
                             </div>
