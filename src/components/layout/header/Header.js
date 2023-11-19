@@ -7,6 +7,7 @@ import logoImg from '../../../assets/images/simpleo-ai-logo@2x.png';
 import { useNavigate } from 'react-router-dom';
 import { IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import NotificationsIcon from '@mui/icons-material/Notifications';
  
 const Header = ({mWebClick}) => {
   const navigate = useNavigate();
@@ -33,8 +34,15 @@ const Header = ({mWebClick}) => {
           </Link>
         </div>
 
+        <div className={`${style.headerSearch} d-none d-lg-block`}>
+          <input type='text' placeholder='Search Tickets' className='form-control' />
+        </div>
+
         <div className={style.headerRight}>
-          <Dropdown className={style.usernameDropown}>
+        <IconButton aria-label="notification">
+          <NotificationsIcon />
+        </IconButton>
+          {/* <Dropdown className={style.usernameDropown}>
             <Dropdown.Toggle variant="default" id="dropdown-basic">
               <div className={style.btnAvatar}>
                 <AccountCircle  />
@@ -49,7 +57,7 @@ const Header = ({mWebClick}) => {
               <h4>Admin</h4>
               <button onClick={handleLogout} className='btn btn-primary'>Logout</button>
             </Dropdown.Menu>
-          </Dropdown>
+          </Dropdown> */}
         </div>
       </header> 
     </>

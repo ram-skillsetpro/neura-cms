@@ -3,11 +3,14 @@
 
 .sidebarNavigation{
     background-color: $white;
+    display: flex;
+    flex-direction: column;
     height: 100%;
     overflow-y: auto;
     @include boxShadow(0 0 5px rgba(0,0,0,0.1));
     ul{
         padding: 0;margin: 0;
+        margin-bottom: 24px;
         li {
             list-style: none;
             a{
@@ -30,5 +33,50 @@
                 }
             }
         }
-    }
+    } 
+
+    //Sidebar bottom
+    .sidebarBottom{
+        margin-top: auto;
+        .userInfo{
+            padding: 0 16px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            img.userImg{
+                width: 36px;
+                height: 36px;
+                flex: 0 0 auto;
+                margin-right: 16px;
+                border: $lightGrey solid 1px;
+                @include borderRadius(100%);
+            }
+            .userInfoTxt{
+                flex: 1;
+                strong{
+                    display: block;
+                    margin-bottom: 0px;
+                    font-size: 12px;
+                    font-weight: 600;
+                }
+                span{
+                    padding: 1px 8px;
+                    background-color: $orangeColor;
+                    font-size: 9px;
+                    font-weight: 400;
+                    display: inline-block;
+                    @include borderRadius(10px);
+                }
+            }
+        }
+        ul{
+            margin-top: 16px;
+            li{
+                a{
+                    padding: 10px 16px;
+                }
+            }
+        }
+    } 
 }
+

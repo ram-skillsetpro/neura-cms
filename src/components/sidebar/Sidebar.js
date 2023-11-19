@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import style from './Sidebar.module.scss'; 
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { AUTHORITY } from "../../utils/constants";
 import {userAuthority } from "../../utils/authGuard"; 
 import Assignment from '@mui/icons-material/Assessment';
@@ -16,8 +16,12 @@ import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import ArticleIcon from '@mui/icons-material/Article';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import SettingsIcon from '@mui/icons-material/Settings';
+import LogoutIcon from '@mui/icons-material/Logout';
+import userDefaultImage from '../../assets/images/defaultProfileImg.png';
 
 const Sidebar = ({closeEvent}) => {
+  const navigate = useNavigate();
   const authority = userAuthority().map(authority => authority.name);
   const [navs, setNavs] = useState([]);
   
@@ -56,6 +60,11 @@ const Sidebar = ({closeEvent}) => {
       return false;
     }
   }
+
+  const handleLogout = () => {
+    localStorage.removeItem('auth');
+    navigate('/login');
+  };
   
   return (
     <>
@@ -75,6 +84,30 @@ const Sidebar = ({closeEvent}) => {
             </li>
           )}
         </ul>
+
+        <div className={style.sidebarBottom}>
+          <div className={style.userInfo}> 
+            <img src={userDefaultImage} alt="Gautam Sinha" className={style.userImg} /> 
+            <div className={style.userInfoTxt}>
+              <strong>Gautam Sinha</strong>
+              <span>CEO</span>
+            </div> 
+          </div>
+          <ul>
+            <li>
+              <NavLink to="/" onClick={mWebCloseEvent}>
+                <SettingsIcon />
+                Settings
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/"  onClick={handleLogout}>
+                <LogoutIcon />
+                Log out
+              </NavLink>
+            </li>
+          </ul> 
+        </div>
       </div>
     </>
     
