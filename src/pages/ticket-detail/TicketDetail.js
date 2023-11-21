@@ -16,7 +16,7 @@ const TicketDetail = () => {
     const [searchParams, setSearchParams] = useSearchParams()
     const [expanded, setExpanded] = React.useState(false);
     const [deProcessedMeta, setDeProcessedMeta] = React.useState([]);
-    const [updatedData, setUpdatedData] = React.useState(null);
+    const [processedMeta, setProcessedMeta] = React.useState([]);
 
 
     const handleChange = (panel) => (event, isExpanded) => {
@@ -26,15 +26,8 @@ const TicketDetail = () => {
         }));
     };
 
-    const handleInputChange1 = (sectionIndex, itemIndex, key, newValue) => {
-        const updatedState = [...deProcessedMeta];
-        updatedState[sectionIndex].value[itemIndex].value[key] = newValue;
-        setDeProcessedMeta(updatedState);
-        console.log(updatedState);
-    };
-
     const handleInputChange = (sectionIndex, itemIndex, key, newValue) => {
-        const updatedState = JSON.parse(JSON.stringify(deProcessedMeta));
+        const updatedState = JSON.parse(JSON.stringify(processedMeta));
         const [subSelection, subIndex] = sectionIndex.toString().split('_');
         if (subIndex) {
             let currentItem = updatedState[subSelection].value[subIndex];
@@ -53,15 +46,14 @@ const TicketDetail = () => {
           };
           updatedState[sectionIndex].value[itemIndex] = currentItem;
         }
-        setDeProcessedMeta(updatedState);
+        setProcessedMeta(updatedState);
         console.log(JSON.stringify(updatedState));
     };
 
     const openFile = async (id) => {
         try {
           const res = await fetcher.post(`deqc/open-assign?fileId=${id}`);
-          setDeProcessedMeta(JSON.parse(res.response.deProcessedMeta));
-          setUpdatedData(deProcessedMeta);
+          setProcessedMeta(JSON.parse(hasAuthority(AUTHORITY.USER_DE) ? res.response.deProcessedMeta : res.response.qcProcessedMeta));
         } catch (error) {
           console.log(error);
         }
@@ -71,9 +63,14 @@ const TicketDetail = () => {
         try {
             const payload = {
                 id: searchParams.get('id'),  
-                deProcessedMeta: JSON.stringify(deProcessedMeta),
                 status: status
             }
+            if (hasAuthority(AUTHORITY.USER_DE)) {
+                payload.deProcessedMeta = JSON.stringify(processedMeta);
+            } else {
+                payload.qcProcessedMeta = JSON.stringify(processedMeta);
+            }
+
             const res = await fetcher.post(`deqc/save-inbox-item`, payload);
             console.log(res);
         } catch (error) {
@@ -136,11 +133,11 @@ const TicketDetail = () => {
     };
 
     const handleMetaAction = (index, status) => {
-        const updatedState = JSON.parse(JSON.stringify(deProcessedMeta));
+        const updatedState = JSON.parse(JSON.stringify(processedMeta));
         const section = updatedState[index];
         section.status = status;
         updatedState[index] = section;
-        setDeProcessedMeta(updatedState);
+        setProcessedMeta(updatedState);
         //console.log(updatedState);
     };
 
@@ -166,10 +163,10 @@ const TicketDetail = () => {
                     className={style.ticketPDF}> 
                 </object> 
 
-                {deProcessedMeta.length > 0 && (
+                {processedMeta.length > 0 && (
                     <section className={style.ticketDetailForm}>
                         <div className={style.accBox}>
-                            {deProcessedMeta && deProcessedMeta.map((section, index) => (
+                            {processedMeta && processedMeta.map((section, index) => (
                                 <Accordion
                                     key={index}
                                     expanded={expanded[`panel${index}`]}
@@ -205,13 +202,13 @@ const TicketDetail = () => {
                             <div className='text-center'>
                                 <button className='btn btn-primary' onClick={() => saveInboxItem(5)}>Save</button>
                                 <button className='btn btn-primary' onClick={() => saveInboxItem(6)}
-                                    disabled={!deProcessedMeta.every(section => section.status === 2 || section.status === 6)}>Submit</button>
+                                    disabled={!processedMeta.every(section => section.status === 2 || section.status === 6)}>Submit</button>
                             </div>
                         ) : (
                             <div className='text-center'>
                                 <button className='btn btn-primary' onClick={() => saveInboxItem(7)}>Save</button>
                                 <button className='btn btn-primary' onClick={() => saveInboxItem(8)}
-                                    disabled={!deProcessedMeta.every(section => section.status === 4 || section.status === 7)}>Submit</button>
+                                    disabled={!processedMeta.every(section => section.status === 4 || section.status === 7)}>Submit</button>
                             </div>
                         )}
                     </section>
