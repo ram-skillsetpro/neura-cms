@@ -10,7 +10,7 @@
     @include boxShadow(0 0 5px rgba(0,0,0,0.1));
     ul{
         padding: 0;margin: 0;
-        margin-bottom: 24px;
+        margin-bottom: 32px;
         li {
             list-style: none;
             a{
@@ -31,6 +31,22 @@
                     border-color: $primaryColor;
                     background-color: rgba($primaryColor, 0.05);
                 }
+                span.arrowIcon{
+                    margin-left: auto;
+                }
+            }
+        }
+
+        .submenu{
+            padding-left: 30px;
+            li{
+                a{
+                    padding: 10px 16px;
+                    &.active{
+                        border-color: transparent;
+                        background-color: transparent;
+                    }
+                }
             }
         }
     } 
@@ -38,6 +54,7 @@
     //Sidebar bottom
     .sidebarBottom{
         margin-top: auto;
+        padding-bottom: 16px;
         .userInfo{
             padding: 0 16px;
             margin-bottom: 16px;
@@ -47,7 +64,7 @@
                 width: 36px;
                 height: 36px;
                 flex: 0 0 auto;
-                margin-right: 16px;
+                margin-right: 8px;
                 border: $lightGrey solid 1px;
                 @include borderRadius(100%);
             }
@@ -71,12 +88,17 @@
         }
         ul{
             margin-top: 16px;
+            margin-bottom: 0;
             li{
                 a{
                     padding: 10px 16px;
+                    &.logoutLink {
+                        color: $primaryColor;
+                    }
                 }
             }
         }
     } 
 }
+ 
 

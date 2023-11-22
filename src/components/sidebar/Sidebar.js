@@ -18,7 +18,9 @@ import ArticleIcon from '@mui/icons-material/Article';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import userDefaultImage from '../../assets/images/defaultProfileImg.png';
+import NavItem from './NavItem';
 
 const Sidebar = ({closeEvent}) => {
   const navigate = useNavigate();
@@ -30,11 +32,27 @@ const Sidebar = ({closeEvent}) => {
       setNavs(prevNavs => [...prevNavs,
         {url: PageUrls.DASHBOARD, title: 'Dashboard', icon: <DashboardIcon /> },
         {url: PageUrls.COMPANY, title: 'Manage Company', icon: <BusinessSharpIcon /> },
-        {url: PageUrls.LEADS, title: 'Manage Leads', icon: <PeopleOutlineSharpIcon />},
-        {url: PageUrls.ROLES, title: 'Roles', icon: <BalanceIcon />, active:true},
-        {url: PageUrls.AUTHORITIES, title: 'Authorities', icon: <Badge />}, 
-        {url: PageUrls.REPORTS, title: 'Reports', icon: <Assignment />}, 
-        {url: PageUrls.USERS, title: 'Users', icon: <PeopleOutlineSharpIcon />}, 
+        {url: PageUrls.LEADS, title: 'Manage Leads', icon: <PeopleOutlineSharpIcon />}, 
+        // {url: PageUrls.REPORTS, title: 'Reports', icon: <Assignment />}, 
+        {
+          title: 'User Management', 
+          icon: <ManageAccountsIcon />, 
+          subNavs: [
+            {url: PageUrls.USERS, title: 'Users'},
+            {url: PageUrls.ROLES, title: 'Roles'},
+            {url: PageUrls.AUTHORITIES, title: 'Authorities'},
+          ]
+        }
+
+        // Sub menu format
+        // {
+        //   title: 'Menu 1', 
+        //   icon: <PeopleOutlineSharpIcon />, 
+        //   subNavs: [
+        //     {url: '/', title: 'Submenu 1'},
+        //     {url: '/', title: 'Submenu 2'},
+        //   ]
+        // }
       ]);
     }
     if(authority.includes(AUTHORITY.CLAUSE_PROMPT_MANAGEMENT)){
@@ -75,13 +93,8 @@ const Sidebar = ({closeEvent}) => {
           </IconButton>
         </div>
         <ul>
-          {navs.map((nav, index) => 
-            <li key={index}>
-              <NavLink to={nav.url} className={({ isActive }) => (isActive ? style.active : '')} onClick={mWebCloseEvent}>
-                {nav.icon}
-                {nav.title}
-              </NavLink>
-            </li>
+          {navs.map((item, index) =>
+            <NavItem {...item} key={index} mWebCloseEvent={mWebCloseEvent} />
           )}
         </ul>
 
@@ -101,7 +114,7 @@ const Sidebar = ({closeEvent}) => {
               </NavLink>
             </li>
             <li>
-              <NavLink to="/"  onClick={handleLogout}>
+              <NavLink to="/" className={style.logoutLink} onClick={handleLogout}>
                 <LogoutIcon />
                 Log out
               </NavLink>
