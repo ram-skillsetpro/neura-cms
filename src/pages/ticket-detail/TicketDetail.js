@@ -7,13 +7,12 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import style from './TicketDetail.module.scss';
-import { useSearchParams, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import fetcher from '../../utils/fetcher';
 import { hasAuthority } from '../../utils/authGuard';
 import { AUTHORITY } from "../../utils/constants";
 
 const TicketDetail = () => {
-    const [searchParams, setSearchParams] = useSearchParams()
     const [expanded, setExpanded] = React.useState(false);
     const [processedMeta, setProcessedMeta] = React.useState([]);
     const location = useLocation();
@@ -54,7 +53,7 @@ const TicketDetail = () => {
     const saveInboxItem = async (status) => {
         try {
             const payload = {
-                id: searchParams.get('id'),  
+                id: ticketDetails.id,  
                 status: status
             }
             if (hasAuthority(AUTHORITY.USER_DE)) {
