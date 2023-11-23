@@ -34,9 +34,9 @@ const Header = ({mWebClick}) => {
           </Link>
         </div>
 
-        <div className={`${style.headerSearch} d-none d-lg-block`}>
+        {/* <div className={`${style.headerSearch} d-none d-lg-block`}>
           <input type='text' placeholder='Search Tickets' className='form-control' />
-        </div>
+        </div> */}
 
         <div className={style.headerRight}>
         <IconButton aria-label="notification">

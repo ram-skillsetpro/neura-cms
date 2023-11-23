@@ -28,7 +28,7 @@ const CreateLead = ({closeEvent, lead, companyList, packageList}) => {
         email: lead?.email || '',
         isLeadActive: lead?.isLeadActive || 1,
         name: lead?.name || '',
-        packageId: lead?.packageId || '',
+        packageId: lead?.packageId || 1,
         packageStartDate: lead?.packageStartDate * 1000 || null,
         phone: lead?.phone || ''
     });
@@ -56,7 +56,6 @@ const CreateLead = ({closeEvent, lead, companyList, packageList}) => {
         email: Yup.string().email('Invalid email address').required('Email is required'),
         phone: Yup.string().required('Phone is required'),
         companyId: Yup.string().required('Company is required'),
-        packageId: Yup.string().required('Package is required'),
         packageStartDate: Yup.date().required('Package start date is required')
     });
     
@@ -149,28 +148,10 @@ const CreateLead = ({closeEvent, lead, companyList, packageList}) => {
                                 <div className="errorMsg">{formik.errors.companyId}</div>
                             )}
                             </div>
-                        </div> 
+                        </div>  
 
                         <div className='form-group'>
-                            <label className='label-control'>Package Name</label>
-                            <div className="customAutoField">
-                                <Autocomplete
-                                    options={packages}
-                                    getOptionLabel={(option) => option.label}
-                                    value={packages.find(i => i.id === formik.values.packageId)}
-                                    onChange={(_, newValue) => {
-                                    formik.setFieldValue('packageId', newValue ? newValue.id : '');
-                                    }}
-                                    renderInput={(params) => <TextField {...params} />}
-                                />
-                                {formik.touched.packageId && formik.errors.packageId && (
-                                    <div className="errorMsg">{formik.errors.packageId}</div>
-                                )}
-                            </div>
-                        </div> 
-
-                        <div className='form-group'>
-                            <label className='label-control'>Package Start Date</label>
+                            <label className='label-control'>Trial Package Start Date</label>
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DatePicker
                                     name="packageStartDate"

@@ -7,7 +7,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import style from './TicketDetail.module.scss';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useLocation } from 'react-router-dom';
 import fetcher from '../../utils/fetcher';
 import { hasAuthority } from '../../utils/authGuard';
 import { AUTHORITY } from "../../utils/constants";
@@ -15,8 +15,9 @@ import { AUTHORITY } from "../../utils/constants";
 const TicketDetail = () => {
     const [searchParams, setSearchParams] = useSearchParams()
     const [expanded, setExpanded] = React.useState(false);
-    const [deProcessedMeta, setDeProcessedMeta] = React.useState([]);
     const [processedMeta, setProcessedMeta] = React.useState([]);
+    const location = useLocation();
+    const { ticketDetails } = location.state;
 
 
     const handleChange = (panel) => (event, isExpanded) => {
@@ -48,15 +49,6 @@ const TicketDetail = () => {
         }
         setProcessedMeta(updatedState);
         console.log(JSON.stringify(updatedState));
-    };
-
-    const openFile = async (id) => {
-        try {
-          const res = await fetcher.post(`deqc/open-assign?fileId=${id}`);
-          setProcessedMeta(JSON.parse(hasAuthority(AUTHORITY.USER_DE) ? res.response.deProcessedMeta : res.response.qcProcessedMeta));
-        } catch (error) {
-          console.log(error);
-        }
     };
 
     const saveInboxItem = async (status) => {
@@ -138,21 +130,15 @@ const TicketDetail = () => {
         section.status = status;
         updatedState[index] = section;
         setProcessedMeta(updatedState);
-        //console.log(updatedState);
     };
 
     useEffect(() => {
-        openFile(searchParams.get('id'));
+      setProcessedMeta(JSON.parse(hasAuthority(AUTHORITY.USER_DE) ? ticketDetails.deProcessedMeta : ticketDetails.qcProcessedMeta));
     }, []);
     return(
         <>
             <div className='headingRow'>
-                <h1>Ticket Detail Title here... </h1>
-
-                <div className={style.timerBox}>
-                    <AccessAlarmIcon />
-                    <span>02:45</span>
-                </div>
+                <h1>{ticketDetails?.fileName && ticketDetails.fileName.split('.')[0]}</h1>
             </div> 
 
             <div className={style.ticketContainer}>

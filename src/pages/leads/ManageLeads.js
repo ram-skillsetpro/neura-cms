@@ -71,8 +71,10 @@ const ManageLeads = () => {
         }
       } else {
         const res = await fetcher.get(`cms/unapproved-leads/${page}`);
-        setUserList(res.response.result);
-        setTotalPages(Math.ceil(res.response.totct / res.response.perpg));
+        if (res?.status === 200) {
+          setUserList(res.response.result);
+          setTotalPages(Math.ceil(res.response.totct / res.response.perpg));
+        }
       }
     } catch (error) {
       console.log(error);
