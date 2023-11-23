@@ -15,7 +15,7 @@ import { PageUrls } from "../utils/constants";
 import Authorities from "../pages/authorities/Authorities";
 import Reports from "../pages/reports/Reports";
 import Tickets from "../pages/tickets/Tickets";
-import TicketDetail from "../pages/ticket-detail/TicketDetail";
+import TicketDetail from "../pages/tickets/ticket-detail/TicketDetail";
 import Dashboard from "../pages/dashboard/Dashboard";
 import Users from "../pages/users/Users";
 

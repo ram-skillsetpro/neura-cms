@@ -11,7 +11,7 @@ export const PageUrls = {
     AUTHORITIES: '/authorities',
     REPORTS: '/reports',
     TICKETS: '/tickets',
-    TICKET_DETAIL: '/ticket-detail',
+    TICKET_DETAIL: '/ticket/ticket-detail',
     DASHBOARD: '/dashboard',
     USERS: '/users'
 };

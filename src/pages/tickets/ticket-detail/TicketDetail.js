@@ -8,9 +8,9 @@ import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import style from './TicketDetail.module.scss';
 import { useLocation } from 'react-router-dom';
-import fetcher from '../../utils/fetcher';
-import { hasAuthority } from '../../utils/authGuard';
-import { AUTHORITY, ProcessMetaStatus, FileProcessStatus } from "../../utils/constants";
+import fetcher from '../../../utils/fetcher';
+import { hasAuthority } from '../../../utils/authGuard';
+import { AUTHORITY, ProcessMetaStatus, FileProcessStatus } from "../../../utils/constants";
 
 const TicketDetail = () => {
     const [expanded, setExpanded] = React.useState(false);
