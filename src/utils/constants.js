@@ -32,7 +32,8 @@ export const AUTHORITY_ROUT_MAP = [
     { route_regx: PageUrls.CLAUSE, authority: [AUTHORITY.CLAUSE_PROMPT_MANAGEMENT] },
     { route_regx: PageUrls.CLAUSE_PROMPT, authority: [AUTHORITY.CLAUSE_PROMPT_MANAGEMENT] },
     { route_regx: PageUrls.ROLES, authority: [AUTHORITY.ROLE_ADMINISTRATOR] },
-    { route_regx: PageUrls.TICKETS, authority: [AUTHORITY.USER_QC, AUTHORITY.USER_DE] }
+    { route_regx: PageUrls.TICKETS, authority: [AUTHORITY.USER_QC, AUTHORITY.USER_DE] },
+    { route_regx: PageUrls.TICKET_DETAIL, authority: [AUTHORITY.USER_QC, AUTHORITY.USER_DE] }
 ];
 
 export const ProcessMetaStatus = {
