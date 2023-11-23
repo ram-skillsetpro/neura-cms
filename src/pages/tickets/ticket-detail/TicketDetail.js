@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -11,6 +11,7 @@ import { useLocation } from 'react-router-dom';
 import fetcher from '../../../utils/fetcher';
 import { hasAuthority } from '../../../utils/authGuard';
 import { AUTHORITY, ProcessMetaStatus, FileProcessStatus } from "../../../utils/constants";
+import SnackBar from '../../../components/SnackBar';
 
 const TicketDetail = () => {
     const [expanded, setExpanded] = React.useState(false);
@@ -18,6 +19,14 @@ const TicketDetail = () => {
     const location = useLocation();
     const { ticketDetails } = location.state;
     const [userAction, setUserAction] = React.useState({});
+    const [snackbar, setSnackbar] = useState({
+      show: false,
+      status: "",
+      message: "",
+    });
+    const toggleSnackbar = (value) => {
+        setSnackbar(value);
+    };
 
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded((prevExpanded) => ({
@@ -63,7 +72,11 @@ const TicketDetail = () => {
             }
 
             const res = await fetcher.post(`deqc/save-inbox-item`, payload);
-            console.log(res);
+            setSnackbar({
+              show: true,
+              status: res.status === 200 ? 'success' : 'error',
+              message: res.status === 200 ? 'Saved successfully' : res?.message
+            });
         } catch (error) {
           console.log(error);
         }
@@ -127,29 +140,41 @@ const TicketDetail = () => {
         setProcessedMeta(updatedState);
     };
 
+  const handleUserAction = () => {
+    if (hasAuthority(AUTHORITY.USER_DE)) {
+      setProcessedMeta(JSON.parse(ticketDetails.deProcessedMeta));
+      setUserAction({
+        ok: ProcessMetaStatus.DE_VERIFIED,
+        edit: ProcessMetaStatus.STANDARD,
+        skip: ProcessMetaStatus.DE_SKIPPED,
+        save: FileProcessStatus.DE_ASSIGNED,
+        submit: FileProcessStatus.DE_DONE
+      });
+    } else if (hasAuthority(AUTHORITY.USER_QC)) {
+      setProcessedMeta(JSON.parse(ticketDetails.qcProcessedMeta));
+      setUserAction({
+        ok: ProcessMetaStatus.QC_VERIFIED,
+        edit: ProcessMetaStatus.STANDARD,
+        skip: ProcessMetaStatus.QC_SKIPPED,
+        save: FileProcessStatus.QC_ASSIGNED,
+        submit: FileProcessStatus.QC_DONE
+      });
+    }
+  }
+
+  const readFile = async () => {
+    const res = await fetcher.get(`de-qc-read-file?fileId=${ticketDetails.id}`);
+    console.log(res);
+  };
+
     useEffect(() => {
-      if (hasAuthority(AUTHORITY.USER_DE)) {
-        setProcessedMeta(JSON.parse(ticketDetails.deProcessedMeta));
-        setUserAction({
-          ok: ProcessMetaStatus.DE_VERIFIED,
-          edit: ProcessMetaStatus.STANDARD,
-          skip: ProcessMetaStatus.DE_SKIPPED,
-          save: FileProcessStatus.DE_ASSIGNED,
-          submit: FileProcessStatus.DE_DONE
-        });
-      } else if (hasAuthority(AUTHORITY.USER_QC)) {
-        setProcessedMeta(JSON.parse(ticketDetails.qcProcessedMeta));
-        setUserAction({
-          ok: ProcessMetaStatus.QC_VERIFIED,
-          edit: ProcessMetaStatus.STANDARD,
-          skip: ProcessMetaStatus.QC_SKIPPED,
-          save: FileProcessStatus.QC_ASSIGNED,
-          submit: FileProcessStatus.QC_DONE
-        });
-      }
+      handleUserAction();
+      readFile();
     }, []);
+    
     return(
         <>
+            <SnackBar {...snackbar} onClose={toggleSnackbar} />
             <div className='headingRow'>
                 <h1>{ticketDetails?.fileName && ticketDetails.fileName.split('.')[0]}</h1>
             </div> 
