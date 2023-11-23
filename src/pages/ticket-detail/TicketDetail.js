@@ -10,14 +10,14 @@ import style from './TicketDetail.module.scss';
 import { useLocation } from 'react-router-dom';
 import fetcher from '../../utils/fetcher';
 import { hasAuthority } from '../../utils/authGuard';
-import { AUTHORITY } from "../../utils/constants";
+import { AUTHORITY, ProcessMetaStatus, FileProcessStatus } from "../../utils/constants";
 
 const TicketDetail = () => {
     const [expanded, setExpanded] = React.useState(false);
     const [processedMeta, setProcessedMeta] = React.useState([]);
     const location = useLocation();
     const { ticketDetails } = location.state;
-
+    const [userAction, setUserAction] = React.useState({});
 
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded((prevExpanded) => ({
@@ -70,11 +70,7 @@ const TicketDetail = () => {
     };
 
     const disableInput = (status) => {
-        if (hasAuthority(AUTHORITY.USER_DE)) {
-            return status === 2 || status === 6;
-        } else {
-            return status === 4 || status === 7;
-        }
+      return status === userAction.ok || status === userAction.skip;
     };
 
     const renderAccordionContent = (data, parentIndex, status) => {
@@ -132,7 +128,25 @@ const TicketDetail = () => {
     };
 
     useEffect(() => {
-      setProcessedMeta(JSON.parse(hasAuthority(AUTHORITY.USER_DE) ? ticketDetails.deProcessedMeta : ticketDetails.qcProcessedMeta));
+      if (hasAuthority(AUTHORITY.USER_DE)) {
+        setProcessedMeta(JSON.parse(ticketDetails.deProcessedMeta));
+        setUserAction({
+          ok: ProcessMetaStatus.DE_VERIFIED,
+          edit: ProcessMetaStatus.STANDARD,
+          skip: ProcessMetaStatus.DE_SKIPPED,
+          save: FileProcessStatus.DE_ASSIGNED,
+          submit: FileProcessStatus.DE_DONE
+        });
+      } else if (hasAuthority(AUTHORITY.USER_QC)) {
+        setProcessedMeta(JSON.parse(ticketDetails.qcProcessedMeta));
+        setUserAction({
+          ok: ProcessMetaStatus.QC_VERIFIED,
+          edit: ProcessMetaStatus.STANDARD,
+          skip: ProcessMetaStatus.QC_SKIPPED,
+          save: FileProcessStatus.QC_ASSIGNED,
+          submit: FileProcessStatus.QC_DONE
+        });
+      }
     }, []);
     return(
         <>
@@ -158,44 +172,32 @@ const TicketDetail = () => {
                                     onChange={handleChange(`panel${index}`)}
                                 >
                                     <AccordionSummary
-                                    expandIcon={<ExpandMoreIcon />}
-                                    aria-controls={`panel${index}bh-content`}
-                                    id={`panel${index}bh-header`}
+                                      expandIcon={<ExpandMoreIcon />}
+                                      aria-controls={`panel${index}bh-content`}
+                                      id={`panel${index}bh-header`}
                                     >
-                                    <Typography>{section.key}</Typography>
+                                      <Typography sx={{ width: 'calc(95% - 24px)', fontSize: '14px', flexShrink: 0 }}>
+                                        {section.key}
+                                      </Typography>
+                                      { section.status === userAction.ok && <TaskAltIcon color="success" /> }
+                                      { section.status === userAction.skip && <TaskAltIcon color="error" /> }
                                     </AccordionSummary>
                                     <AccordionDetails>
-                                        {renderAccordionContent(section.value, index, section.status)}
-                                        {hasAuthority(AUTHORITY.USER_DE) ? (
-                                            <div className={style.ticActionBtn}>
-                                                <button className='btn btn-success' onClick={() => handleMetaAction(index, 2)}>Ok</button>
-                                                <button className='btn btn-secondary' onClick={() => handleMetaAction(index, 0)}>Edit</button>
-                                                <button className='btn btn-primary' onClick={() => handleMetaAction(index, 6)}>Skip</button> 
-                                            </div>
-                                        ) : (
-                                            <div className={style.ticActionBtn}>
-                                                <button className='btn btn-success' onClick={() => handleMetaAction(index, 4)}>Ok</button>
-                                                <button className='btn btn-secondary' onClick={() => handleMetaAction(index, 0)}>Edit</button>
-                                                <button className='btn btn-primary' onClick={() => handleMetaAction(index, 7)}>Skip</button> 
-                                            </div>
-                                        )}
+                                      {renderAccordionContent(section.value, index, section.status)}
+                                      <div className={style.ticActionBtn}>
+                                        <button className='btn btn-success' onClick={() => handleMetaAction(index, userAction.ok)}>Ok</button>
+                                        <button className='btn btn-secondary' onClick={() => handleMetaAction(index, userAction.edit)}>Edit</button>
+                                        <button className='btn btn-primary' onClick={() => handleMetaAction(index, userAction.skip)}>Skip</button> 
+                                      </div>
                                     </AccordionDetails>
                                 </Accordion>
                             ))}
                         </div>
-                        {hasAuthority(AUTHORITY.USER_DE) ? (
-                            <div className='text-center'>
-                                <button className='btn btn-primary' onClick={() => saveInboxItem(5)}>Save</button>
-                                <button className='btn btn-primary' onClick={() => saveInboxItem(6)}
-                                    disabled={!processedMeta.every(section => section.status === 2 || section.status === 6)}>Submit</button>
-                            </div>
-                        ) : (
-                            <div className='text-center'>
-                                <button className='btn btn-primary' onClick={() => saveInboxItem(7)}>Save</button>
-                                <button className='btn btn-primary' onClick={() => saveInboxItem(8)}
-                                    disabled={!processedMeta.every(section => section.status === 4 || section.status === 7)}>Submit</button>
-                            </div>
-                        )}
+                        <div className='text-center'>
+                          <button className='btn btn-primary' onClick={() => saveInboxItem(userAction.save)}>Save</button>
+                          <button className='btn btn-primary' onClick={() => saveInboxItem(userAction.submit)}
+                            disabled={!processedMeta.every(section => section.status === userAction.ok || section.status === userAction.skip)}>Submit</button>
+                        </div>
                     </section>
                 )}
             </div>
