@@ -12,6 +12,7 @@ import fetcher from '../../../utils/fetcher';
 import { hasAuthority } from '../../../utils/authGuard';
 import { AUTHORITY, ProcessMetaStatus, FileProcessStatus } from "../../../utils/constants";
 import SnackBar from '../../../components/SnackBar';
+import { CircularProgress } from '@mui/material';
 
 const TicketDetail = () => {
     const [expanded, setExpanded] = React.useState(false);
@@ -19,6 +20,8 @@ const TicketDetail = () => {
     const location = useLocation();
     const { ticketDetails } = location.state;
     const [userAction, setUserAction] = React.useState({});
+    const [fileData, setFileData] = React.useState(null);
+    const [progress, setProgress] = useState(false);
     const [snackbar, setSnackbar] = useState({
       show: false,
       status: "",
@@ -163,8 +166,10 @@ const TicketDetail = () => {
   }
 
   const readFile = async () => {
+    setProgress(true);
     const res = await fetcher.get(`de-qc-read-file?fileId=${ticketDetails.id}`);
-    console.log(res);
+    setFileData(res);
+    setProgress(false);
   };
 
     useEffect(() => {
@@ -174,19 +179,21 @@ const TicketDetail = () => {
     
     return(
         <>
+            {progress ? <CircularProgress /> : null}
             <SnackBar {...snackbar} onClose={toggleSnackbar} />
             <div className='headingRow'>
                 <h1>{ticketDetails?.fileName && ticketDetails.fileName.split('.')[0]}</h1>
             </div> 
 
             <div className={style.ticketContainer}>
-                <object 
-                    data="https://media.geeksforgeeks.org/wp-content/cdn-uploads/20210101201653/PDF.pdf" 
-                    width="100%"     
+                { fileData && 
+                  <object
+                    data={`data:application/pdf;base64,${fileData}`}
+                    width="100%"
                     height="500"
-                    className={style.ticketPDF}> 
-                </object> 
-
+                    className={style.ticketPDF}
+                  ></object>
+                }
                 {processedMeta.length > 0 && (
                     <section className={style.ticketDetailForm}>
                         <div className={style.accBox}>
