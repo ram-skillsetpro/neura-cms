@@ -17,6 +17,7 @@ export const PageUrls = {
 };
 
 export const AUTHORITY = {
+    USER_SUPER_ADMIN: 'CMS_USER_SUPER_ADMIN',
     COMPANY_SUPER_ADMIN: 'COMPANY_SUPER_ADMIN',
     UPDATE_DEMO_USER: 'CMS_UPDATE_DEMO_USER',
     CLAUSE_PROMPT_MANAGEMENT: 'AUTHORITY_CLAUSE_PROMPT_MANAGEMENT',
@@ -33,7 +34,8 @@ export const AUTHORITY_ROUT_MAP = [
     { route_regx: PageUrls.CLAUSE_PROMPT, authority: [AUTHORITY.CLAUSE_PROMPT_MANAGEMENT] },
     { route_regx: PageUrls.ROLES, authority: [AUTHORITY.ROLE_ADMINISTRATOR] },
     { route_regx: PageUrls.TICKETS, authority: [AUTHORITY.USER_QC, AUTHORITY.USER_DE] },
-    { route_regx: PageUrls.TICKET_DETAIL, authority: [AUTHORITY.USER_QC, AUTHORITY.USER_DE] }
+    { route_regx: PageUrls.TICKET_DETAIL, authority: [AUTHORITY.USER_QC, AUTHORITY.USER_DE] },
+    { route_regx: PageUrls.USER_SUPER_ADMIN, authority: [AUTHORITY.USER_SUPER_ADMIN] }
 ];
 
 export const ProcessMetaStatus = {

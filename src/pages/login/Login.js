@@ -21,6 +21,8 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import logoImg from '../../assets/images/simpleo-ai-logo@2x.png';
 import loginBanner from '../../assets/images/mobile-login.jpg';
 import style from './Login.module.scss';
+import { hasAuthority } from '../../utils/authGuard';
+import { AUTHORITY, PageUrls } from "../../utils/constants";
 
 
 const Login = () => {
@@ -55,7 +57,13 @@ const Login = () => {
       const response = await fetcher.post('login', values);
       if (response?.response?.token) {
         localStorage.setItem('auth', JSON.stringify(response.response));
-        navigate('/');
+        if (hasAuthority(AUTHORITY.USER_QC) || hasAuthority(AUTHORITY.USER_DE)) {
+          navigate(PageUrls.TICKETS);
+        } else if (hasAuthority(AUTHORITY.USER_SUPER_ADMIN)) {
+          navigate(PageUrls.DASHBOARD);
+        } else {
+          navigate('/');
+        }
       }
     } catch (err) {
       console.log(err);
