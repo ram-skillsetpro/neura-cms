@@ -166,8 +166,6 @@ const ManageCompany = () => {
                     <TableCell style={{ minWidth: '200px' }}>Email</TableCell>
                     <TableCell style={{ minWidth: '200px' }}>Phone No.</TableCell>
                     <TableCell style={{ minWidth: '200px' }}>Demo Expiry</TableCell>
-                    <TableCell style={{ minWidth: '200px' }}>Package Name</TableCell>
-                    <TableCell style={{ minWidth: '200px' }}>Package Expiry Date</TableCell> 
                     <TableCell style={{ width: '100px' }}>Status</TableCell>
                     <TableCell style={{ width: '100px' }}></TableCell>
                   </TableRow>
@@ -187,8 +185,6 @@ const ManageCompany = () => {
                       <TableCell>{company.companyEmail}</TableCell>
                       <TableCell>{company.companyPhone}</TableCell>
                       <TableCell> </TableCell>
-                      <TableCell>{getPackageName(company.packageId)}</TableCell>
-                      <TableCell>{longToDate(company.packageEndDate)}</TableCell>
                       <TableCell>
                         {company.isActive ? 
                           <Chip label="Active" color="success" size="small" /> 

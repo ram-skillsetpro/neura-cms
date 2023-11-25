@@ -21,11 +21,10 @@ const CreateCompany = ({closeEvent, company, packageList}) => {
         logo: company?.logo || '',
         name: company?.name || '',
         packageId: company?.packageId || 1,
-        packageStartDate: company?.packageStartDate * 1000 || null,
         phone: company?.companyPhone || '',
         user: company?.companyUser || '',
         website: company?.website || '',
-        id: company?.id || '',
+        companyId: company?.id || '',
         countryCode: company?.countryCode || '+91'
     });
 
@@ -55,21 +54,7 @@ const CreateCompany = ({closeEvent, company, packageList}) => {
 
     const handleSubmit = async (values) => {
         try {
-            let res = null;
-            values.packageStartDate = values.packageStartDate / 1000;
-            if (company?.id) {
-                const cmpRes = await fetcher.get(`cms/company-details?companyId=${company.id}`);
-                cmpRes.response.description = values.description;
-                cmpRes.response.companyEmail = values.email;
-                cmpRes.response.logo = values.logo;
-                cmpRes.response.name = values.name;
-                cmpRes.response.companyPhone = values.phone;
-                cmpRes.response.companyUser = values.user;
-                cmpRes.response.website = values.website;
-                res = await fetcher.post('cms/edit-company', cmpRes.response);
-            } else {
-                res = await fetcher.post('cms/create-company', values);
-            }
+            const res = await fetcher.post('cms/create-company', values);
             if (res?.status !== 200) {
                 setSnackbar({
                   show: true,
