@@ -1,110 +1,33 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Breadcrumbs from '@mui/material/Breadcrumbs';
-import Link from '@mui/material/Link';
-import { DataGrid } from '@mui/x-data-grid';
-import {
-  Paper,
-  TableContainer
-} from '@mui/material'
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { isAuthenticated } from '../utils/authGuard';
 
-const columns = [
-  { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'firstName', headerName: 'First name', width: 130 },
-  { field: 'lastName', headerName: 'Last name', width: 130 },
-  {
-    field: 'age',
-    headerName: 'Age',
-    type: 'number',
-    width: 90,
-  },
-  {
-    field: 'fullName',
-    headerName: 'Full name',
-    description: 'This column has a value getter and is not sortable.',
-    sortable: false,
-    width: 160,
-    valueGetter: (params) =>
-      `${params.row.firstName || ''} ${params.row.lastName || ''}`,
-  },
-];
+import { hasAuthority } from '../utils/authGuard';
+import { AUTHORITY, PageUrls } from '../utils/constants';
 
-const rows = [
-  { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-  { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-  { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-  { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-  { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-  { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-  { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-  { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-  { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-];
+const Index = () => {
 
-export const Index = (props) => (
-  <Box sx={{ width: '100%', padding:"20px",}}>
-    {/* <Breadcrumbs aria-label="breadcrumb" sx={{margin: "20px 0 50px"}}>
-        <Link underline="hover" color="inherit" href="/">
-          Files
-        </Link>
-        <Link
-          underline="hover"
-          color="inherit"
-          href="#"
-        >
-          Core
-        </Link>
-        <Link
-          underline="hover"
-          color="text.primary"
-          href="#"
-          aria-current="page"
-        >
-          Breadcrumbs
-        </Link>
-      </Breadcrumbs> */}
+  const navigate = useNavigate();
+  const isAuthentic = isAuthenticated();
 
-      {/* <Typography variant="h5" gutterBottom>
-      Uploading
-      </Typography>
-      <Typography variant="overline" display="block" gutterBottom>
-      3 Files, 2 Uploading
-      </Typography> */}
-      
-      {/* <TableContainer sx={{ maxHeight: "400px" }} component={Paper}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: { page: 0, pageSize: 5 },
-          },
-        }}
-        pageSizeOptions={[5, 10]}
-        checkboxSelection
-      />
-    </TableContainer> */}
+  const navigateTo = () => {
+    if (hasAuthority(AUTHORITY.USER_QC) || hasAuthority(AUTHORITY.USER_DE)) {
+      navigate(PageUrls.TICKETS);
+    } else if (hasAuthority(AUTHORITY.USER_SUPER_ADMIN)) {
+      navigate(PageUrls.DASHBOARD);
+    } else {
+      navigate(PageUrls.LOGIN);
+    }
+  };
 
-    {/* <Typography variant="h5" gutterBottom sx={{marginTop: "50px"}}> 
-    Recent files
-      </Typography>
-      <Typography variant="overline" display="block" gutterBottom>
-      3 Files
-      </Typography> */}
+  useEffect(() => {
+    navigateTo();
+  }, [])
 
-      {/* <TableContainer sx={{ maxHeight: "400px" }} component={Paper}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: { page: 0, pageSize: 5 },
-          },
-        }}
-        pageSizeOptions={[5, 10]}
-        checkboxSelection
-      />
-    </TableContainer> */}
-      </Box>
-)
+  return(
+    <></>
+  );
+
+};
+
+export default Index;

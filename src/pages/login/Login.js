@@ -57,18 +57,22 @@ const Login = () => {
       const response = await fetcher.post('login', values);
       if (response?.response?.token) {
         localStorage.setItem('auth', JSON.stringify(response.response));
-        if (hasAuthority(AUTHORITY.USER_QC) || hasAuthority(AUTHORITY.USER_DE)) {
-          navigate(PageUrls.TICKETS);
-        } else if (hasAuthority(AUTHORITY.USER_SUPER_ADMIN)) {
-          navigate(PageUrls.DASHBOARD);
-        } else {
-          navigate('/');
-        }
+        navigateTo();
       }
     } catch (err) {
       console.log(err);
     }
   }
+
+  const navigateTo = () => {
+    if (hasAuthority(AUTHORITY.USER_QC) || hasAuthority(AUTHORITY.USER_DE)) {
+      navigate(PageUrls.TICKETS);
+    } else if (hasAuthority(AUTHORITY.USER_SUPER_ADMIN)) {
+      navigate(PageUrls.DASHBOARD);
+    } else {
+      navigate(PageUrls.INDEX);
+    }
+  };
 
   const formik = useFormik({
     initialValues: formData,
@@ -82,7 +86,7 @@ const Login = () => {
 
   useEffect(() => {
     if (isAuthentic) {
-      navigate('/');
+      navigateTo();
     }
   }, [])
 

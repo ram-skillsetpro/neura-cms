@@ -3,7 +3,7 @@ import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { canAccessTheRouteWithUserAuthorities, isAuthenticated, isRestrictedRoutWithAuthority } from "../utils/authGuard";
 import Layout from "../components/layout/Layout";  // Import the Layout HOC
 import Login from "../pages/login/Login";
-import { Index } from "../pages/Index";
+import Index from "../pages/Index";
 import ManageCompany from "../pages/company/ManageCompany";
 import ManageLeads from "../pages/leads/ManageLeads";
 import ManageContract from "../pages/contract/ManageContract";
@@ -34,8 +34,8 @@ function PrivateRoute({ element }) {
 const Routers = () => {
     return(
         <Routes>
-          <Route path={PageUrls.LOGIN} element={<Login />} />
-          <Route path={PageUrls.INDEX} element={<PrivateRoute element={<Layout> <Index /> </Layout>} />} />
+          <Route path={PageUrls.LOGIN} element={<Login />}/>
+          <Route path={PageUrls.INDEX} element={<Index />}/>
           <Route path={PageUrls.ROLES} element={<PrivateRoute element={<Layout> <Roles /> </Layout>} />} />
           <Route path={PageUrls.AUTHORITIES} element={<PrivateRoute element={<Layout> <Authorities /> </Layout>} />} /> 
           <Route path={PageUrls.COMPANY} element={<PrivateRoute element={<Layout> <ManageCompany /> </Layout>} />} />
