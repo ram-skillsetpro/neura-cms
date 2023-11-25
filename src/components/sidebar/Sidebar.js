@@ -21,6 +21,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import userDefaultImage from '../../assets/images/defaultProfileImg.png';
 import NavItem from './NavItem';
+import { getAuthUser } from '../../utils/authGuard';
 
 const Sidebar = ({closeEvent}) => {
   const navigate = useNavigate();
@@ -102,8 +103,8 @@ const Sidebar = ({closeEvent}) => {
           <div className={style.userInfo}> 
             <img src={userDefaultImage} alt="Gautam Sinha" className={style.userImg} /> 
             <div className={style.userInfoTxt}>
-              <strong>Gautam Sinha</strong>
-              <span>CEO</span>
+              <strong>{getAuthUser()?.username}</strong>
+              <span>{getAuthUser()?.roleName}</span>
             </div> 
           </div>
           <ul>
