@@ -3,10 +3,14 @@
 
 .ticketContainer{
     display: flex;
-    .ticketPDF{
+    .ticketPDFArea{
         flex: 1;
         height: calc(100vh - 150px); 
         margin-right: 24px;
+        .ticketPDF{
+            width: 100%;
+            height: 100%;
+        }
     }
     .ticketDetailForm{
         width:300px;

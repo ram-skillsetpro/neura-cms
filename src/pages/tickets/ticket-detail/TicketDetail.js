@@ -115,7 +115,7 @@ const TicketDetail = () => {
                   // If the value is not an object, render input field
                   <>
                     <div className='form-group'>
-                        <label>{item.key}</label>
+                        <label className='label-control'>{item.key}</label>
                         <input
                             name={item.key}
                             type="text"
@@ -178,14 +178,15 @@ const TicketDetail = () => {
     }, []);
     
     return(
-        <>
-            {progress ? <CircularProgress /> : null}
+        <> 
             <SnackBar {...snackbar} onClose={toggleSnackbar} />
             <div className='headingRow'>
                 <h1>{ticketDetails?.fileName && ticketDetails.fileName.split('.')[0]}</h1>
             </div> 
 
             <div className={style.ticketContainer}>
+              <div className={style.ticketPDFArea}>
+                {progress ? <div className='text-center py-4'><CircularProgress /></div> : null}
                 { fileData && 
                   <object
                     data={`data:application/pdf;base64,${fileData}`}
@@ -194,7 +195,9 @@ const TicketDetail = () => {
                     className={style.ticketPDF}
                   ></object>
                 }
-                {processedMeta.length > 0 && (
+              </div>
+              
+              {processedMeta.length > 0 && (
                     <section className={style.ticketDetailForm}>
                         <div className={style.accBox}>
                             {processedMeta && processedMeta.map((section, index) => (
@@ -231,7 +234,7 @@ const TicketDetail = () => {
                             disabled={!processedMeta.every(section => section.status === userAction.ok || section.status === userAction.skip)}>Submit</button>
                         </div>
                     </section>
-                )}
+              )}
             </div>
         </>
     )
