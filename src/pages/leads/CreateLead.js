@@ -154,6 +154,7 @@ const CreateLead = ({closeEvent, lead, companyList, packageList}) => {
                             <label className='label-control'>Trial Package Start Date</label>
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DatePicker
+                                    className="datepickerStyle"
                                     name="packageStartDate"
                                     value={formik.values.packageStartDate}
                                     onChange={(date) => formik.setFieldValue('packageStartDate', date.getTime())}

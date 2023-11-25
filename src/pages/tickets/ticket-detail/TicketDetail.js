@@ -226,7 +226,7 @@ const TicketDetail = () => {
                             ))}
                         </div>
                         <div className='text-center'>
-                          <button className='btn btn-primary' onClick={() => saveInboxItem(userAction.save)}>Save</button>
+                          <button className='btn btn-primary mr-2' onClick={() => saveInboxItem(userAction.save)}>Save</button>
                           <button className='btn btn-primary' onClick={() => saveInboxItem(userAction.submit)}
                             disabled={!processedMeta.every(section => section.status === userAction.ok || section.status === userAction.skip)}>Submit</button>
                         </div>
