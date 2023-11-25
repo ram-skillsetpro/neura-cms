@@ -160,8 +160,8 @@ const ManageCompany = () => {
                   <TableRow>
                     {/* <TableCell style={{ minWidth: '100px' }}>Code</TableCell> */}
                     {/* <TableCell style={{ minWidth: '250px' }}>Description</TableCell> */}
-                    <TableCell style={{ minWidth: '250px' }}>Company Name</TableCell>
-                    <TableCell style={{ minWidth: '200px' }}>Logo</TableCell>
+                    <TableCell style={{ minWidth: '200px' }}>Company Name</TableCell>
+                    <TableCell style={{ minWidth: '80px' }}>Logo</TableCell>
                     <TableCell style={{ minWidth: '200px' }}>Contact Name</TableCell>
                     <TableCell style={{ minWidth: '200px' }}>Email</TableCell>
                     <TableCell style={{ minWidth: '200px' }}>Phone No.</TableCell>
@@ -180,7 +180,7 @@ const ManageCompany = () => {
                         {company.description}
                       </TableCell> */}
                       <TableCell>{company.name}</TableCell>
-                      <TableCell><img src={company.logo} alt="" /></TableCell>
+                      <TableCell>{company.logo ? <img src={company.logo} alt={company.name} width="60" /> : '' }</TableCell>
                       <TableCell>{company.companyUser}</TableCell>
                       <TableCell>{company.companyEmail}</TableCell>
                       <TableCell>{company.companyPhone}</TableCell>
