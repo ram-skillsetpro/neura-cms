@@ -1,9 +1,24 @@
 import React from "react";
-import { IconButton, Table, TableBody, TableCell, TableHead, TableRow, Chip } from "@mui/material";
+import { IconButton, Table, TableBody, TableCell, TableHead, TableRow, Chip, Drawer } from "@mui/material";
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import { longToDate } from '../../utils/utility';
+import CreateLead from "./CreateLead";
+import { useState } from "react";
 
-const TableDemoLeads = ({userList}) => {
+const TableDemoLeads = ({closeEvent, userList, companyList, packageList}) => {
+    const [panelState, setPanelState] = useState(false);
+    const [lead, setLead] = useState(null);
+
+    const handleCloseEvent = () => { 
+        setPanelState(false);
+        closeEvent();
+    };
+
+    const handleEditLead = (lead, index) => {
+        setLead(lead);
+        setPanelState(true);
+      }
+
     return(
         <>
             <Table className='dataTable'>
@@ -39,7 +54,7 @@ const TableDemoLeads = ({userList}) => {
                             }
                         </TableCell>
                         <TableCell>
-                            <IconButton aria-label="Edit" className="editBtn">
+                            <IconButton aria-label="Edit" className="editBtn" onClick={() => handleEditLead(user)}>
                                 <BorderColorIcon />
                             </IconButton>
                             {/* <Button
@@ -66,6 +81,21 @@ const TableDemoLeads = ({userList}) => {
                   ))}
                 </TableBody>
             </Table>
+
+            <Drawer
+                anchor="right"
+                open={panelState}
+                onClose={handleCloseEvent}
+                PaperProps={{ 
+                    sx: {width: {xs: '100%', sm: '700px'}},
+                    style: { backgroundColor: '#f5f5f5', padding: '16px' } 
+                }} 
+                >
+
+                {/* NOTE: please rename as "CreateCompany" */}
+                <CreateLead closeEvent={handleCloseEvent} lead={lead} companyList={companyList} packageList={packageList} />
+            </Drawer>
+
         </>
     )
 }

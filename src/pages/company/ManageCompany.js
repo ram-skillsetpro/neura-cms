@@ -104,9 +104,8 @@ const ManageCompany = () => {
   const handleUpdateCompanyStatus = async () => {
     try {
       setDialogProgress(true);
-      const cmpRes = await fetcher.get(`cms/company-details?companyId=${company.id}`);
-      cmpRes.response.isActive = !company.isActive;
-      await fetcher.post('cms/edit-company', cmpRes.response);
+      company.isActive = !company.isActive;
+      await fetcher.post('cms/create-company', company);
       fetchCompanyList(currentPage);
     } catch (err) {
       console.log(err);

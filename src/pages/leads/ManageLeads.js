@@ -183,6 +183,7 @@ const ManageLeads = () => {
 
   const handleCloseEvent = () => { 
     setPanelState(false);
+    fetchUserList(currentPage);
   };
 
   return (
@@ -219,7 +220,12 @@ const ManageLeads = () => {
               )}
 
               { currentUserTab === 1 && (
-                <TableDemoLeads userList={userList} />
+                <TableDemoLeads
+                  closeEvent={handleCloseEvent}
+                  userList={userList}
+                  companyList={companyList}
+                  packageList={packageList}
+                />
               )}
 
               { currentUserTab === 2 && (

@@ -27,16 +27,18 @@ const CreateLead = ({closeEvent, lead, companyList, packageList}) => {
         companyId: lead?.companyId || '',
         email: lead?.email || '',
         isLeadActive: lead?.isLeadActive || 1,
-        name: lead?.name || '',
+        name: lead?.userName || '',
         packageId: lead?.packageId || 1,
-        packageStartDate: lead?.packageStartDate * 1000 || null,
-        phone: lead?.phone || ''
+        packageStartDate: lead?.packageStartDate ? new Date(lead.packageStartDate * 1000) : null,
+        phone: lead?.phone || '',
+        userId: lead?.id || ''
     });
 
     const handleSubmit = async (values) => {
         try {
-            values.packageStartDate = values.packageStartDate / 1000;
-            const res = await fetcher.post('/cms/create-lead', values);
+            const payload = { ...values };
+            payload.packageStartDate = values.packageStartDate.getTime() / 1000;
+            const res = await fetcher.post('/cms/create-lead', payload);
             if (res.status !== 200) {
                 setSnackbar({
                   show: true,
@@ -135,20 +137,23 @@ const CreateLead = ({closeEvent, lead, companyList, packageList}) => {
                         <div className='form-group'>
                             <label className='label-control'>Company</label>
                             <div className="customAutoField">
-                            <Autocomplete
+                                <Autocomplete
                                 options={companies}
                                 getOptionLabel={(option) => option.label}
-                                value={companies.find(company => company.id === formik.values.companyId)}
+                                value={companies.find((company) => company.id === formData.companyId) || null}
                                 onChange={(_, newValue) => {
-                                formik.setFieldValue('companyId', newValue ? newValue.id : '');
+                                    setFormData((prevData) => ({
+                                    ...prevData,
+                                    companyId: newValue ? newValue.id : '',
+                                    }));
                                 }}
                                 renderInput={(params) => <TextField {...params} />}
-                            />
-                            {formik.touched.companyId && formik.errors.companyId && (
+                                />
+                                {formik.touched.companyId && formik.errors.companyId && (
                                 <div className="errorMsg">{formik.errors.companyId}</div>
-                            )}
+                                )}
                             </div>
-                        </div>  
+                        </div>
 
                         <div className='form-group'>
                             <label className='label-control'>Trial Package Start Date</label>
@@ -157,7 +162,7 @@ const CreateLead = ({closeEvent, lead, companyList, packageList}) => {
                                     className="datepickerStyle"
                                     name="packageStartDate"
                                     value={formik.values.packageStartDate}
-                                    onChange={(date) => formik.setFieldValue('packageStartDate', date.getTime())}
+                                    onChange={(date) => formik.setFieldValue('packageStartDate', date)}
                                     onBlur={formik.handleBlur}
                                     renderInput={(params) => <TextField {...params} />}
                                 />

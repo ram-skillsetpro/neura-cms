@@ -4,7 +4,7 @@ import CallMadeIcon from '@mui/icons-material/CallMade';
 import CallReceivedIcon from '@mui/icons-material/CallReceived';
 import style from './../Dashboard.module.scss';
 
-const ActiveTrials = () => {
+const ActiveTrials = ({dashboardMetrics}) => {
     return(
         <>
             <section className={`${style.whiteBox}`}>
@@ -13,15 +13,15 @@ const ActiveTrials = () => {
                 </div>
                 
                 <div className={style.topCardVal}>
-                    20 
+                    {dashboardMetrics.activeTrials} 
                     <span className={style.upIcon}><CallMadeIcon /></span>
                     {/* <span className={style.downIcon}><CallReceivedIcon /></span> */}
                 </div>
                 <p className={style.topCardText}>Increase compared to last week</p>
 
-                <div className={style.buttonLink}>
+                {/* <div className={style.buttonLink}>
                     <button className="btn btn-default">All Active Trials <KeyboardArrowRightIcon /></button>
-                </div>
+                </div> */}
             </section>        
         </>
     )
