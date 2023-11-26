@@ -14,6 +14,7 @@ import ChartGoLeads from './dashboard-components/ChartGoLeads';
 import ChartLeadsWeekly from './dashboard-components/ChartLeadsWeekly';
 import fetcher from '../../utils/fetcher';
 import ActiveClients from './dashboard-components/ActiveClients';
+import { monthNames, monthShortNames } from '../../utils/utility';
 
 const Dashboard = () => {
     const [dashboardMetrics, setDashboardMetrics] = useState({});
@@ -36,6 +37,41 @@ const Dashboard = () => {
           console.log(error);
         }
     };
+
+    const topMonthCard = (dashboardMetrics?.topMonth && Object.entries(dashboardMetrics.topMonth))
+        ? Object.entries(dashboardMetrics.topMonth).map(([date, value]) => {
+        const [year, month] = date.split("-");
+        return (
+            <LeadGeneratedCard
+              title="Top Month"
+              subTitle={year}
+              value={monthNames[parseInt(month, 10) - 1]} 
+            />
+        );
+    }) : null;
+
+    const topWeekCard = (dashboardMetrics?.topWeek && Object.entries(dashboardMetrics.topWeek))
+        ? Object.entries(dashboardMetrics?.topWeek).map(([week, value]) => {
+        const year = week.substring(0, 4);
+        const weekNumber = parseInt(week.substring(4), 10);
+    
+        // Calculate the date range for the week
+        const startDate = new Date(year, 0, 1 + (weekNumber - 1) * 7);
+        const endDate = new Date(startDate);
+        endDate.setDate(endDate.getDate() + 6);
+    
+        // Format the date range as "DD-Month"
+        const formattedStartDate = `${startDate.getDate()} ${monthShortNames[startDate.getMonth()]}`;
+        const formattedEndDate = `${endDate.getDate()} ${monthShortNames[endDate.getMonth()]}`;
+    
+        return (
+            <LeadGeneratedCard
+              title="Top Week"
+              subTitle={`${value} Leads`}
+              value={`${formattedStartDate}-${formattedEndDate}`}
+            />
+        );
+    }) : null;
 
     useEffect(() => {
         fetchDashboardMetrics();
@@ -65,10 +101,10 @@ const Dashboard = () => {
                         <div className='col-12'>
                             <div className='row'>
                                 <div className='col-sm-4 mb-4'>
-                                    <LeadGeneratedCard title="Top Month" subTitle="2023" value="September" />
+                                    {topMonthCard}
                                 </div>
                                 <div className='col-sm-4 mb-4'>
-                                    <LeadGeneratedCard title="Top Week" subTitle="28 Leads" value="21-27 Nov"  />
+                                    {topWeekCard}
                                 </div>
                                 <div className='col-sm-4 mb-4'>
                                     <LeadGeneratedCard title="Top Demo Manager" subTitle={dashboardMetrics?.topLeadManager?.user_name} value="" image={userImg}  />

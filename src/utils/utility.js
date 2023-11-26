@@ -7,13 +7,8 @@ export const formatDate = (date) => {
 
 export const longToDate = (timestamp) => {
     const date = new Date(timestamp * 1000);
-    const monthNames = [
-        'Jan', 'Feb', 'March', 'April', 'May', 'June',
-        'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'
-    ];
-
     const day = date.getDate();
-    const month = monthNames[date.getMonth()];
+    const month = monthShortNames[date.getMonth()];
     const year = date.getFullYear();
     return `${day} ${month}, ${year}`;
 }
@@ -27,3 +22,22 @@ export const daysDifference = (timestamp) => {
 
     return daysDifference;
 }
+
+export const monthShortNames = [
+    'Jan', 'Feb', 'March', 'April', 'May', 'June',
+    'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'
+];
+export const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+];
