@@ -216,7 +216,7 @@ const ManageLeads = () => {
           <Paper sx={{ width: '100%', overflow: 'hidden' }}>
             <TableContainer>
               {currentUserTab === 0 && (
-                <TablePendingLeads userList={userList} />
+                <TablePendingLeads userList={userList} companyList={companyList}/>
               )}
 
               { currentUserTab === 1 && (
@@ -279,20 +279,6 @@ const ManageLeads = () => {
         </DialogActions>
       </Dialog>
       <SnackBar {...snackbar} onClose={toggleSnackbar} />
-
-
-      {/* Create Lead panel */}
-      <Drawer
-          anchor="right"
-          open={panelState}
-          onClose={handleCloseEvent}
-          PaperProps={{ 
-            sx: {width: {xs: '100%', sm: '500px'}},
-            style: { backgroundColor: '#f5f5f5', padding: '16px' } 
-          }} 
-        >
-          <CreateLead closeEvent={handleCloseEvent} companyList={companyList} lead={null} packageList={packageList} />
-        </Drawer>
     </>
   );
 
