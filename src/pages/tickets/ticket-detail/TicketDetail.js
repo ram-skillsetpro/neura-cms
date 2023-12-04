@@ -7,17 +7,19 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import style from './TicketDetail.module.scss';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import fetcher from '../../../utils/fetcher';
 import { hasAuthority } from '../../../utils/authGuard';
 import { AUTHORITY, ProcessMetaStatus, FileProcessStatus } from "../../../utils/constants";
 import SnackBar from '../../../components/SnackBar';
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, IconButton } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const TicketDetail = () => {
     const [expanded, setExpanded] = React.useState(false);
     const [processedMeta, setProcessedMeta] = React.useState([]);
     const location = useLocation();
+    const navigate = useNavigate();
     const { ticketDetails } = location.state;
     const [userAction, setUserAction] = React.useState({});
     const [fileData, setFileData] = React.useState(null);
@@ -181,7 +183,12 @@ const TicketDetail = () => {
         <> 
             <SnackBar {...snackbar} onClose={toggleSnackbar} />
             <div className='headingRow'>
-                <h1>{ticketDetails?.fileName && ticketDetails.fileName.split('.')[0]}</h1>
+                <h1>
+                  <IconButton aria-label="Back" className='mr-2' onClick={() => navigate(-1)}>
+                    <ArrowBackIcon />
+                  </IconButton>
+                  {ticketDetails?.fileName && ticketDetails.fileName.split('.')[0]}
+                </h1>
             </div> 
 
             <div className={style.ticketContainer}>

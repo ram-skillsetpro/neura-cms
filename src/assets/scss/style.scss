@@ -255,6 +255,20 @@ table td{padding: 10px 16px;}
   }
 
   tbody{
+    tr{
+      &:hover{
+        background-color: rgba(255, 165, 0, 0.1);
+        @include boxShadow(0 0 5px rgba(0,0,0,0.1));
+      }
+      &.reassign{
+        border-left: $primaryColor solid 2px;
+        background-color: rgba($primaryColor,0.1);
+        &:hover{
+          background-color: rgba($primaryColor,0.15);
+          @include boxShadow(none);
+        }
+      }
+    }
     td{
       font-size: 12px;
       color: $grey_v4;
