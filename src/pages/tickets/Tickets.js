@@ -115,7 +115,8 @@ const Tickets = () => {
                             </TableHead>
                             <TableBody>
                                 { tickets.map((ticket, index) => (
-                                    <TableRow key={index}>
+                                    // please make it dynamic class on the table row, when ticket reassign to DE -  className="reassign"
+                                    <TableRow key={index}> 
                                         <TableCell>
                                             <Link to="#" onClick={(event) => routTicketDetails(ticket.id, event)}>
                                                 {ticket.id}
