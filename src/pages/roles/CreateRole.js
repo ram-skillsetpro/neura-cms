@@ -28,8 +28,8 @@ const CreateRole = ({closeEvent, role}) => {
                     authorities: filteredArray
                 }));
             }
-        } catch (error) {
-          console.log(error);
+        } catch (err) {
+          console.log(err);
         }
     };
 
