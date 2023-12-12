@@ -12,10 +12,12 @@ import fetcher from '../../../utils/fetcher';
 import { hasAuthority } from '../../../utils/authGuard';
 import { AUTHORITY, ProcessMetaStatus, FileProcessStatus } from "../../../utils/constants";
 import SnackBar from '../../../components/SnackBar';
-import { CircularProgress, IconButton } from '@mui/material';
+import { CircularProgress, Drawer, IconButton } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import TicketComments from '../ticket-comments/TicketComments';
 
 const TicketDetail = () => {
+    const [panelState, setPanelState] = useState(false);
     const [expanded, setExpanded] = React.useState(false);
     const [processedMeta, setProcessedMeta] = React.useState([]);
     const location = useLocation();
@@ -178,6 +180,10 @@ const TicketDetail = () => {
       handleUserAction();
       readFile();
     }, []);
+
+    const handleCloseEvent = () => { 
+      setPanelState(false);
+    };
     
     return(
         <> 
@@ -187,8 +193,10 @@ const TicketDetail = () => {
                   <IconButton aria-label="Back" className='mr-2' onClick={() => navigate(-1)}>
                     <ArrowBackIcon />
                   </IconButton>
-                  {ticketDetails?.fileName && ticketDetails.fileName.split('.')[0]}
+                  {ticketDetails?.fileName && ticketDetails.fileName.split('.')[0]} 
                 </h1>
+
+                <button className='btn btn-primary' onClick={() => setPanelState(true)}>Comments</button>
             </div> 
 
             <div className={style.ticketContainer}>
@@ -243,6 +251,20 @@ const TicketDetail = () => {
                     </section>
               )}
             </div>
+
+
+            {/* Create Role panel */}
+            <Drawer
+                anchor="right"
+                open={panelState}
+                onClose={handleCloseEvent}
+                PaperProps={{ 
+                  sx: {width: {xs: '100%', sm: '500px'}},
+                  style: { backgroundColor: '#f5f5f5', padding: '16px' } 
+                }} 
+              >
+                <TicketComments closeEvent={handleCloseEvent} />
+            </Drawer>
         </>
     )
 }
