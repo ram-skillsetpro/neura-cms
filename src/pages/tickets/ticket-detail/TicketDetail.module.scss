@@ -58,3 +58,34 @@
         margin-left: 8px;
     }
 }
+
+
+
+
+.authModalHead{
+    font-size: 16px!important;
+    padding: 12px 24px!important;
+    font-weight: 600!important;
+}
+.commentTextForm{
+    width: 600px;
+    overflow-y: auto;
+    min-height: 150px;
+    max-height: 50vh;
+    padding: 16px 24px!important;
+    border-top: 1px solid $lightGrey;
+    border-bottom: 1px solid $lightGrey;
+    @include smScreen {
+        width: inherit;
+    } 
+
+    textarea{
+        height: 150px;
+    }
+    .textlength{
+        font-size: 12px;
+        color: $primaryColor;
+        padding-top: 8px;
+    }
+
+}

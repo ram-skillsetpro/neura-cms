@@ -36,7 +36,8 @@ const TicketComments = ({closeEvent}) => {
                 <div className="form-group"> 
                     <textarea className="form-control" placeholder="Please type your comments"></textarea>
                 </div>
-                <div className="text-right">
+                <div className="d-flex justify-content-between">
+                    <div className={style.textlength}><strong>500</strong> character remaining</div>    
                     <button className="btn btn-primary">Comment</button>
                 </div>
             </div>

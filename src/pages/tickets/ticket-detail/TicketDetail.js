@@ -12,12 +12,14 @@ import fetcher from '../../../utils/fetcher';
 import { hasAuthority } from '../../../utils/authGuard';
 import { AUTHORITY, ProcessMetaStatus, FileProcessStatus } from "../../../utils/constants";
 import SnackBar from '../../../components/SnackBar';
-import { CircularProgress, Drawer, IconButton } from '@mui/material';
+import { CircularProgress, Dialog, DialogContent, DialogTitle, Drawer, IconButton } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import TicketComments from '../ticket-comments/TicketComments';
+import CloseIcon from '@mui/icons-material/Close';
 
 const TicketDetail = () => {
     const [panelState, setPanelState] = useState(false);
+    const [commentViewDialog, setCommentViewDialog] = useState(false);
     const [expanded, setExpanded] = React.useState(false);
     const [processedMeta, setProcessedMeta] = React.useState([]);
     const location = useLocation();
@@ -184,6 +186,13 @@ const TicketDetail = () => {
     const handleCloseEvent = () => { 
       setPanelState(false);
     };
+
+    const handleOpenCommentPopup = (role) => { 
+      setCommentViewDialog(true);
+    };
+    const handleCloseCommentPopup = () => {
+      setCommentViewDialog(false);
+    };
     
     return(
         <> 
@@ -253,7 +262,7 @@ const TicketDetail = () => {
             </div>
 
 
-            {/* Create Role panel */}
+            {/* Ticket Comment panel */}
             <Drawer
                 anchor="right"
                 open={panelState}
@@ -265,6 +274,40 @@ const TicketDetail = () => {
               >
                 <TicketComments closeEvent={handleCloseEvent} />
             </Drawer>
+
+
+            {/* Ticket Comment Popup */}
+            <Dialog className={style.authListModal} open={commentViewDialog}>
+              <DialogTitle className={style.authModalHead}>
+                Ticket Comments
+              </DialogTitle>
+              <IconButton
+                aria-label="close" 
+                onClick={handleCloseCommentPopup}
+                sx={{
+                  position: 'absolute',
+                  right: 8,
+                  top: 8,
+                  color: (theme) => theme.palette.grey[500],
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
+              
+              <DialogContent className={style.commentTextForm}>
+                 <div className='form-group'>
+                    <label className='label-control'>Comment <span>*</span></label>
+                    <textarea className='form-control'></textarea>
+                    <div className={style.textlength}><strong>500</strong> character remaining</div>
+                 </div>
+                <div className="text-right">
+                    {/* <button className="btn btn-secondary mr-2">Submit without comments</button>
+                    <button className="btn btn-primary">Submit with comments</button> */}
+
+                    <button className="btn btn-primary">Reject with comments</button>
+                </div>
+              </DialogContent> 
+            </Dialog>
         </>
     )
 }
