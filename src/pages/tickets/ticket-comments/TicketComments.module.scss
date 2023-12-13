@@ -57,4 +57,8 @@
     border-top: rgba($grey_v1, 0.3) solid 1px;
     padding-top: 20px;
     margin-top: auto;
+    .textlength{
+        font-size: 12px;
+        color: $primaryColor; 
+    }
 }
