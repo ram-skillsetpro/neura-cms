@@ -166,7 +166,8 @@ const TicketDetail = () => {
         edit: ProcessMetaStatus.STANDARD,
         skip: ProcessMetaStatus.QC_SKIPPED,
         save: FileProcessStatus.QC_ASSIGNED,
-        submit: FileProcessStatus.QC_DONE
+        submit: FileProcessStatus.QC_DONE,
+        reject: FileProcessStatus.QC_REJECT
       });
     }
   }

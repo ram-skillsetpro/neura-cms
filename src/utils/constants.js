@@ -57,5 +57,6 @@ export const FileProcessStatus = {
     DE_ERROR: 9,
     QC_ERROR: 10,
     DE_ERROR_MAX_REACHED: 11,
-    DE_REASSIGNED: 12
+    DE_REASSIGNED: 12,
+    QC_REJECT: 9 //Only for QC not for DE // and comment medatory
 };

@@ -27,6 +27,7 @@ import { BiDotsVerticalRounded } from 'react-icons/bi'
 import fetcher from '../../utils/fetcher'
 import CreateCompany from './CreateCompany';
 import { longToDate } from '../../utils/utility';
+import SnackBar from '../../components/SnackBar';
 
 const ManageCompany = () => {
 
@@ -40,6 +41,14 @@ const ManageCompany = () => {
   const [openStates, setOpenStates] = useState(Array(30).fill(false));
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [panelState, setPanelState] = useState(false);
+  const [snackbar, setSnackbar] = useState({
+    show: false,
+    status: "",
+    message: "",
+  });
+  const toggleSnackbar = (value) => {
+    setSnackbar(value);
+  };
 
   const fetchCompanyList = async (page) => {
     try {
@@ -104,9 +113,17 @@ const ManageCompany = () => {
   const handleUpdateCompanyStatus = async () => {
     try {
       setDialogProgress(true);
-      company.isActive = !company.isActive;
-      await fetcher.post('cms/create-company', company);
-      fetchCompanyList(currentPage);
+      const url = company.isActive ? `cms/deactivate-company?companyId=${company.id}` : `cms/activate-company?companyId=${company.id}`;
+      const res = await fetcher.get(url);
+      if (res?.status === 200) {
+        fetchCompanyList(currentPage);
+      } else {
+        setSnackbar({
+          show: true,
+          status: 'error',
+          message: res?.response || res?.message
+        });
+      }
     } catch (err) {
       console.log(err);
     } finally {
@@ -266,7 +283,7 @@ const ManageCompany = () => {
           {/* NOTE: please rename as "CreateCompany" */}
           <CreateCompany closeEvent={handleCloseEvent} company={company} packageList={packageList} />
         </Drawer>
-
+        <SnackBar {...snackbar} onClose={toggleSnackbar} />
 
     </>
   );

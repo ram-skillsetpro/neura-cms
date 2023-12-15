@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
-import { Autocomplete, Checkbox, FormControlLabel, IconButton, Radio, RadioGroup, TextField } from '@mui/material';
+import { Autocomplete, Checkbox, CircularProgress, IconButton, Radio, RadioGroup, TextField } from '@mui/material';
 import fetcher from '../../utils/fetcher';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -15,6 +15,8 @@ const CreateCompany = ({closeEvent, company, packageList}) => {
     const [packages, setPackages] = useState([]);
     const [formInitialized, setFormInitialized] = useState(false);
     const [logoFile, setLogoFile] = useState(null);
+    const [logoUploadUrl, setLogoUploadUrl] = useState(null);
+    const [progress, setProgress] = useState(false);
     const [formData, setFormData] = useState({
         description: company?.description || '',
         email: company?.companyEmail || '',
@@ -49,11 +51,16 @@ const CreateCompany = ({closeEvent, company, packageList}) => {
         name: Yup.string().required('Company name is required'),
         phone: Yup.string().required('Phone is required'),
         user: Yup.string().required('Contact name is required'),
-        website: Yup.string().required('Website is required')     
-    });
+        website: Yup.string().required('Website is required')
+    });  
 
     const handleSubmit = async (values) => {
         try {
+            setProgress(true);
+            if (logoFile && logoUploadUrl) {
+                await fetcher.putFile(logoUploadUrl, logoFile);
+            }
+
             const res = await fetcher.post('cms/create-company', values);
             if (res?.status !== 200) {
                 setSnackbar({
@@ -71,6 +78,8 @@ const CreateCompany = ({closeEvent, company, packageList}) => {
                 status: 'error',
                 message: 'Something went wrong'
               });
+        } finally {
+            setProgress(false);
         }
     }
 
@@ -82,6 +91,7 @@ const CreateCompany = ({closeEvent, company, packageList}) => {
 
     const handleLogoFileChange = async (event) => {
         try {
+            setProgress(true);
             const file = event.target.files[0];
             const data = {'companyName': formik.values.name};
             if (formik.values.name) {
@@ -90,11 +100,22 @@ const CreateCompany = ({closeEvent, company, packageList}) => {
             const res = await fetcher.post(`cms/create-company-logo?extension=${file.name.split('.').pop()}`, data);
 
             if (res.status === 200) {
-                await fetcher.putFile(res.response, file);
+                setLogoFile(file);
+                setLogoUploadUrl(res.response);
                 formik.setFieldValue('logo', res.response.split('?')[0]);
+            } else {
+                event.target.value = null;
+                setSnackbar({
+                    show: true,
+                    status: 'error',
+                    message: res?.response || res?.message
+                });
             }
         } catch (err) {
+            event.target.value = null;
             console.log(err);
+        } finally {
+            setProgress(false);
         }
     };
 
@@ -110,6 +131,7 @@ const CreateCompany = ({closeEvent, company, packageList}) => {
 
     return(
         <>
+            { progress ? <CircularProgress /> : null }
             <div className="createMainTitle">
                 <h2>{company ? 'Edit Company' : 'Create Company'}</h2>
                 <IconButton onClick={closeEvent}>
@@ -256,7 +278,7 @@ const CreateCompany = ({closeEvent, company, packageList}) => {
 
                     <div className='d-flex justify-content-end'>
                         <button className='btn btn-outline-primary mr-2' onClick={closeEvent}>Cancel</button>
-                        <button type="submit" className='btn btn-primary' disabled={!formik.isValid}>Save Company</button>
+                        <button type="submit" className='btn btn-primary' disabled={!formik.isValid || progress}>Save Company</button>
                     </div>
                 </form>
             )}
