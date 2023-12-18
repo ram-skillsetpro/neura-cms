@@ -12,13 +12,17 @@ import fetcher from '../../../utils/fetcher';
 import { hasAuthority } from '../../../utils/authGuard';
 import { AUTHORITY, ProcessMetaStatus, FileProcessStatus } from "../../../utils/constants";
 import SnackBar from '../../../components/SnackBar';
-import { CircularProgress, Dialog, DialogContent, DialogTitle, Drawer, IconButton } from '@mui/material';
+import { CircularProgress, Dialog, DialogContent, DialogTitle, Drawer, IconButton, TextField } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import TicketComments from '../ticket-comments/TicketComments';
 import CloseIcon from '@mui/icons-material/Close';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { ButtonAction } from '../../../utils/constants';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { parse, format } from 'date-fns';
 
 const TicketDetail = () => {
     const [panelState, setPanelState] = useState(false);
@@ -56,7 +60,7 @@ const TicketDetail = () => {
             let currentItem = updatedState[subSelection].value[subIndex];
             currentItem.value = currentItem.value.map((subItem) => {
                 if (subItem.key === key) {
-                  return { key, value: newValue };
+                  return { key, value: newValue instanceof Date ? newValue.getTime() : newValue };
                 } else {
                   return subItem;
                 }
@@ -64,7 +68,7 @@ const TicketDetail = () => {
         } else {
           let currentItem = updatedState[sectionIndex].value[itemIndex];
           currentItem = {
-            value: newValue,
+            value: newValue instanceof Date ? newValue.getTime() : newValue,
             key: currentItem.key,
           };
           updatedState[sectionIndex].value[itemIndex] = currentItem;
@@ -101,59 +105,88 @@ const TicketDetail = () => {
       return status === userAction.ok || status === userAction.skip;
     };
 
-    const renderAccordionContent = (data, parentIndex, status) => {
-        return (
-          <div>
-            {data.map((item, itemIndex) => (
-              <div key={itemIndex} className='form-group'>
-                {typeof item.value === 'object' ? (
-                  // If the value is an object, render nested accordions
-                  <Accordion
-                    expanded={expanded[`panel${parentIndex}_${itemIndex}`]}
-                    onChange={handleChange(`panel${parentIndex}_${itemIndex}`)}
-                  >
-                    <AccordionSummary
-                      expandIcon={<ExpandMoreIcon />}
-                      aria-controls={`panel${parentIndex}_${itemIndex}bh-content`}
-                      id={`panel${parentIndex}_${itemIndex}bh-header`}
-                    >
-                      <Typography>{item.key}</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      {renderAccordionContent(item.value, `${parentIndex}_${itemIndex}`, status)}
-                    </AccordionDetails>
-                  </Accordion>
-                ) : (
-                  // If the value is not an object, render input field
-                  <>
-                    <div className='form-group'>
-                        <label className='label-control'>{item.key}</label>
-                        <input
-                            name={item.key}
-                            type="text"
-                            className="form-control"
-                            value={item.value}
-                            onChange={(e) =>
-                                handleInputChange(parentIndex, itemIndex, item.key, e.target.value)
-                            }
-                            disabled={disableInput(status)}
-                        />
-                    </div>
-                  </>
-                )}
-              </div>
-            ))}
+  const renderAccordionContent = (data, parentIndex, status) => {
+    return (
+      <div>
+        {data.map((item, itemIndex) => (
+          <div key={itemIndex} className='form-group'>
+            {typeof item.value === 'object' ? (
+              // If the value is an object, render nested accordions
+              <Accordion
+                expanded={expanded[`panel${parentIndex}_${itemIndex}`]}
+                onChange={handleChange(`panel${parentIndex}_${itemIndex}`)}
+              >
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls={`panel${parentIndex}_${itemIndex}bh-content`}
+                  id={`panel${parentIndex}_${itemIndex}bh-header`}
+                >
+                  <Typography>{item.key}</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  {renderAccordionContent(item.value, `${parentIndex}_${itemIndex}`, status)}
+                </AccordionDetails>
+              </Accordion>
+            ) : (
+              // If the value is not an object, check for "date" and render accordingly
+              <>
+                <div className='form-group'>
+                  {item.key.toLowerCase().includes('date') ? (
+                    // If item.key is "date," render the DatePicker component
+                    <>
+                      <label className='label-control'>{item.key}</label>
+                      <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <DatePicker
+                                    className="datepickerStyle"
+                                    name={item.key}
+                                    value={!(typeof item.value === 'number') ? convertToDateObject(item.value) : item.value}
+                                    onChange={(date) => handleInputChange(parentIndex, itemIndex, item.key, date)}
+                                    renderInput={(params) => <TextField {...params} />}
+                                />
+                            </LocalizationProvider>
+                    </>
+                  ) : (
+                    // If item.key is not "date," render the input field
+                    <>
+                      <label className='label-control'>{item.key}</label>
+                      <input
+                        name={item.key}
+                        type="text"
+                        className="form-control"
+                        value={item.value}
+                        onChange={(e) =>
+                          handleInputChange(parentIndex, itemIndex, item.key, e.target.value)
+                        }
+                        disabled={disableInput(status)}
+                      />
+                    </>
+                  )}
+                </div>
+              </>
+            )}
           </div>
-        );
-    };
+        ))}
+      </div>
+    );
+  };
 
-    const handleMetaAction = (index, status) => {
-        const updatedState = JSON.parse(JSON.stringify(processedMeta));
-        const section = updatedState[index];
-        section.status = status;
-        updatedState[index] = section;
-        setProcessedMeta(updatedState);
-    };
+  const convertToDateObject = (dateString) => {
+    if (dateString && typeof dateString === 'string') {
+      const dateObject = parse(dateString, 'dd/MM/yyyy', new Date());
+      return dateObject;
+    } else {
+      return null;
+    }
+  };
+
+
+  const handleMetaAction = (index, status) => {
+    const updatedState = JSON.parse(JSON.stringify(processedMeta));
+    const section = updatedState[index];
+    section.status = status;
+    updatedState[index] = section;
+    setProcessedMeta(updatedState);
+  };
 
   const handleUserAction = () => {
     if (hasAuthority(AUTHORITY.USER_DE)) {
