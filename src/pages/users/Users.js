@@ -12,20 +12,36 @@ import CloseIcon from '@mui/icons-material/Close';
 import LockIcon from '@mui/icons-material/Lock'; 
 import CreateUser from "./CreateUser";
 import UserCard from "./UserCard";
+import fetcher from "../../utils/fetcher";
 
 
 const Users = () => { 
     const [panelState, setPanelState] = useState(false);
-    const UsersItems = [
-        {label: 'All Users', value: '46', color: '#FFA500', icon: <SentimentSatisfiedIcon sx={{ fontSize: 32, color: '#FFA500' }} /> },
-        {label: 'Active Users', value: '21', color: '#0F962D', icon: <SentimentSatisfiedAltIcon sx={{ fontSize: 32, color: '#0F962D' }} /> },
-        {label: 'Inactive Users', value: '18', color: '#d84316', icon: <SentimentVeryDissatisfiedIcon sx={{ fontSize: 32, color: '#d84316' }} /> },
-        {label: 'User Live Now', value: '2', color: '#1f88e5', icon: <StreamIcon sx={{ fontSize: 32, color: '#1f88e5' }} /> },
-    ]
+    const [users, setUsers] = useState([]);
+    const [UsersItems, setUsersItems] = useState([]);
 
     const handleCloseEvent = () => { 
         setPanelState(false);
     };
+
+    const getUsers = async () => {
+        const res = await fetcher.get(`cms/list-cms-users`);
+        if (res?.status === 200) {
+            setUsers(res.response);
+            const activeCount = res.response.filter(u => u.status === 1).length;
+            const inactiveCount = res.response.filter(u => u.status === 0).length;
+            setUsersItems([
+                {label: 'All Users', value: res.response.length, color: '#FFA500', icon: <SentimentSatisfiedIcon sx={{ fontSize: 32, color: '#FFA500' }} /> },
+                {label: 'Active Users', value: activeCount, color: '#0F962D', icon: <SentimentSatisfiedAltIcon sx={{ fontSize: 32, color: '#0F962D' }} /> },
+                {label: 'Inactive Users', value: inactiveCount, color: '#d84316', icon: <SentimentVeryDissatisfiedIcon sx={{ fontSize: 32, color: '#d84316' }} /> }
+            ]);
+        }
+    };
+
+    useEffect(() => {
+        getUsers();
+    }, []);
+
     return(
         <>
             <div className='headingRow'>
@@ -61,27 +77,33 @@ const Users = () => {
                                 </TableRow>
                             </TableHead>
                             <TableBody> 
-                                <TableRow>
-                                    <TableCell>Sanjay2010</TableCell>
-                                    <TableCell>sanjay@gmail.com</TableCell>
-                                    <TableCell>QE</TableCell>
-                                    <TableCell>Legal Ops</TableCell>
-                                    <TableCell>12, Oct 2023</TableCell>
-                                    <TableCell>
-                                        <Chip label="Active" color="success" size="small" /> 
-                                    </TableCell>
-                                    <TableCell> 
-                                        <Link to="/" className="mr-3">
-                                            <EditNoteIcon />
-                                        </Link>
-                                        <Link to='/' className="mr-3">
-                                            <LockIcon />
-                                        </Link> 
-                                        <Link to="/">
-                                            <CloseIcon />
-                                        </Link>
-                                    </TableCell>
-                                </TableRow> 
+                                {users && users.map((user, index) => (
+                                    <TableRow>
+                                        <TableCell>{user.firstName}</TableCell>
+                                        <TableCell>{user.email}</TableCell>
+                                        <TableCell></TableCell>
+                                        <TableCell></TableCell>
+                                        <TableCell></TableCell>
+                                        <TableCell>
+                                            {user.status ? 
+                                                <Chip label="Active" color="success" size="small" /> 
+                                                : 
+                                                <Chip label="Inactive" color="error" size="small" /> 
+                                            }
+                                        </TableCell>
+                                        <TableCell> 
+                                            <Link to="/" className="mr-3">
+                                                <EditNoteIcon />
+                                            </Link>
+                                            <Link to='/' className="mr-3">
+                                                <LockIcon />
+                                            </Link> 
+                                            <Link to="/">
+                                                <CloseIcon />
+                                            </Link>
+                                        </TableCell>
+                                    </TableRow> 
+                                ))}
                             </TableBody>
                         </Table>
                     </TableContainer>

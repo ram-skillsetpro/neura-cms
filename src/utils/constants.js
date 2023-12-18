@@ -60,3 +60,9 @@ export const FileProcessStatus = {
     DE_REASSIGNED: 12,
     QC_REJECT: 9 //Only for QC not for DE // and comment medatory
 };
+
+export const ButtonAction = {
+    SAVE: 'SAVE',
+    SUBMIT: 'SUBMIT',
+    REJECT: 'REJECT'
+};

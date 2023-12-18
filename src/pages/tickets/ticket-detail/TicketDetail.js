@@ -16,6 +16,9 @@ import { CircularProgress, Dialog, DialogContent, DialogTitle, Drawer, IconButto
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import TicketComments from '../ticket-comments/TicketComments';
 import CloseIcon from '@mui/icons-material/Close';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import { ButtonAction } from '../../../utils/constants';
 
 const TicketDetail = () => {
     const [panelState, setPanelState] = useState(false);
@@ -28,6 +31,8 @@ const TicketDetail = () => {
     const [userAction, setUserAction] = React.useState({});
     const [fileData, setFileData] = React.useState(null);
     const [progress, setProgress] = useState(false);
+    const maxCharacterLimit = 500;
+
     const [snackbar, setSnackbar] = useState({
       show: false,
       status: "",
@@ -68,11 +73,12 @@ const TicketDetail = () => {
         console.log(JSON.stringify(updatedState));
     };
 
-    const saveInboxItem = async (status) => {
+    const saveInboxItem = async (status, comment) => {
         try {
             const payload = {
                 id: ticketDetails.id,  
-                status: status
+                status: status,
+                comment: comment
             }
             if (hasAuthority(AUTHORITY.USER_DE)) {
                 payload.deProcessedMeta = JSON.stringify(processedMeta);
@@ -179,6 +185,29 @@ const TicketDetail = () => {
     setProgress(false);
   };
 
+  const commentValidationSchema = Yup.object().shape({
+    comment: Yup.string().when('isCommentReq', (req, schema) => {
+      if (req[0]) {
+        return schema.required('Comment is required').max(maxCharacterLimit, 'Comment exceeds character limit for required comment');
+      }
+      return schema.max(maxCharacterLimit, 'Comment exceeds character limit');
+    })
+  });
+
+  const initialValues =  {
+    comment: '',
+    status: 0,
+    isCommentReq: false
+  };
+
+  const commentFormik = useFormik({
+    initialValues: initialValues,
+    validationSchema: commentValidationSchema,
+    onSubmit: (values) => {
+      saveInboxItem(values.status, values.comment);
+    }
+  });
+
     useEffect(() => {
       handleUserAction();
       readFile();
@@ -188,11 +217,22 @@ const TicketDetail = () => {
       setPanelState(false);
     };
 
-    const handleOpenCommentPopup = (role) => { 
-      setCommentViewDialog(true);
+    const handleOpenCommentDialog = (status, action) => {
+      commentFormik.values.status = status;
+      if (action === ButtonAction.REJECT) {
+        commentFormik.values.isCommentReq = true;
+        setCommentViewDialog(true);
+      } else if (action === ButtonAction.SUBMIT) {
+        commentFormik.values.isCommentReq = false;
+        setCommentViewDialog(true);
+      } else {
+        saveInboxItem(status, commentFormik.values.comment);
+      }
     };
+
     const handleCloseCommentPopup = () => {
       setCommentViewDialog(false);
+      commentFormik.setValues(initialValues);
     };
     
     return(
@@ -254,9 +294,13 @@ const TicketDetail = () => {
                             ))}
                         </div>
                         <div className='text-center'>
-                          <button className='btn btn-primary mr-2' onClick={() => saveInboxItem(userAction.save)}>Save</button>
-                          <button className='btn btn-primary' onClick={() => saveInboxItem(userAction.submit)}
+                          <button className='btn btn-primary mr-2' onClick={() => handleOpenCommentDialog(userAction.save, ButtonAction.SAVE)}>Save</button>
+                          <button className='btn btn-primary' onClick={() => handleOpenCommentDialog(userAction.submit, ButtonAction.SUBMIT)}
                             disabled={!processedMeta.every(section => section.status === userAction.ok || section.status === userAction.skip)}>Submit</button>
+                          { userAction?.reject && (
+                            <button className='btn btn-primary mr-2' onClick={() => handleOpenCommentDialog(userAction.reject, ButtonAction.REJECT)}>Reject</button>
+                          )}
+                          
                         </div>
                     </section>
               )}
@@ -296,17 +340,26 @@ const TicketDetail = () => {
               </IconButton>
               
               <DialogContent className={style.commentTextForm}>
+              <form onSubmit={commentFormik.handleSubmit}>
                  <div className='form-group'>
                     <label className='label-control'>Comment <span>*</span></label>
-                    <textarea className='form-control'></textarea>
-                    <div className={style.textlength}><strong>500</strong> character remaining</div>
+                    <textarea
+                      name="comment"
+                      className='form-control'
+                      value={commentFormik.values.comment}
+                      onChange={commentFormik.handleChange}
+                    />
+                    {commentFormik.touched.comment && commentFormik.errors.comment ? (
+                      <div className={style.textlength}>{commentFormik.errors.comment}</div>
+                    ) : <div className={style.textlength}>
+                        <strong>{maxCharacterLimit - commentFormik.values.comment.length}</strong> character remaining
+                      </div>
+                    }
                  </div>
                 <div className="text-right">
-                    {/* <button className="btn btn-secondary mr-2">Submit without comments</button>
-                    <button className="btn btn-primary">Submit with comments</button> */}
-
                     <button className="btn btn-primary">Reject with comments</button>
                 </div>
+                </form>
               </DialogContent> 
             </Dialog>
         </>
