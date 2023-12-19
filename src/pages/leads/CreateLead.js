@@ -140,12 +140,9 @@ const CreateLead = ({closeEvent, lead, companyList, packageList}) => {
                                 <Autocomplete
                                 options={companies}
                                 getOptionLabel={(option) => option.label}
-                                value={companies.find((company) => company.id === formData.companyId) || null}
+                                value={companies.find((company) => company.id === formik.values.companyId) || null}
                                 onChange={(_, newValue) => {
-                                    setFormData((prevData) => ({
-                                    ...prevData,
-                                    companyId: newValue ? newValue.id : '',
-                                    }));
+                                    formik.setFieldValue('companyId', newValue ? newValue.id : '');
                                 }}
                                 renderInput={(params) => <TextField {...params} />}
                                 />

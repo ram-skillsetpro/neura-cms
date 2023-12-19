@@ -278,6 +278,20 @@ const ManageLeads = () => {
           <Button variant="contained" onClick={handleDeactivateUser}>Ok</Button>
         </DialogActions>
       </Dialog>
+
+      <Drawer
+        anchor="right"
+        open={panelState}
+        onClose={handleCloseEvent}
+        PaperProps={{
+          sx: { width: { xs: '100%', sm: '700px' } },
+          style: { backgroundColor: '#f5f5f5', padding: '16px' }
+        }}
+      >
+
+        <CreateLead closeEvent={handleCloseEvent} companyList={companyList} packageList={packageList} />
+      </Drawer>
+
       <SnackBar {...snackbar} onClose={toggleSnackbar} />
     </>
   );
