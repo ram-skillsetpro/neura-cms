@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Autocomplete, FormControlLabel, IconButton, Radio, RadioGroup, TextField } from "@mui/material";
+import { Autocomplete, FormControlLabel, IconButton, Radio, RadioGroup, TextField, CircularProgress } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import fetcher from "../../utils/fetcher";
 import { useFormik, Field } from 'formik';
@@ -11,6 +11,7 @@ import SnackBar from "../../components/SnackBar";
 
 const CreateLead = ({closeEvent, lead, companyList, packageList}) => {
 
+    const [progress, setProgress] = useState(false);
     const [companies, setCompanies] = useState([]);
     const [packages, setPackages] = useState([]);
 
@@ -26,7 +27,7 @@ const CreateLead = ({closeEvent, lead, companyList, packageList}) => {
     const [formData, setFormData] = useState({
         companyId: lead?.companyId || '',
         email: lead?.email || '',
-        isLeadActive: lead?.isLeadActive || 1,
+        isLeadActive: lead?.isLeadActive || '1',
         name: lead?.userName || '',
         packageId: lead?.packageId || 1,
         packageStartDate: lead?.packageStartDate ? new Date(lead.packageStartDate * 1000) : null,
@@ -36,8 +37,10 @@ const CreateLead = ({closeEvent, lead, companyList, packageList}) => {
 
     const handleSubmit = async (values) => {
         try {
+            setProgress(true);
             const payload = { ...values };
             payload.packageStartDate = values.packageStartDate.getTime() / 1000;
+            payload.isLeadActive = values.isLeadActive === '1' ? true : false;
             const res = await fetcher.post('/cms/create-lead', payload);
             if (res.status !== 200) {
                 setSnackbar({
@@ -50,6 +53,8 @@ const CreateLead = ({closeEvent, lead, companyList, packageList}) => {
             closeEvent();
         } catch (err) {
             console.log(err);
+        } finally {
+            setProgress(false);
         }
     };
 
@@ -80,12 +85,12 @@ const CreateLead = ({closeEvent, lead, companyList, packageList}) => {
     return(
         <>
             <div className="createMainTitle">
-                <h2>Create Lead</h2>
+                <h2>{lead ? 'Edit Lead' : 'Create Lead'}</h2>
                 <IconButton onClick={closeEvent}>
                     <CloseIcon />
                 </IconButton>
             </div>
-
+            {progress ? <CircularProgress /> : null}
             <form onSubmit={formik.handleSubmit}>
                 <div className="createSection mb-3"> 
                     <h3 className="createSubTitle">General</h3 > 
@@ -195,7 +200,7 @@ const CreateLead = ({closeEvent, lead, companyList, packageList}) => {
 
                 <div className='d-flex justify-content-end'>
                     <button className='btn btn-outline-primary mr-2' onClick={closeEvent}>Cancel</button>
-                    <button type="submit" className='btn btn-primary'>Save Lead</button>
+                    <button type="submit" className='btn btn-primary' disabled={progress}>Save Lead</button>
                 </div>
             </form>
             <SnackBar {...snackbar} onClose={toggleSnackbar} />
