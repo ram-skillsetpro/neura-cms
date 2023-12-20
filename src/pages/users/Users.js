@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Chip, Drawer, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Chip, Drawer, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, CircularProgress, Dialog, DialogActions, DialogContent, Typography, Button} from "@mui/material";
 import { Link } from 'react-router-dom';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import style from './Users.module.scss';
@@ -13,12 +13,25 @@ import LockIcon from '@mui/icons-material/Lock';
 import CreateUser from "./CreateUser";
 import UserCard from "./UserCard";
 import fetcher from "../../utils/fetcher";
+import SnackBar from "../../components/SnackBar";
 
 
 const Users = () => { 
     const [panelState, setPanelState] = useState(false);
     const [users, setUsers] = useState([]);
+    const [user, setUser] = useState(null);
     const [UsersItems, setUsersItems] = useState([]);
+    const [dialogProgress, setDialogProgress] = useState(false);
+    const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+
+    const [snackbar, setSnackbar] = useState({
+        show: false,
+        status: "",
+        message: "",
+    });
+    const toggleSnackbar = (value) => {
+        setSnackbar(value);
+    };
 
     const handleCloseEvent = () => { 
         setPanelState(false);
@@ -37,6 +50,35 @@ const Users = () => {
             ]);
         }
     };
+
+    const handleUserEdit = (user) => {
+        setUser(user);
+        setOpenConfirmDialog(true);
+    }
+
+    const handleUserStatus = async () => {
+        try {
+          setDialogProgress(true);
+          const url = `cms/create-user`;
+          user.status = user.status ? false : true;
+          const res = await fetcher.post(url, user);
+          if (res?.status === 200) {
+            getUsers();
+          } else {
+            setSnackbar({
+              show: true,
+              status: 'error',
+              message: res?.response || res?.message
+            });
+          }
+        } catch (err) {
+          console.log(err);
+        } finally {
+          setDialogProgress(false);
+          setUser(null);
+          setOpenConfirmDialog(false);
+        }
+      };
 
     useEffect(() => {
         getUsers();
@@ -92,13 +134,13 @@ const Users = () => {
                                             }
                                         </TableCell>
                                         <TableCell> 
-                                            <Link to="/" className="mr-3">
+                                            <Link to="#" className="mr-3" onClick={() => handleUserEdit(user)}>
                                                 <EditNoteIcon />
                                             </Link>
-                                            <Link to='/' className="mr-3">
+                                            <Link to='#' className="mr-3">
                                                 <LockIcon />
                                             </Link> 
-                                            <Link to="/">
+                                            <Link to="#">
                                                 <CloseIcon />
                                             </Link>
                                         </TableCell>
@@ -109,6 +151,17 @@ const Users = () => {
                     </TableContainer>
                 </Paper>
             </div>
+
+            <Dialog open={openConfirmDialog}>
+                { dialogProgress ? <CircularProgress /> : null }
+                <DialogContent>
+                    <Typography componebt="p">Are you sure you want to  {user?.status ? ( 'Deactivate') : ( 'Activate' )}</Typography>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setOpenConfirmDialog(false)}>Cancel</Button>
+                    <Button variant="contained" onClick={handleUserStatus}>Ok</Button>
+                </DialogActions>
+            </Dialog>
 
             {/* Create User panel */}
             <Drawer
@@ -122,6 +175,7 @@ const Users = () => {
             >
                 <CreateUser closeEvent={handleCloseEvent} />
             </Drawer>
+            <SnackBar {...snackbar} onClose={toggleSnackbar} />
 
         </>
     )

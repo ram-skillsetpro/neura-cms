@@ -241,9 +241,15 @@ const TicketDetail = () => {
     }
   });
 
+  const fetchComments = async () => {
+    const res = await fetcher.get(`deqc/ticket-comments`);
+    console.log(res);
+  };
+
     useEffect(() => {
       handleUserAction();
       readFile();
+      fetchComments();
     }, []);
 
     const handleCloseEvent = () => { 
@@ -390,7 +396,7 @@ const TicketDetail = () => {
                     }
                  </div>
                 <div className="text-right">
-                    <button className="btn btn-primary">Reject with comments</button>
+                    <button className="btn btn-primary">Save</button>
                 </div>
                 </form>
               </DialogContent> 

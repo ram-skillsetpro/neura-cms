@@ -109,7 +109,7 @@ const Sidebar = ({closeEvent}) => {
           </div>
           <ul>
             <li>
-              <NavLink to="/" onClick={mWebCloseEvent}>
+              <NavLink to="#" onClick={mWebCloseEvent}>
                 <SettingsIcon />
                 Settings
               </NavLink>

@@ -61,8 +61,10 @@ const ManageLeads = () => {
       setProgress(true);
       if (currentUserTab === 1) {
         const res = await fetcher.get(`cms/approved-leads/demo/${page}`);
-        setUserList(res.response.result);
-        setTotalPages(Math.ceil(res.response.totct / res.response.perpg));
+        if (res?.status === 200) {
+          setUserList(res.response.result);
+          setTotalPages(Math.ceil(res.response.totct / res.response.perpg));
+        }
       } else if (currentUserTab === 2) {
         const res = await fetcher.get(`cms/approved-leads/client/${page}`);
         if (res?.status === 200) {
