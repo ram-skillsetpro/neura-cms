@@ -333,12 +333,12 @@ const TicketDetail = () => {
                             ))}
                         </div>
                         <div className='text-center'>
-                          <button className='btn btn-primary mr-2' onClick={() => handleOpenCommentDialog(userAction.save, ButtonAction.SAVE)}>Save</button>
-                          <button className='btn btn-primary' onClick={() => handleOpenCommentDialog(userAction.submit, ButtonAction.SUBMIT)}
-                            disabled={!processedMeta.every(section => section.status === userAction.ok || section.status === userAction.skip)}>Submit</button>
                           { userAction?.reject && (
                             <button className='btn btn-primary mr-2' onClick={() => handleOpenCommentDialog(userAction.reject, ButtonAction.REJECT)}>Reject</button>
                           )}
+                          <button className='btn btn-primary mr-2' onClick={() => handleOpenCommentDialog(userAction.save, ButtonAction.SAVE)}>Save</button>
+                          <button className='btn btn-primary' onClick={() => handleOpenCommentDialog(userAction.submit, ButtonAction.SUBMIT)}
+                            disabled={!processedMeta.every(section => section.status === userAction.ok || section.status === userAction.skip)}>Submit</button>
                           
                         </div>
                     </section>
