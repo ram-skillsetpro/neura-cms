@@ -12,7 +12,7 @@ const TicketComments = ({ ticketDetails, closeEvent }) => {
     const [progress, setProgress] = React.useState(false);
     const [comments, setComments] = React.useState([]);
     const [comment, setComment] = React.useState('');
-    const maxCharacterLimit = 10;
+    const maxCharacterLimit = 500;
     const [snackbar, setSnackbar] = React.useState({
         show: false,
         status: "",
