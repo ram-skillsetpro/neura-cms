@@ -11,7 +11,6 @@ import SnackBar from "../../../components/SnackBar";
 const TicketComments = ({ ticketDetails, closeEvent }) => {
     const [progress, setProgress] = React.useState(false);
     const [comments, setComments] = React.useState([]);
-    const [comment, setComment] = React.useState('');
     const maxCharacterLimit = 500;
     const [snackbar, setSnackbar] = React.useState({
         show: false,
@@ -21,19 +20,6 @@ const TicketComments = ({ ticketDetails, closeEvent }) => {
     const toggleSnackbar = (value) => {
         setSnackbar(value);
     };
-
-    /* const comments = [
-        {
-            userType: 'DE',
-            userName: 'Karan Sharma',
-            detail: 'Task has been completed, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. '
-        },
-        {
-            userType: 'QE',
-            userName: 'self',
-            detail: 'Some issues are pending. Lorem Ipsum is not simply random text. It has roots in a piece '
-        },
-    ] */
 
     const validationSchema = Yup.object().shape({
         comment: Yup.string().required('Comment is required').max(maxCharacterLimit, 'Comment exceeds character limit for required comment')
@@ -69,7 +55,6 @@ const TicketComments = ({ ticketDetails, closeEvent }) => {
             console.log(err);
         } finally {
             setProgress(false);
-            setComment('');
         }
     };
 
