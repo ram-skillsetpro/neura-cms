@@ -48,6 +48,12 @@ export const hasAuthority = (authority) => {
   return !!foundAuthority;
 };
 
+export const hasAuthorityById = (authorityId) => {
+  const authUser = getAuthUser();
+  const foundAuthority = authUser?.userauthority.find(i => i.id === authorityId);
+  return !!foundAuthority;
+};
+
 export const isRestrictedRoutWithAuthority = (route) => {
   let returnValue = false;  
   const authorityRouteArray = AUTHORITY_ROUT_MAP.filter(x => route.match(x.route_regx) ? true : false)

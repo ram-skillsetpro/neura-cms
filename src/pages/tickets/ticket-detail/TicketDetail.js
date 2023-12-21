@@ -241,15 +241,9 @@ const TicketDetail = () => {
     }
   });
 
-  const fetchComments = async () => {
-    const res = await fetcher.get(`deqc/ticket-comments`);
-    console.log(res);
-  };
-
     useEffect(() => {
       handleUserAction();
       readFile();
-      fetchComments();
     }, []);
 
     const handleCloseEvent = () => { 
@@ -356,7 +350,7 @@ const TicketDetail = () => {
                   style: { backgroundColor: '#f5f5f5', padding: '16px' } 
                 }} 
               >
-                <TicketComments closeEvent={handleCloseEvent} />
+                <TicketComments ticketDetails={ticketDetails} closeEvent={handleCloseEvent} />
             </Drawer>
 
 

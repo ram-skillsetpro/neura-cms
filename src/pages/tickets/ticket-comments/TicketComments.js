@@ -1,11 +1,28 @@
-import React from "react";
+import React, { useEffect } from "react";
 import style from "./TicketComments.module.scss";
 import { IconButton } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import CommentArticle from "./CommentArticle";
+import fetcher from "../../../utils/fetcher";
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import SnackBar from "../../../components/SnackBar";
 
-const TicketComments = ({closeEvent}) => {
-    const comments = [
+const TicketComments = ({ ticketDetails, closeEvent }) => {
+    const [progress, setProgress] = React.useState(false);
+    const [comments, setComments] = React.useState([]);
+    const [comment, setComment] = React.useState('');
+    const maxCharacterLimit = 10;
+    const [snackbar, setSnackbar] = React.useState({
+        show: false,
+        status: "",
+        message: "",
+    });
+    const toggleSnackbar = (value) => {
+        setSnackbar(value);
+    };
+
+    /* const comments = [
         {
             userType: 'DE',
             userName: 'Karan Sharma',
@@ -16,9 +33,61 @@ const TicketComments = ({closeEvent}) => {
             userName: 'self',
             detail: 'Some issues are pending. Lorem Ipsum is not simply random text. It has roots in a piece '
         },
-    ]
-    return(
+    ] */
+
+    const validationSchema = Yup.object().shape({
+        comment: Yup.string().required('Comment is required').max(maxCharacterLimit, 'Comment exceeds character limit for required comment')
+    });
+
+    const initialValues = {
+        comment: ''
+    };
+
+    const formik = useFormik({
+        initialValues: initialValues,
+        validationSchema: validationSchema,
+        onSubmit: () => {
+            handleAddComment();
+        }
+    });
+
+    const handleAddComment = async () => {
+        try {
+            setProgress(true);
+            const res = await fetcher.post(`deqc/ticket-comments/add`, { fileId: ticketDetails.id, comment: formik.values.comment });
+            if (res.status === 200) {
+                fetchComments();
+                formik.setValues(initialValues);
+            } else {
+                setSnackbar({
+                    show: true,
+                    status: 'error',
+                    message: res.response
+                });
+            }
+        } catch (err) {
+            console.log(err);
+        } finally {
+            setProgress(false);
+            setComment('');
+        }
+    };
+
+    const fetchComments = async () => {
+        const res = await fetcher.get(`deqc/ticket-comments/view?fileId=${ticketDetails.id}`);
+        if (res?.status === 200) {
+            setComments(res.response);
+        }
+    };
+
+    useEffect(() => {
+        fetchComments();
+        formik.validateForm();
+    }, []);
+
+    return (
         <>
+            <SnackBar {...snackbar} onClose={toggleSnackbar} />
             <div className="createMainTitle">
                 <h2>Comments</h2>
                 <IconButton onClick={closeEvent}>
@@ -27,21 +96,34 @@ const TicketComments = ({closeEvent}) => {
             </div>
 
             <div className={style.commentsList}>
-                {comments.map((item, index) => 
-                    <CommentArticle {...item} key={index} />
+                {comments.map((comment, index) =>
+                    <CommentArticle comment={comment} key={index} />
                 )}
             </div>
 
-            <div className={style.commentForm}>
-                <div className="form-group"> 
-                    <textarea className="form-control" placeholder="Please type your comments"></textarea>
+            <form onSubmit={formik.handleSubmit}>
+                <div className={style.commentForm}>
+                    <div className="form-group">
+                        <textarea
+                            name="comment"
+                            onChange={formik.handleChange}
+                            value={formik.values.comment}
+                            className="form-control"
+                            placeholder="Please type your comments"
+                        ></textarea>
+                    </div>
+                    <div className="d-flex justify-content-between">
+                        {formik.errors.comment ? (
+                            <div className={style.textlength}>{formik.errors.comment}</div>
+                        ) : <div className={style.textlength}>
+                            <strong>{maxCharacterLimit - formik.values.comment.length}</strong> character remaining
+                        </div>
+                        }
+                        <button type="submit" className='btn btn-primary' disabled={!formik.isValid || progress}>Comment</button>
+                    </div>
                 </div>
-                <div className="d-flex justify-content-between">
-                    <div className={style.textlength}><strong>500</strong> character remaining</div>    
-                    <button className="btn btn-primary">Comment</button>
-                </div>
-            </div>
-        
+            </form>
+
         </>
     )
 }
