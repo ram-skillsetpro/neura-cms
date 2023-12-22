@@ -1,8 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import style from './../Dashboard.module.scss';
 
-const WinLoss = () => {
+//allClosedTickets / (allClosedTickets + allOpenTickets)
+const WinLoss = ({dashboardMetrics}) => {
+    const [data, setData] = useState('0%');
+
+    const calculateWinLoss = () => {
+        const denominator = dashboardMetrics.allClosedTickets + dashboardMetrics.allOpenTickets;
+
+        // Check if the denominator is not zero before calculating
+        const cal = denominator !== 0 ? Math.round(dashboardMetrics.allClosedTickets / denominator) : '0';
+        setData(isNaN(cal) ? '0%' : cal + '%');
+    };
+
+    useEffect(() => {
+        calculateWinLoss();
+    }, [dashboardMetrics]); 
+
     return(
         <>
             <section className={`${style.whiteBox}`}>
@@ -11,9 +26,9 @@ const WinLoss = () => {
                 </div>
                 
                 <div className={style.winLossBox}>
-                    <div className={`${style.winPercentVal} ${style.green}`}>84%</div>
+                    <div className={`${style.winPercentVal} ${style.green}`}>{data}</div>
                     <div className={style.progressBar}> 
-                        <span style={{width: '84%'}}></span>
+                        <span style={{width: data}}></span>
                     </div>
                 </div>
 

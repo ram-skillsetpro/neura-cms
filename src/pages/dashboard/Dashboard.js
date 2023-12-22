@@ -123,7 +123,7 @@ const Dashboard = () => {
 
                 <div className='col-md-4'>
                     <div className='mb-4'>
-                        <WinLoss />
+                        <WinLoss dashboardMetrics={dashboardMetrics}/>
                     </div>
                     <div className='mb-4'>
                         <Notifications />
