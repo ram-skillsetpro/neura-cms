@@ -1,23 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import style from './../Dashboard.module.scss';
-import leadChart from '../../../assets/images/leadChart.png';
+import fetcher from "../../../utils/fetcher";
+import LineChart from "../../shared/LineChart";
 
-const ChartLeadGenerated = () => {  
+const ChartLeadGenerated = () => {
+
+    const [data, setData] = useState({});
+
+    const fetchLeadCount = async () => {
+        const res = await fetcher.get(`weak-wise-lead-count`);
+        setData(res.response);
+    };
+
+    useEffect(() => {
+        fetchLeadCount();
+    }, []);
+
     return(
         <>
             <section className={`${style.whiteBox}`}>
                 <div className={style.titleRow}>
                     <h2>Leads Generated</h2>
-                    <div className={style.sortDropdown}>
-                        <select className="form-control">
-                            <option>Weekly</option>
-                            <option>Monthly</option>
-                        </select>
-                    </div>
                 </div>
  
                 <div className={style.graphArea}>
-                    <img src={leadChart} alt="" />
+                    <LineChart data={data} />
                 </div>
             </section>        
         </>
