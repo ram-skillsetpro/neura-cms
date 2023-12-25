@@ -343,7 +343,7 @@ const TicketDetail = () => {
             ></object>
           } */}
           {fileData &&
-            <PdfViewer file={fileData}></PdfViewer>
+            <PdfViewer file={fileData} fileId={id} className={style.ticketPDF}></PdfViewer>
           }
         </div>
 
