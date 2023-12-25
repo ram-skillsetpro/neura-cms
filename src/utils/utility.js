@@ -41,3 +41,15 @@ export const monthNames = [
     "November",
     "December",
 ];
+
+export const base64toBlob = (base64) => {
+    const contentType = "application/pdf";
+    const bytes = atob(base64);
+    let length = bytes.length;
+    const out = new Uint8Array(length);
+    while (length--) {
+      out[length] = bytes.charCodeAt(length);
+    }
+    const f = new Blob([out], { type: contentType });
+    return URL.createObjectURL(f);
+  };

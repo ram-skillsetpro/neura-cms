@@ -23,15 +23,18 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { parse, format } from 'date-fns';
+import PdfViewer from '../../../components/pdf/PdfViewer';
+import { useParams } from 'react-router-dom';
 
 const TicketDetail = () => {
+    const { id } = useParams();
     const [panelState, setPanelState] = useState(false);
     const [commentViewDialog, setCommentViewDialog] = useState(false);
     const [expanded, setExpanded] = React.useState(false);
     const [processedMeta, setProcessedMeta] = React.useState([]);
     const location = useLocation();
     const navigate = useNavigate();
-    const { ticketDetails } = location.state;
+    const [ticketDetails, setTicketDetails] = React.useState(null);
     const [userAction, setUserAction] = React.useState({});
     const [fileData, setFileData] = React.useState(null);
     const [progress, setProgress] = useState(false);
@@ -213,10 +216,43 @@ const TicketDetail = () => {
 
   const readFile = async () => {
     setProgress(true);
-    const res = await fetcher.get(`de-qc-read-file?fileId=${ticketDetails.id}`);
+    const res = await fetcher.get(`de-qc-read-file?fileId=${id}`);
     setFileData(res);
     setProgress(false);
   };
+
+  
+    const dummyPdfHighRotateTest = async () => {
+      const url = 'http://204.236.168.121:9090/v1/team/read-file-content?fileId=29&teamId=80';
+      const token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI5NTZlMjgxYWIyYmFlNmNhYThhZjhlYTExMzVlODE4NGEzNGVkMzI4MzkwOTUyZmI5M2FiZTBkNTY1OTUzZmZiZjgyYjFjMTljODZhYmQ2Njk0OGVlZDRkN2EwMDE5NTJmNzE4NzY2ZDRjZmJkYzUxOWQ3NjllY2Q1YWRmMzNiZjQ3ZjE3ZDI2Mjg1NzNiMDJkOTY5ZDgzYjQ5MjhkMDgzNmMzMzU1ODMxYWU0OGJiNGMwMGU0MjBiYWU0NGE5ZjdiNzAzODZlY2U1MmFiM2M5MzQ1OGZkYzA0MmRiMWNlMzNjMzQ0ZDgxYmExZjQ4NmY5NjVhODY2OWIyZWJlMTkyZmFkNmM0MGNmZWY5YWFhMzZhMmNmOWNmMWY3MGU2Y2YyMDU2NjlhYmY4MDQ2ODkzZDkxY2ViNmMyNzQ5YWRhZjlkM2NiMjcwMjE1NDMxZDgxYjhkYWRiZTIzZGUwYzJhOGEyYjk2Mjg5OTE4ZjkyMjcwZWNhYTEwNDNmZjExMDc3NGYzZjM4ZDllNGI4MmE1M2VmZThiOTExMDBkNWUyNDI0NmJlNGJmNTBlNTRiYjUwOGE1MTc2ZTk0M2Y1NTA0N2U2NTg1OTE3ZDY2ZGEzNzJlYTI1ZTQwNDI0YmE3OWNjODlkMmRlNjM4ZmM5YjBkMzZiOTE5NGY0YmNmYjg4ZmY1ZWViOTA4MTc0Mzk0ODdjYjdmMmEwYzQzYTgxMDRjM2M4NzQxN2ZjNWM4MDIyZjUwOTJmM2ZlMTEwNzg4OTcwOWVhYzY5M2NkYjExNzY4NWE0MDA5ZjRhY2U1MTg1MDE1YTg2NjZlYzFhZmU2NTU3Mjk3ZWFiMzQ5NGJkMDVkNDcwZDk1NGQwYTVkNTU2OWY2NGU3MzhhNmY3OTgyNTNlODdkNmJhNWE4MTliNWMwMGJhYWE3NDA2Yjg1MWRlYyIsImlhdCI6MTcwMzUxMTUyNywiZXhwIjoxNzA2MTAzNTI3fQ.RbcOKXIqZR7NjvsqiyX2UcS6m-zeRfehCGEWH9apCLJp5fj7dyern3jom5eKH9iS5rYWTSpL4XJuHhs2CB6f0w'; // Replace with your actual access token
+
+      try {
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Accept-Language': 'en-GB,en-US;q=0.9,en;q=0.8',
+            'Authorization': `Bearer ${token}`,
+            'Connection': 'keep-alive',
+            'Origin': 'http://appv2.simpleo.ai',
+            'Referer': 'http://appv2.simpleo.ai/',
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'doCache': 'false',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.text();
+        setFileData(data);
+        console.log('Data:', data);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
 
   const commentValidationSchema = Yup.object().shape({
     comment: Yup.string().when('isCommentReq', (req, schema) => {
@@ -241,10 +277,23 @@ const TicketDetail = () => {
     }
   });
 
-    useEffect(() => {
+  const fetchTicketDetails = async () => {
+    setProgress(true);
+    const res = await fetcher.post(`deqc/open-assign?fileId=${id}`);
+    setTicketDetails(res.response);
+    setProgress(false);
+  };
+
+  useEffect(() => {
+    if (ticketDetails) {
       handleUserAction();
-      readFile();
-    }, []);
+    }
+  }, [ticketDetails]);
+
+  useEffect(() => {
+    fetchTicketDetails();
+    readFile();
+  }, []);
 
     const handleCloseEvent = () => { 
       setPanelState(false);
@@ -269,133 +318,136 @@ const TicketDetail = () => {
     };
     
     return(
-        <> 
-            <SnackBar {...snackbar} onClose={toggleSnackbar} />
-            <div className='headingRow'>
-                <h1>
-                  <IconButton aria-label="Back" className='mr-2' onClick={() => navigate(-1)}>
-                    <ArrowBackIcon />
-                  </IconButton>
-                  {ticketDetails?.fileName && ticketDetails.fileName.split('.')[0]} 
-                </h1>
+      <> 
+      <SnackBar {...snackbar} onClose={toggleSnackbar} />
+      <div className='headingRow'>
+          <h1>
+            <IconButton aria-label="Back" className='mr-2' onClick={() => navigate(-1)}>
+              <ArrowBackIcon />
+            </IconButton>
+            {ticketDetails?.fileName && ticketDetails.fileName.split('.')[0]} 
+          </h1>
 
-                <button className='btn btn-primary' onClick={() => setPanelState(true)}>Comments</button>
-            </div> 
+          <button className='btn btn-primary' onClick={() => setPanelState(true)}>Comments</button>
+      </div> 
 
-            <div className={style.ticketContainer}>
-              <div className={style.ticketPDFArea}>
-                {progress ? <div className='text-center py-4'><CircularProgress /></div> : null}
-                { fileData && 
-                  <object
-                    data={`data:application/pdf;base64,${fileData}`}
-                    width="100%"
-                    height="500"
-                    className={style.ticketPDF}
-                  ></object>
-                }
-              </div>
-              
-              {processedMeta.length > 0 && (
-                    <section className={style.ticketDetailForm}>
-                        <div className={style.accBox}>
-                            {processedMeta && processedMeta.map((section, index) => (
-                                <Accordion
-                                    key={index}
-                                    expanded={expanded[`panel${index}`]}
-                                    onChange={handleChange(`panel${index}`)}
-                                >
-                                    <AccordionSummary
-                                      expandIcon={<ExpandMoreIcon />}
-                                      aria-controls={`panel${index}bh-content`}
-                                      id={`panel${index}bh-header`}
-                                    >
-                                      <Typography sx={{ width: 'calc(95% - 24px)', fontSize: '14px', flexShrink: 0 }}>
-                                        {section.key}
-                                      </Typography>
-                                      { section.status === userAction.ok && <TaskAltIcon color="success" /> }
-                                      { section.status === userAction.skip && <TaskAltIcon color="error" /> }
-                                    </AccordionSummary>
-                                    <AccordionDetails>
-                                      {renderAccordionContent(section.value, index, section.status)}
-                                      <div className={style.ticActionBtn}>
-                                        <button className='btn btn-success' onClick={() => handleMetaAction(index, userAction.ok)}>Ok</button>
-                                        <button className='btn btn-secondary' onClick={() => handleMetaAction(index, userAction.edit)}>Edit</button>
-                                        <button className='btn btn-primary' onClick={() => handleMetaAction(index, userAction.skip)}>Skip</button> 
-                                      </div>
-                                    </AccordionDetails>
-                                </Accordion>
-                            ))}
-                        </div>
-                        <div className='text-center'>
-                          { userAction?.reject && (
-                            <button className='btn btn-primary mr-2' onClick={() => handleOpenCommentDialog(userAction.reject, ButtonAction.REJECT)}>Reject</button>
-                          )}
-                          <button className='btn btn-primary mr-2' onClick={() => handleOpenCommentDialog(userAction.save, ButtonAction.SAVE)}>Save</button>
-                          <button className='btn btn-primary' onClick={() => handleOpenCommentDialog(userAction.submit, ButtonAction.SUBMIT)}
-                            disabled={!processedMeta.every(section => section.status === userAction.ok || section.status === userAction.skip)}>Submit</button>
-                          
-                        </div>
-                    </section>
-              )}
-            </div>
-
-
-            {/* Ticket Comment panel */}
-            <Drawer
-                anchor="right"
-                open={panelState}
-                onClose={handleCloseEvent}
-                PaperProps={{ 
-                  sx: {width: {xs: '100%', sm: '500px'}},
-                  style: { backgroundColor: '#f5f5f5', padding: '16px' } 
-                }} 
-              >
-                <TicketComments ticketDetails={ticketDetails} closeEvent={handleCloseEvent} />
-            </Drawer>
+      <div className={style.ticketContainer}>
+        <div className={style.ticketPDFArea}>
+          {progress ? <div className='text-center py-4'><CircularProgress /></div> : null}
+          {/* { fileData && 
+            <object
+              data={`data:application/pdf;base64,${fileData}`}
+              width="100%"
+              height="500"
+              className={style.ticketPDF}
+            ></object>
+          } */}
+          { fileData && 
+            <PdfViewer file={fileData}></PdfViewer>
+          }
+        </div>
+        
+        {processedMeta.length > 0 && (
+              <section className={style.ticketDetailForm}>
+                  <div className={style.accBox}>
+                      {processedMeta && processedMeta.map((section, index) => (
+                          <Accordion
+                              key={index}
+                              expanded={expanded[`panel${index}`]}
+                              onChange={handleChange(`panel${index}`)}
+                          >
+                              <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls={`panel${index}bh-content`}
+                                id={`panel${index}bh-header`}
+                              >
+                                <Typography sx={{ width: 'calc(95% - 24px)', fontSize: '14px', flexShrink: 0 }}>
+                                  {section.key}
+                                </Typography>
+                                { section.status === userAction.ok && <TaskAltIcon color="success" /> }
+                                { section.status === userAction.skip && <TaskAltIcon color="error" /> }
+                              </AccordionSummary>
+                              <AccordionDetails>
+                                {renderAccordionContent(section.value, index, section.status)}
+                                <div className={style.ticActionBtn}>
+                                  <button className='btn btn-success' onClick={() => handleMetaAction(index, userAction.ok)}>Ok</button>
+                                  <button className='btn btn-secondary' onClick={() => handleMetaAction(index, userAction.edit)}>Edit</button>
+                                  <button className='btn btn-primary' onClick={() => handleMetaAction(index, userAction.skip)}>Skip</button> 
+                                </div>
+                              </AccordionDetails>
+                          </Accordion>
+                      ))}
+                  </div>
+                  <div className='text-center'>
+                    { userAction?.reject && (
+                      <button className='btn btn-primary mr-2' onClick={() => handleOpenCommentDialog(userAction.reject, ButtonAction.REJECT)}>Reject</button>
+                    )}
+                    <button className='btn btn-primary mr-2' onClick={() => handleOpenCommentDialog(userAction.save, ButtonAction.SAVE)}>Save</button>
+                    <button className='btn btn-primary' onClick={() => handleOpenCommentDialog(userAction.submit, ButtonAction.SUBMIT)}
+                      disabled={!processedMeta.every(section => section.status === userAction.ok || section.status === userAction.skip)}>Submit</button>
+                    
+                  </div>
+              </section>
+        )}
+      </div>
 
 
-            {/* Ticket Comment Popup */}
-            <Dialog className={style.authListModal} open={commentViewDialog}>
-              <DialogTitle className={style.authModalHead}>
-                Ticket Comments
-              </DialogTitle>
-              <IconButton
-                aria-label="close" 
-                onClick={handleCloseCommentPopup}
-                sx={{
-                  position: 'absolute',
-                  right: 8,
-                  top: 8,
-                  color: (theme) => theme.palette.grey[500],
-                }}
-              >
-                <CloseIcon />
-              </IconButton>
-              
-              <DialogContent className={style.commentTextForm}>
-              <form onSubmit={commentFormik.handleSubmit}>
-                 <div className='form-group'>
-                    <label className='label-control'>Comment <span>*</span></label>
-                    <textarea
-                      name="comment"
-                      className='form-control'
-                      value={commentFormik.values.comment}
-                      onChange={commentFormik.handleChange}
-                    />
-                    {commentFormik.touched.comment && commentFormik.errors.comment ? (
-                      <div className={style.textlength}>{commentFormik.errors.comment}</div>
-                    ) : <div className={style.textlength}>
-                        <strong>{maxCharacterLimit - commentFormik.values.comment.length}</strong> character remaining
-                      </div>
-                    }
-                 </div>
-                <div className="text-right">
-                    <button className="btn btn-primary">Save</button>
+      {/* Ticket Comment panel */}
+      <Drawer
+          anchor="right"
+          open={panelState}
+          onClose={handleCloseEvent}
+          PaperProps={{ 
+            sx: {width: {xs: '100%', sm: '500px'}},
+            style: { backgroundColor: '#f5f5f5', padding: '16px' } 
+          }} 
+        >
+          <TicketComments ticketDetails={ticketDetails} closeEvent={handleCloseEvent} />
+      </Drawer>
+
+
+      {/* Ticket Comment Popup */}
+      <Dialog className={style.authListModal} open={commentViewDialog}>
+        <DialogTitle className={style.authModalHead}>
+          Ticket Comments
+        </DialogTitle>
+        <IconButton
+          aria-label="close" 
+          onClick={handleCloseCommentPopup}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+        
+        <DialogContent className={style.commentTextForm}>
+        <form onSubmit={commentFormik.handleSubmit}>
+           <div className='form-group'>
+              <label className='label-control'>Comment <span>*</span></label>
+              <textarea
+                name="comment"
+                className='form-control'
+                value={commentFormik.values.comment}
+                onChange={commentFormik.handleChange}
+              />
+              {commentFormik.touched.comment && commentFormik.errors.comment ? (
+                <div className={style.textlength}>{commentFormik.errors.comment}</div>
+              ) : <div className={style.textlength}>
+                  <strong>{maxCharacterLimit - commentFormik.values.comment.length}</strong> character remaining
                 </div>
-                </form>
-              </DialogContent> 
-            </Dialog>
-        </>
+              }
+           </div>
+          <div className="text-right">
+              <button className="btn btn-primary">Save</button>
+          </div>
+          </form>
+        </DialogContent> 
+      </Dialog>
+  </>
     )
 }
 

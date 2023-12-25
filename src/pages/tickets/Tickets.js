@@ -70,7 +70,8 @@ const Tickets = () => {
                 });
                 return;
             } else {
-                navigate('/ticket/ticket-detail', { state: { ticketDetails: res.response } });
+                navigate(`/ticket/ticket-detail/${id}`);
+                //navigate('/ticket/ticket-detail', { state: { ticketDetails: res.response } });
             }
         } catch (error) {
             console.log(error);
