@@ -27,86 +27,86 @@ import PdfViewer from '../../../components/pdf/PdfViewer';
 import { useParams } from 'react-router-dom';
 
 const TicketDetail = () => {
-    const { id } = useParams();
-    const [panelState, setPanelState] = useState(false);
-    const [commentViewDialog, setCommentViewDialog] = useState(false);
-    const [expanded, setExpanded] = React.useState(false);
-    const [processedMeta, setProcessedMeta] = React.useState([]);
-    const location = useLocation();
-    const navigate = useNavigate();
-    const [ticketDetails, setTicketDetails] = React.useState(null);
-    const [userAction, setUserAction] = React.useState({});
-    const [fileData, setFileData] = React.useState(null);
-    const [progress, setProgress] = useState(false);
-    const maxCharacterLimit = 500;
+  const { id } = useParams();
+  const [panelState, setPanelState] = useState(false);
+  const [commentViewDialog, setCommentViewDialog] = useState(false);
+  const [expanded, setExpanded] = React.useState(false);
+  const [processedMeta, setProcessedMeta] = React.useState([]);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [ticketDetails, setTicketDetails] = React.useState(null);
+  const [userAction, setUserAction] = React.useState({});
+  const [fileData, setFileData] = React.useState(null);
+  const [progress, setProgress] = useState(false);
+  const maxCharacterLimit = 500;
 
-    const [snackbar, setSnackbar] = useState({
-      show: false,
-      status: "",
-      message: "",
-    });
-    const toggleSnackbar = (value) => {
-        setSnackbar(value);
-    };
+  const [snackbar, setSnackbar] = useState({
+    show: false,
+    status: "",
+    message: "",
+  });
+  const toggleSnackbar = (value) => {
+    setSnackbar(value);
+  };
 
-    const handleChange = (panel) => (event, isExpanded) => {
-        setExpanded((prevExpanded) => ({
-          ...prevExpanded,
-          [panel]: isExpanded ? panel : false,
-        }));
-    };
+  const handleChange = (panel) => (event, isExpanded) => {
+    setExpanded((prevExpanded) => ({
+      ...prevExpanded,
+      [panel]: isExpanded ? panel : false,
+    }));
+  };
 
-    const handleInputChange = (sectionIndex, itemIndex, key, newValue) => {
-        const updatedState = JSON.parse(JSON.stringify(processedMeta));
-        const [subSelection, subIndex] = sectionIndex.toString().split('_');
-        if (subIndex) {
-            let currentItem = updatedState[subSelection].value[subIndex];
-            currentItem.value = currentItem.value.map((subItem) => {
-                if (subItem.key === key) {
-                  return { key, value: newValue instanceof Date ? newValue.getTime() : newValue };
-                } else {
-                  return subItem;
-                }
-              });
+  const handleInputChange = (sectionIndex, itemIndex, key, newValue) => {
+    const updatedState = JSON.parse(JSON.stringify(processedMeta));
+    const [subSelection, subIndex] = sectionIndex.toString().split('_');
+    if (subIndex) {
+      let currentItem = updatedState[subSelection].value[subIndex];
+      currentItem.value = currentItem.value.map((subItem) => {
+        if (subItem.key === key) {
+          return { key, value: newValue instanceof Date ? newValue.getTime() : newValue };
         } else {
-          let currentItem = updatedState[sectionIndex].value[itemIndex];
-          currentItem = {
-            value: newValue instanceof Date ? newValue.getTime() : newValue,
-            key: currentItem.key,
-          };
-          updatedState[sectionIndex].value[itemIndex] = currentItem;
+          return subItem;
         }
-        setProcessedMeta(updatedState);
-        console.log(JSON.stringify(updatedState));
-    };
+      });
+    } else {
+      let currentItem = updatedState[sectionIndex].value[itemIndex];
+      currentItem = {
+        value: newValue instanceof Date ? newValue.getTime() : newValue,
+        key: currentItem.key,
+      };
+      updatedState[sectionIndex].value[itemIndex] = currentItem;
+    }
+    setProcessedMeta(updatedState);
+    console.log(JSON.stringify(updatedState));
+  };
 
-    const saveInboxItem = async (status, comment) => {
-        try {
-            const payload = {
-                id: ticketDetails.id,  
-                status: status,
-                comment: comment
-            }
-            if (hasAuthority(AUTHORITY.USER_DE)) {
-                payload.deProcessedMeta = JSON.stringify(processedMeta);
-            } else {
-                payload.qcProcessedMeta = JSON.stringify(processedMeta);
-            }
+  const saveInboxItem = async (status, comment) => {
+    try {
+      const payload = {
+        id: ticketDetails.id,
+        status: status,
+        comment: comment
+      }
+      if (hasAuthority(AUTHORITY.USER_DE)) {
+        payload.deProcessedMeta = JSON.stringify(processedMeta);
+      } else {
+        payload.qcProcessedMeta = JSON.stringify(processedMeta);
+      }
 
-            const res = await fetcher.post(`deqc/save-inbox-item`, payload);
-            setSnackbar({
-              show: true,
-              status: res.status === 200 ? 'success' : 'error',
-              message: res.status === 200 ? 'Saved successfully' : res?.message
-            });
-        } catch (error) {
-          console.log(error);
-        }
-    };
+      const res = await fetcher.post(`deqc/save-inbox-item`, payload);
+      setSnackbar({
+        show: true,
+        status: res.status === 200 ? 'success' : 'error',
+        message: res.status === 200 ? 'Saved successfully' : res?.message
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-    const disableInput = (status) => {
-      return status === userAction.ok || status === userAction.skip;
-    };
+  const disableInput = (status) => {
+    return status === userAction.ok || status === userAction.skip;
+  };
 
   const renderAccordionContent = (data, parentIndex, status) => {
     return (
@@ -139,14 +139,14 @@ const TicketDetail = () => {
                     <>
                       <label className='label-control'>{item.key}</label>
                       <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                <DatePicker
-                                    className="datepickerStyle"
-                                    name={item.key}
-                                    value={!(typeof item.value === 'number') ? convertToDateObject(item.value) : item.value}
-                                    onChange={(date) => handleInputChange(parentIndex, itemIndex, item.key, date)}
-                                    renderInput={(params) => <TextField {...params} />}
-                                />
-                            </LocalizationProvider>
+                        <DatePicker
+                          className="datepickerStyle"
+                          name={item.key}
+                          value={!(typeof item.value === 'number') ? convertToDateObject(item.value) : item.value}
+                          onChange={(date) => handleInputChange(parentIndex, itemIndex, item.key, date)}
+                          renderInput={(params) => <TextField {...params} />}
+                        />
+                      </LocalizationProvider>
                     </>
                   ) : (
                     // If item.key is not "date," render the input field
@@ -221,37 +221,37 @@ const TicketDetail = () => {
     setProgress(false);
   };
 
-  
-    const dummyPdfHighRotateTest = async () => {
-      const url = 'http://204.236.168.121:9090/v1/team/read-file-content?fileId=29&teamId=80';
-      const token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI5NTZlMjgxYWIyYmFlNmNhYThhZjhlYTExMzVlODE4NGEzNGVkMzI4MzkwOTUyZmI5M2FiZTBkNTY1OTUzZmZiZjgyYjFjMTljODZhYmQ2Njk0OGVlZDRkN2EwMDE5NTJmNzE4NzY2ZDRjZmJkYzUxOWQ3NjllY2Q1YWRmMzNiZjQ3ZjE3ZDI2Mjg1NzNiMDJkOTY5ZDgzYjQ5MjhkMDgzNmMzMzU1ODMxYWU0OGJiNGMwMGU0MjBiYWU0NGE5ZjdiNzAzODZlY2U1MmFiM2M5MzQ1OGZkYzA0MmRiMWNlMzNjMzQ0ZDgxYmExZjQ4NmY5NjVhODY2OWIyZWJlMTkyZmFkNmM0MGNmZWY5YWFhMzZhMmNmOWNmMWY3MGU2Y2YyMDU2NjlhYmY4MDQ2ODkzZDkxY2ViNmMyNzQ5YWRhZjlkM2NiMjcwMjE1NDMxZDgxYjhkYWRiZTIzZGUwYzJhOGEyYjk2Mjg5OTE4ZjkyMjcwZWNhYTEwNDNmZjExMDc3NGYzZjM4ZDllNGI4MmE1M2VmZThiOTExMDBkNWUyNDI0NmJlNGJmNTBlNTRiYjUwOGE1MTc2ZTk0M2Y1NTA0N2U2NTg1OTE3ZDY2ZGEzNzJlYTI1ZTQwNDI0YmE3OWNjODlkMmRlNjM4ZmM5YjBkMzZiOTE5NGY0YmNmYjg4ZmY1ZWViOTA4MTc0Mzk0ODdjYjdmMmEwYzQzYTgxMDRjM2M4NzQxN2ZjNWM4MDIyZjUwOTJmM2ZlMTEwNzg4OTcwOWVhYzY5M2NkYjExNzY4NWE0MDA5ZjRhY2U1MTg1MDE1YTg2NjZlYzFhZmU2NTU3Mjk3ZWFiMzQ5NGJkMDVkNDcwZDk1NGQwYTVkNTU2OWY2NGU3MzhhNmY3OTgyNTNlODdkNmJhNWE4MTliNWMwMGJhYWE3NDA2Yjg1MWRlYyIsImlhdCI6MTcwMzUxMTUyNywiZXhwIjoxNzA2MTAzNTI3fQ.RbcOKXIqZR7NjvsqiyX2UcS6m-zeRfehCGEWH9apCLJp5fj7dyern3jom5eKH9iS5rYWTSpL4XJuHhs2CB6f0w'; // Replace with your actual access token
 
-      try {
-        const response = await fetch(url, {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/json, text/plain, */*',
-            'Accept-Language': 'en-GB,en-US;q=0.9,en;q=0.8',
-            'Authorization': `Bearer ${token}`,
-            'Connection': 'keep-alive',
-            'Origin': 'http://appv2.simpleo.ai',
-            'Referer': 'http://appv2.simpleo.ai/',
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-            'doCache': 'false',
-          },
-        });
+  const dummyPdfHighRotateTest = async () => {
+    const url = 'http://204.236.168.121:9090/v1/team/read-file-content?fileId=29&teamId=80';
+    const token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI5NTZlMjgxYWIyYmFlNmNhYThhZjhlYTExMzVlODE4NGEzNGVkMzI4MzkwOTUyZmI5M2FiZTBkNTY1OTUzZmZiZjgyYjFjMTljODZhYmQ2Njk0OGVlZDRkN2EwMDE5NTJmNzE4NzY2ZDRjZmJkYzUxOWQ3NjllY2Q1YWRmMzNiZjQ3ZjE3ZDI2Mjg1NzNiMDJkOTY5ZDgzYjQ5MjhkMDgzNmMzMzU1ODMxYWU0OGJiNGMwMGU0MjBiYWU0NGE5ZjdiNzAzODZlY2U1MmFiM2M5MzQ1OGZkYzA0MmRiMWNlMzNjMzQ0ZDgxYmExZjQ4NmY5NjVhODY2OWIyZWJlMTkyZmFkNmM0MGNmZWY5YWFhMzZhMmNmOWNmMWY3MGU2Y2YyMDU2NjlhYmY4MDQ2ODkzZDkxY2ViNmMyNzQ5YWRhZjlkM2NiMjcwMjE1NDMxZDgxYjhkYWRiZTIzZGUwYzJhOGEyYjk2Mjg5OTE4ZjkyMjcwZWNhYTEwNDNmZjExMDc3NGYzZjM4ZDllNGI4MmE1M2VmZThiOTExMDBkNWUyNDI0NmJlNGJmNTBlNTRiYjUwOGE1MTc2ZTk0M2Y1NTA0N2U2NTg1OTE3ZDY2ZGEzNzJlYTI1ZTQwNDI0YmE3OWNjODlkMmRlNjM4ZmM5YjBkMzZiOTE5NGY0YmNmYjg4ZmY1ZWViOTA4MTc0Mzk0ODdjYjdmMmEwYzQzYTgxMDRjM2M4NzQxN2ZjNWM4MDIyZjUwOTJmM2ZlMTEwNzg4OTcwOWVhYzY5M2NkYjExNzY4NWE0MDA5ZjRhY2U1MTg1MDE1YTg2NjZlYzFhZmU2NTU3Mjk3ZWFiMzQ5NGJkMDVkNDcwZDk1NGQwYTVkNTU2OWY2NGU3MzhhNmY3OTgyNTNlODdkNmJhNWE4MTliNWMwMGJhYWE3NDA2Yjg1MWRlYyIsImlhdCI6MTcwMzUxMTUyNywiZXhwIjoxNzA2MTAzNTI3fQ.RbcOKXIqZR7NjvsqiyX2UcS6m-zeRfehCGEWH9apCLJp5fj7dyern3jom5eKH9iS5rYWTSpL4XJuHhs2CB6f0w'; // Replace with your actual access token
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json, text/plain, */*',
+          'Accept-Language': 'en-GB,en-US;q=0.9,en;q=0.8',
+          'Authorization': `Bearer ${token}`,
+          'Connection': 'keep-alive',
+          'Origin': 'http://appv2.simpleo.ai',
+          'Referer': 'http://appv2.simpleo.ai/',
+          'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+          'doCache': 'false',
+        },
+      });
 
-        const data = await response.text();
-        setFileData(data);
-        console.log('Data:', data);
-      } catch (error) {
-        console.error('Error:', error);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
       }
-    };
+
+      const data = await response.text();
+      setFileData(data);
+      console.log('Data:', data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
 
   const commentValidationSchema = Yup.object().shape({
@@ -263,7 +263,7 @@ const TicketDetail = () => {
     })
   });
 
-  const initialValues =  {
+  const initialValues = {
     comment: '',
     status: 0,
     isCommentReq: false
@@ -295,41 +295,41 @@ const TicketDetail = () => {
     readFile();
   }, []);
 
-    const handleCloseEvent = () => { 
-      setPanelState(false);
-    };
+  const handleCloseEvent = () => {
+    setPanelState(false);
+  };
 
-    const handleOpenCommentDialog = (status, action) => {
-      commentFormik.values.status = status;
-      if (action === ButtonAction.REJECT) {
-        commentFormik.values.isCommentReq = true;
-        setCommentViewDialog(true);
-      } else if (action === ButtonAction.SUBMIT) {
-        commentFormik.values.isCommentReq = false;
-        setCommentViewDialog(true);
-      } else {
-        saveInboxItem(status, commentFormik.values.comment);
-      }
-    };
+  const handleOpenCommentDialog = (status, action) => {
+    commentFormik.values.status = status;
+    if (action === ButtonAction.REJECT) {
+      commentFormik.values.isCommentReq = true;
+      setCommentViewDialog(true);
+    } else if (action === ButtonAction.SUBMIT) {
+      commentFormik.values.isCommentReq = false;
+      setCommentViewDialog(true);
+    } else {
+      saveInboxItem(status, commentFormik.values.comment);
+    }
+  };
 
-    const handleCloseCommentPopup = () => {
-      setCommentViewDialog(false);
-      commentFormik.setValues(initialValues);
-    };
-    
-    return(
-      <> 
+  const handleCloseCommentPopup = () => {
+    setCommentViewDialog(false);
+    commentFormik.setValues(initialValues);
+  };
+
+  return (
+    <>
       <SnackBar {...snackbar} onClose={toggleSnackbar} />
       <div className='headingRow'>
-          <h1>
-            <IconButton aria-label="Back" className='mr-2' onClick={() => navigate(-1)}>
-              <ArrowBackIcon />
-            </IconButton>
-            {ticketDetails?.fileName && ticketDetails.fileName.split('.')[0]} 
-          </h1>
+        <h1>
+          <IconButton aria-label="Back" className='mr-2' onClick={() => navigate(-1)}>
+            <ArrowBackIcon />
+          </IconButton>
+          {ticketDetails?.fileName && ticketDetails.fileName.split('.')[0]}
+        </h1>
 
-          <button className='btn btn-primary' onClick={() => setPanelState(true)}>Comments</button>
-      </div> 
+        <button className='btn btn-primary' onClick={() => setPanelState(true)}>Comments</button>
+      </div>
 
       <div className={style.ticketContainer}>
         <div className={style.ticketPDFArea}>
@@ -342,67 +342,67 @@ const TicketDetail = () => {
               className={style.ticketPDF}
             ></object>
           } */}
-          { fileData && 
+          {fileData &&
             <PdfViewer file={fileData}></PdfViewer>
           }
         </div>
-        
+
         {processedMeta.length > 0 && (
-              <section className={style.ticketDetailForm}>
-                  <div className={style.accBox}>
-                      {processedMeta && processedMeta.map((section, index) => (
-                          <Accordion
-                              key={index}
-                              expanded={expanded[`panel${index}`]}
-                              onChange={handleChange(`panel${index}`)}
-                          >
-                              <AccordionSummary
-                                expandIcon={<ExpandMoreIcon />}
-                                aria-controls={`panel${index}bh-content`}
-                                id={`panel${index}bh-header`}
-                              >
-                                <Typography sx={{ width: 'calc(95% - 24px)', fontSize: '14px', flexShrink: 0 }}>
-                                  {section.key}
-                                </Typography>
-                                { section.status === userAction.ok && <TaskAltIcon color="success" /> }
-                                { section.status === userAction.skip && <TaskAltIcon color="error" /> }
-                              </AccordionSummary>
-                              <AccordionDetails>
-                                {renderAccordionContent(section.value, index, section.status)}
-                                <div className={style.ticActionBtn}>
-                                  <button className='btn btn-success' onClick={() => handleMetaAction(index, userAction.ok)}>Ok</button>
-                                  <button className='btn btn-secondary' onClick={() => handleMetaAction(index, userAction.edit)}>Edit</button>
-                                  <button className='btn btn-primary' onClick={() => handleMetaAction(index, userAction.skip)}>Skip</button> 
-                                </div>
-                              </AccordionDetails>
-                          </Accordion>
-                      ))}
-                  </div>
-                  <div className='text-center'>
-                    { userAction?.reject && (
-                      <button className='btn btn-primary mr-2' onClick={() => handleOpenCommentDialog(userAction.reject, ButtonAction.REJECT)}>Reject</button>
-                    )}
-                    <button className='btn btn-primary mr-2' onClick={() => handleOpenCommentDialog(userAction.save, ButtonAction.SAVE)}>Save</button>
-                    <button className='btn btn-primary' onClick={() => handleOpenCommentDialog(userAction.submit, ButtonAction.SUBMIT)}
-                      disabled={!processedMeta.every(section => section.status === userAction.ok || section.status === userAction.skip)}>Submit</button>
-                    
-                  </div>
-              </section>
+          <section className={style.ticketDetailForm}>
+            <div className={style.accBox}>
+              {processedMeta && processedMeta.map((section, index) => (
+                <Accordion
+                  key={index}
+                  expanded={expanded[`panel${index}`]}
+                  onChange={handleChange(`panel${index}`)}
+                >
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls={`panel${index}bh-content`}
+                    id={`panel${index}bh-header`}
+                  >
+                    <Typography sx={{ width: 'calc(95% - 24px)', fontSize: '14px', flexShrink: 0 }}>
+                      {section.key}
+                    </Typography>
+                    {section.status === userAction.ok && <TaskAltIcon color="success" />}
+                    {section.status === userAction.skip && <TaskAltIcon color="error" />}
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    {renderAccordionContent(section.value, index, section.status)}
+                    <div className={style.ticActionBtn}>
+                      <button className='btn btn-success' onClick={() => handleMetaAction(index, userAction.ok)}>Ok</button>
+                      <button className='btn btn-secondary' onClick={() => handleMetaAction(index, userAction.edit)}>Edit</button>
+                      <button className='btn btn-primary' onClick={() => handleMetaAction(index, userAction.skip)}>Skip</button>
+                    </div>
+                  </AccordionDetails>
+                </Accordion>
+              ))}
+            </div>
+            <div className='text-center'>
+              {userAction?.reject && (
+                <button className='btn btn-primary mr-2' onClick={() => handleOpenCommentDialog(userAction.reject, ButtonAction.REJECT)}>Reject</button>
+              )}
+              <button className='btn btn-primary mr-2' onClick={() => handleOpenCommentDialog(userAction.save, ButtonAction.SAVE)}>Save</button>
+              <button className='btn btn-primary' onClick={() => handleOpenCommentDialog(userAction.submit, ButtonAction.SUBMIT)}
+                disabled={!processedMeta.every(section => section.status === userAction.ok || section.status === userAction.skip)}>Submit</button>
+
+            </div>
+          </section>
         )}
       </div>
 
 
       {/* Ticket Comment panel */}
       <Drawer
-          anchor="right"
-          open={panelState}
-          onClose={handleCloseEvent}
-          PaperProps={{ 
-            sx: {width: {xs: '100%', sm: '500px'}},
-            style: { backgroundColor: '#f5f5f5', padding: '16px' } 
-          }} 
-        >
-          <TicketComments ticketDetails={ticketDetails} closeEvent={handleCloseEvent} />
+        anchor="right"
+        open={panelState}
+        onClose={handleCloseEvent}
+        PaperProps={{
+          sx: { width: { xs: '100%', sm: '500px' } },
+          style: { backgroundColor: '#f5f5f5', padding: '16px' }
+        }}
+      >
+        <TicketComments ticketDetails={ticketDetails} closeEvent={handleCloseEvent} />
       </Drawer>
 
 
@@ -412,7 +412,7 @@ const TicketDetail = () => {
           Ticket Comments
         </DialogTitle>
         <IconButton
-          aria-label="close" 
+          aria-label="close"
           onClick={handleCloseCommentPopup}
           sx={{
             position: 'absolute',
@@ -423,10 +423,10 @@ const TicketDetail = () => {
         >
           <CloseIcon />
         </IconButton>
-        
+
         <DialogContent className={style.commentTextForm}>
-        <form onSubmit={commentFormik.handleSubmit}>
-           <div className='form-group'>
+          <form onSubmit={commentFormik.handleSubmit}>
+            <div className='form-group'>
               <label className='label-control'>Comment <span>*</span></label>
               <textarea
                 name="comment"
@@ -437,18 +437,18 @@ const TicketDetail = () => {
               {commentFormik.touched.comment && commentFormik.errors.comment ? (
                 <div className={style.textlength}>{commentFormik.errors.comment}</div>
               ) : <div className={style.textlength}>
-                  <strong>{maxCharacterLimit - commentFormik.values.comment.length}</strong> character remaining
-                </div>
+                <strong>{maxCharacterLimit - commentFormik.values.comment.length}</strong> character remaining
+              </div>
               }
-           </div>
-          <div className="text-right">
+            </div>
+            <div className="text-right">
               <button className="btn btn-primary">Save</button>
-          </div>
+            </div>
           </form>
-        </DialogContent> 
+        </DialogContent>
       </Dialog>
-  </>
-    )
+    </>
+  )
 }
 
 export default TicketDetail;
