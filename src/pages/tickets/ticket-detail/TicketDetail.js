@@ -278,10 +278,8 @@ const TicketDetail = () => {
   });
 
   const fetchTicketDetails = async () => {
-    setProgress(true);
     const res = await fetcher.post(`deqc/open-assign?fileId=${id}`);
     setTicketDetails(res.response);
-    setProgress(false);
   };
 
   useEffect(() => {
