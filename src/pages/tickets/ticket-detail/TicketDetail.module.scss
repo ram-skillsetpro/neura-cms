@@ -4,8 +4,9 @@
 .ticketContainer{
     display: flex;
     .ticketPDFArea{
-        flex: 1;
-        height: calc(100vh - 150px); 
+        flex: 0 0 auto;
+        width: calc(100% - 324px);
+        // height: calc(100vh - 150px); 
         margin-right: 24px;
         .ticketPDF{
             width: 100%;
