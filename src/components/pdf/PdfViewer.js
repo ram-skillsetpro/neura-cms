@@ -12,6 +12,11 @@ import { useLocation } from "react-router";
 import HighlightList from './highlights-list';
 import "./style/pdf-viewer.scss";
 import { Button, Dialog, DialogActions } from '@mui/material';
+import AutorenewIcon from '@mui/icons-material/Autorenew';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import CloseIcon from '@mui/icons-material/Close';
+import SearchIcon from '@mui/icons-material/Search';
 
 const PdfSpinner = () => <div>Loading...</div>;
 const HighlightPopup = ({ comment }) => (
@@ -46,8 +51,7 @@ const PdfViewer = ({ file, fileId }) => {
     const { hash } = useLocation();
 
     const consoleRef = useRef(window.console.log);
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+ 
   const scrollViewerTo = useRef((highlight) => {});
 
   const resetHighlights = () => {
@@ -180,8 +184,7 @@ const PdfViewer = ({ file, fileId }) => {
       }
     }
   };
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+ 
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchTerm) {
@@ -190,7 +193,7 @@ const PdfViewer = ({ file, fileId }) => {
     }
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  
   const resetPdfSearch = () => {
     setSearchActive(false);
     setSearchTerm("");
@@ -348,7 +351,7 @@ const PdfViewer = ({ file, fileId }) => {
 
   return (
     <>
-      <div className="App" style={{ display: "flex", height: `${height}px`, width: `${width}px` }}>
+      <div className="App" style={{ display: "flex", height: `${height}px`, width: `${width}px`, maxWidth: '100%' }}>
 
           {/* <div style={{ height: "97vh", display: "flex", justifyContent: "center" }}>
             <canvas ref={canvasRef}></canvas>
@@ -363,6 +366,7 @@ const PdfViewer = ({ file, fileId }) => {
           style={{
             height: `${height}px`,
             width: `${width}px`,
+            maxWidth: '100%',
             position: "relative",
           }}
         >
@@ -379,12 +383,12 @@ const PdfViewer = ({ file, fileId }) => {
               {searchActive ? (
                 <div onClick={resetPdfSearch} title="Clear Search">
                   <button className={`button-red msg-delete-btn search-btn`}>
-                    Close
+                    <CloseIcon />
                   </button>
                 </div>
               ) : (
                 <button onClick={handleSearch} className={`button-red msg-delete-btn search-btn`}>
-                  Search
+                  <SearchIcon />
                 </button>
               )}
             </div>
@@ -395,7 +399,7 @@ const PdfViewer = ({ file, fileId }) => {
                     onClick={handleSearchPrev}
                     className={`button-red msg-delete-btn pdf-rotate-btn next-prev-btn`}
                   >
-                    Up
+                    <KeyboardArrowUpIcon />
                   </button>
                 </div>
                 <div className="search-pager">
@@ -406,13 +410,14 @@ const PdfViewer = ({ file, fileId }) => {
                     onClick={handleSearchNext}
                     className={`button-red msg-delete-btn pdf-rotate-btn next-prev-btn`}
                   >
-                    Down
+                    <KeyboardArrowDownIcon />
                   </button>
                 </div>
               </>
             )}
             <div onClick={rotatePdf} title="Rotate Page">
               <button className={`button-red msg-delete-btn pdf-rotate-btn`}>
+                <AutorenewIcon fontSize="small" className='mr-1' />
                 Rotate
               </button>
             </div>
@@ -488,7 +493,6 @@ const PdfViewer = ({ file, fileId }) => {
                       <Popup
                         popupContent={<HighlightPopup {...highlight} />}
                         onMouseOver={(popupContent) => {
-                          // eslint-disable-next-line @typescript-eslint/no-unused-vars
                           return setTip(highlight, (highlight) => popupContent);
                         }}
                         onMouseOut={hideTip}
@@ -506,9 +510,9 @@ const PdfViewer = ({ file, fileId }) => {
         </div>
       </div>
 
-      <Dialog open={isOpen} onClose={() => { setIsOpen(false)}}>
-        <div style={{ height: "97vh", display: "flex", justifyContent: "center" }}>
-          <canvas ref={canvasRef}></canvas>
+      <Dialog open={isOpen} fullScreen onClose={() => { setIsOpen(false)}}>
+        <div style={{ height: "calc(100vh - 55px)", display: "flex", justifyContent: "center" }}>
+          <canvas ref={canvasRef} className='pdfDialogCanvas'></canvas>
         </div>
         <DialogActions>
           <Button onClick={rotatePdf}>Rotate</Button>
