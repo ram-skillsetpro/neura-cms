@@ -29,9 +29,13 @@ const Sidebar = ({closeEvent}) => {
   const [navs, setNavs] = useState([]);
   
   useEffect(() => {
+    if (authority.includes(AUTHORITY.USER_SUPER_ADMIN)) {
+      setNavs(prevNavs => [...prevNavs,
+        {url: PageUrls.DASHBOARD, title: 'Dashboard', icon: <DashboardIcon /> }
+      ]);
+    }
     if(authority.includes(AUTHORITY.UPDATE_DEMO_USER)){
       setNavs(prevNavs => [...prevNavs,
-        {url: PageUrls.DASHBOARD, title: 'Dashboard', icon: <DashboardIcon /> },
         {url: PageUrls.COMPANY, title: 'Manage Company', icon: <BusinessSharpIcon /> },
         {url: PageUrls.LEADS, title: 'Manage Leads', icon: <PeopleOutlineSharpIcon />}, 
         // {url: PageUrls.REPORTS, title: 'Reports', icon: <Assignment />}, 
@@ -40,20 +44,10 @@ const Sidebar = ({closeEvent}) => {
           icon: <ManageAccountsIcon />, 
           subNavs: [
             {url: PageUrls.USERS, title: 'Users'},
-            {url: PageUrls.ROLES, title: 'Roles'},
+            authority.includes(AUTHORITY.ROLE_ADMINISTRATOR) ? { url: PageUrls.ROLES, title: 'Roles'} : null,
             {url: PageUrls.AUTHORITIES, title: 'Authorities'},
-          ]
+          ].filter(nav => nav !== null)
         }
-
-        // Sub menu format
-        // {
-        //   title: 'Menu 1', 
-        //   icon: <PeopleOutlineSharpIcon />, 
-        //   subNavs: [
-        //     {url: '/', title: 'Submenu 1'},
-        //     {url: '/', title: 'Submenu 2'},
-        //   ]
-        // }
       ]);
     }
     if(authority.includes(AUTHORITY.CLAUSE_PROMPT_MANAGEMENT)){

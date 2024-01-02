@@ -65,12 +65,16 @@ const Login = () => {
   }
 
   const navigateTo = () => {
-    if (hasAuthority(AUTHORITY.USER_QC) || hasAuthority(AUTHORITY.USER_DE)) {
-      navigate(PageUrls.TICKETS);
-    } else if (hasAuthority(AUTHORITY.USER_SUPER_ADMIN)) {
+    if (hasAuthority(AUTHORITY.USER_SUPER_ADMIN)) {
       navigate(PageUrls.DASHBOARD);
+    } else if (hasAuthority(AUTHORITY.USER_QC) || hasAuthority(AUTHORITY.USER_DE)) {
+      navigate(PageUrls.TICKETS);
+    } else if (hasAuthority(AUTHORITY.CLAUSE_PROMPT_MANAGEMENT)) {
+      navigate(PageUrls.CONTRACT);
+    } else if (hasAuthority(AUTHORITY.UPDATE_DEMO_USER)) {
+      navigate(PageUrls.COMPANY);
     } else {
-      navigate(PageUrls.INDEX);
+      navigate(PageUrls.DASHBOARD);
     }
   };
 

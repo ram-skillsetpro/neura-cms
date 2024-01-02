@@ -39,7 +39,7 @@ export const AUTHORITY_ROUT_MAP = [
     { route_regx: PageUrls.ROLES, authority: [AUTHORITY.ROLE_ADMINISTRATOR] },
     { route_regx: PageUrls.TICKETS, authority: [AUTHORITY.USER_QC, AUTHORITY.USER_DE] },
     { route_regx: PageRouteRegx.TICKET_DETAIL, authority: [AUTHORITY.USER_QC, AUTHORITY.USER_DE] },
-    { route_regx: PageUrls.USER_SUPER_ADMIN, authority: [AUTHORITY.USER_SUPER_ADMIN] }
+    { route_regx: PageUrls.DASHBOARD, authority: [AUTHORITY.USER_SUPER_ADMIN] }
 ];
 
 export const ProcessMetaStatus = {
