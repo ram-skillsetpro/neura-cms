@@ -12,7 +12,7 @@ const port = process.env.PORT || 3000;
 app.use(express.static(path.join(__dirname, 'build')));
 
 // Route for handling requests
-app.get("/!*", (_, res) => {
+app.get("/*", (_, res) => {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
