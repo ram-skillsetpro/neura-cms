@@ -13,6 +13,10 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
+/*app.get("/!*", (_, res) => {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});*/
+
 // Start the server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
