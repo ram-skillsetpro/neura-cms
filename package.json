@@ -35,6 +35,8 @@
     "eject": "react-scripts eject",
     "start": "env-cmd -f ./env/development.env react-scripts start",
     "build": "env-cmd -f ./env/development.env react-scripts build",
+    "build:devhub": "env-cmd -f ./env/development.env react-scripts build && node generate-server.js",
+    "start:devhub": "pm2 start ecosystem.config.js",
     "build:production": "env-cmd -f ./env/production.env react-scripts build && node generate-server.js",
     "start:production": "pm2 start ecosystem.config.js"
   },
