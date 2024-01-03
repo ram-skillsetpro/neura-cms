@@ -16,11 +16,6 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-// Handle 404 errors
-app.use((req, res) => {
-  res.status(200).sendFile(path.join(__dirname, 'build', 'index.html'));
-});
-
 // Start the server
 app.listen(port, () => {
   console.log(\`Server is running on port \${port}\`);
