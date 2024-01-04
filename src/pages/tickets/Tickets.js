@@ -35,10 +35,15 @@ const Tickets = () => {
     
     const fetchTickets = async () => {
         try {
-          const res = await fetcher.get(`deqc/inbox`);
-          setTickets(res.response);
+            setProgress(true);
+            const res = await fetcher.get(`deqc/inbox`);
+            if (res?.status === 200) {
+                setTickets(res.response);
+            }
         } catch (error) {
           console.log(error);
+        } finally {
+            setProgress(false);
         }
     };
 
@@ -115,32 +120,40 @@ const Tickets = () => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                { tickets.map((ticket, index) => (
-                                    // please make it dynamic class on the table row, when ticket reassign to DE -  className="reassign"
-                                    <TableRow key={index}> 
-                                        <TableCell>
-                                            <Link to="#" onClick={(event) => routTicketDetails(ticket.id, event)}>
-                                                {ticket.id}
-                                            </Link>
-                                        </TableCell>
-                                        <TableCell>{ticket.companyName}</TableCell>
-                                        <TableCell>{ticket.contractType}</TableCell>
-                                        { hasAuthority(AUTHORITY.USER_QC) ? <TableCell>{ticket.qcOwnerName}</TableCell> : null }
-                                        <TableCell>{longToDate(ticket.createdDate)}</TableCell>
-                                        <TableCell>{daysDifference(ticket.createdDate)} Days</TableCell>
-                                        <TableCell>
-                                            <Link to="#" className="mr-3" onClick={(event) => routTicketDetails(ticket.id, event)}>
-                                                <EditNoteIcon />
-                                            </Link>
-                                            { hasAuthority(AUTHORITY.USER_QC) && (
-                                                ticket.qcOwner ? <LockIcon /> : <LockOpenIcon />
-                                            )}
-                                            { hasAuthority(AUTHORITY.USER_DE) && (
-                                                ticket.deOwner ? <LockIcon /> : <LockOpenIcon />
-                                            )}
+                                {!progress && tickets.length === 0 ? (
+                                    <TableRow>
+                                        <TableCell colSpan={6} align="center">
+                                            No records found
                                         </TableCell>
                                     </TableRow>
-                                ))}
+                                ) : (
+                                    tickets.map((ticket, index) => (
+                                        // please make it dynamic class on the table row, when ticket reassign to DE -  className="reassign"
+                                        <TableRow key={index}> 
+                                            <TableCell>
+                                                <Link to="#" onClick={(event) => routTicketDetails(ticket.id, event)}>
+                                                    {ticket.id}
+                                                </Link>
+                                            </TableCell>
+                                            <TableCell>{ticket.companyName}</TableCell>
+                                            <TableCell>{ticket.contractType}</TableCell>
+                                            { hasAuthority(AUTHORITY.USER_QC) ? <TableCell>{ticket.qcOwnerName}</TableCell> : null }
+                                            <TableCell>{longToDate(ticket.createdDate)}</TableCell>
+                                            <TableCell>{daysDifference(ticket.createdDate)} Days</TableCell>
+                                            <TableCell>
+                                                <Link to="#" className="mr-3" onClick={(event) => routTicketDetails(ticket.id, event)}>
+                                                    <EditNoteIcon />
+                                                </Link>
+                                                { hasAuthority(AUTHORITY.USER_QC) && (
+                                                    ticket.qcOwner ? <LockIcon /> : <LockOpenIcon />
+                                                )}
+                                                { hasAuthority(AUTHORITY.USER_DE) && (
+                                                    ticket.deOwner ? <LockIcon /> : <LockOpenIcon />
+                                                )}
+                                            </TableCell>
+                                        </TableRow>
+                                    ))
+                                )}
                             </TableBody>
                         </Table>
                     </TableContainer>
