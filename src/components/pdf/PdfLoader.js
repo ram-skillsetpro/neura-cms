@@ -50,10 +50,7 @@ class PdfLoader extends Component {
     const { pdfDocument: discardedDocument } = this.state;
     this.setState({ pdfDocument: null, error: null });
 
-    GlobalWorkerOptions.workerSrc = new URL(
-      "pdfjs-dist/build/pdf.worker.min.js",
-      import.meta.url,
-    ).toString();
+    GlobalWorkerOptions.workerSrc = 'https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
 
     Promise.resolve()
       .then(() => discardedDocument && discardedDocument.destroy())
