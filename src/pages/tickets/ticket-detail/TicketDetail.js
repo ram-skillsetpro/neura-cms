@@ -94,6 +94,7 @@ const TicketDetail = () => {
       }
 
       const res = await fetcher.post(`deqc/save-inbox-item`, payload);
+      handleCloseCommentPopup();
       setSnackbar({
         show: true,
         status: res.status === 200 ? 'success' : 'error',
@@ -345,7 +346,7 @@ const TicketDetail = () => {
           }
         </div>
 
-        {processedMeta.length > 0 && (
+        {processedMeta?.length > 0 && (
           <section className={style.ticketDetailForm}>
             <div className={style.accBox}>
               {processedMeta && processedMeta.map((section, index) => (
