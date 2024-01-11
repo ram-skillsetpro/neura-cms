@@ -13,7 +13,8 @@ export const PageUrls = {
     TICKETS: '/tickets',
     TICKET_DETAIL: '/ticket/ticket-detail/:id',
     DASHBOARD: '/dashboard',
-    USERS: '/users'
+    USERS: '/users',
+    SETTINGS: '/settings'
 };
 
 export const PageRouteRegx = {
