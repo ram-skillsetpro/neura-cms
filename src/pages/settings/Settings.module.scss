@@ -1,0 +1,15 @@
+@import '../../assets/scss/mixins';
+@import '../../assets/scss/variables';
+
+.resetPasswordPage{
+    max-width: 400px;
+    background-color: $white; 
+    margin: 20px;
+    h2{ 
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        padding-bottom: 16px;
+        border-bottom: $lightGrey_v1 solid 1px;
+    }
+}

@@ -3,6 +3,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import SnackBar from '../../components/SnackBar';
 import fetcher from '../../utils/fetcher';
+import style from './Settings.module.scss';
 
 const ChangePassword = () => {
 
@@ -39,39 +40,45 @@ const ChangePassword = () => {
   });
 
   return (
-    <>
+    <div className={`${style.resetPasswordPage} whiteContainer`}>
       <SnackBar {...snackbar} onClose={toggleSnackbar} />
       <form onSubmit={formik.handleSubmit}>
-        <div>
-          <label htmlFor="oldPassword">Old Password</label>
+        <h2>Reset Password</h2>
+        <div className='form-group'>
+          <label htmlFor="oldPassword" className='label-control'>Old Password</label>
           <input
             type="password"
             id="oldPassword"
             name="oldPassword"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            value={formik.values.oldPassword} />
+            value={formik.values.oldPassword}
+            className='form-control'  
+          />
           {formik.touched.oldPassword && formik.errors.oldPassword && (
-            <div>{formik.errors.oldPassword}</div>
+            <div className='errorMsg'>{formik.errors.oldPassword}</div>
           )}
         </div>
 
-        <div>
-          <label htmlFor="newPassword">New Password</label>
+        <div className='form-group'>
+          <label htmlFor="newPassword" className='label-control'>New Password</label>
           <input
             type="password"
             id="newPassword"
             name="newPassword"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            value={formik.values.newPassword} />
+            value={formik.values.newPassword} 
+            className='form-control'
+          />
           {formik.touched.newPassword && formik.errors.newPassword && (
-            <div>{formik.errors.newPassword}</div>
+            <div className='errorMsg'>{formik.errors.newPassword}</div>
           )}
         </div>
-
-        <button type="submit">Change Password</button>
-      </form></>
+         
+        <button type="submit" className='btn btn-primary'>Change Password</button>
+      </form>
+    </div>
   );
 };
 
