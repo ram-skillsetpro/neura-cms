@@ -23,12 +23,22 @@ import loginBanner from '../../assets/images/mobile-login.jpg';
 import style from './Login.module.scss';
 import { hasAuthority } from '../../utils/authGuard';
 import { AUTHORITY, PageUrls } from "../../utils/constants";
+import SnackBar from '../../components/SnackBar';
 
 
 const Login = () => {
   const navigate = useNavigate();
   const isAuthentic = isAuthenticated();
   const [showPassword, setShowPassword] = useState(false);
+
+  const [snackbar, setSnackbar] = useState({
+    show: false,
+    status: "",
+    message: "",
+  });
+  const toggleSnackbar = (value) => {
+    setSnackbar(value);
+  };
 
   const [formData, setFormData] = useState({
     emailId: '',
@@ -55,6 +65,11 @@ const Login = () => {
     console.log('submitting')
     try {
       const response = await fetcher.post('login', values);
+      setSnackbar({
+        show: true,
+        status: response?.status === 200 ? 'success' : 'error',
+        message: response?.status === 200 ? 'Login successfully' : response?.message
+      });
       if (response?.response?.token) {
         localStorage.setItem('auth', JSON.stringify(response.response));
         navigateTo();
@@ -97,7 +112,8 @@ const Login = () => {
 
   return (
     <>
-       <div className={style.loginWrapper}>
+      <SnackBar {...snackbar} onClose={toggleSnackbar} />
+      <div className={style.loginWrapper}>
         <div className={style.loginContainer}>
           <div className='row no-gutters'>
             <div className='col-md-6 d-none d-md-block'>
