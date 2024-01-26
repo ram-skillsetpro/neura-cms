@@ -113,7 +113,7 @@ const Tickets = () => {
                                     <TableCell style={{ minWidth: '150px' }}>ID</TableCell>
                                     <TableCell style={{ minWidth: '150px' }}>Client</TableCell>
                                     <TableCell style={{ minWidth: '150px' }}>Type</TableCell>
-                                    { hasAuthority(AUTHORITY.USER_QC) ? <TableCell style={{ minWidth: '150px' }}>Verified By</TableCell> : null }
+                                    <TableCell style={{ minWidth: '150px' }}>{ hasAuthority(AUTHORITY.USER_QC) ? 'Verified By' : 'Comment' }</TableCell>
                                     <TableCell style={{ minWidth: '150px' }}>Created Date</TableCell>
                                     <TableCell style={{ minWidth: '150px' }}>Pending Since</TableCell> 
                                     <TableCell style={{ width: '150px' }}></TableCell>
@@ -129,7 +129,7 @@ const Tickets = () => {
                                 ) : (
                                     tickets.map((ticket, index) => (
                                         // please make it dynamic class on the table row, when ticket reassign to DE -  className="reassign"
-                                        <TableRow key={index}> 
+                                        <TableRow key={index} className={ticket?.errorCount ? 'reassign' : ''}> 
                                             <TableCell>
                                                 <Link to="#" onClick={(event) => routTicketDetails(ticket.id, event)}>
                                                     {ticket.id}
@@ -137,7 +137,7 @@ const Tickets = () => {
                                             </TableCell>
                                             <TableCell>{ticket.companyName}</TableCell>
                                             <TableCell>{ticket.contractType}</TableCell>
-                                            { hasAuthority(AUTHORITY.USER_QC) ? <TableCell>{ticket.qcOwnerName}</TableCell> : null }
+                                            <TableCell>{hasAuthority(AUTHORITY.USER_QC) ? ticket.deOwnerName : ticket.commentsCount}</TableCell>
                                             <TableCell>{longToDate(ticket.createdDate)}</TableCell>
                                             <TableCell>{daysDifference(ticket.createdDate)} Days</TableCell>
                                             <TableCell>

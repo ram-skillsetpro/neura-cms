@@ -39,6 +39,7 @@ const TicketDetail = () => {
   const [fileData, setFileData] = React.useState(null);
   const [progress, setProgress] = useState(false);
   const maxCharacterLimit = 500;
+  const pdfViewerRef = React.useRef();
 
   const [snackbar, setSnackbar] = useState({
     show: false,
@@ -78,6 +79,16 @@ const TicketDetail = () => {
     }
     setProcessedMeta(updatedState);
     console.log(JSON.stringify(updatedState));
+  };
+
+  const handleInputClick = async (searchTerm) => {
+    if (searchTerm && pdfViewerRef?.current) {
+      pdfViewerRef.current.resetPdfSearch();
+      pdfViewerRef.current.setSearchTerm(searchTerm);
+      setTimeout(() => {
+        pdfViewerRef.current.searchPdf(searchTerm);
+      }, 1000);
+    }
   };
 
   const saveInboxItem = async (status, comment) => {
@@ -158,6 +169,7 @@ const TicketDetail = () => {
                         type="text"
                         className="form-control"
                         value={item.value}
+                        onClick={() => handleInputClick(item.value)}
                         onChange={(e) =>
                           handleInputChange(parentIndex, itemIndex, item.key, e.target.value)
                         }
@@ -292,6 +304,25 @@ const TicketDetail = () => {
   useEffect(() => {
     fetchTicketDetails();
     readFile();
+
+    const handleRightClick = (event) => {
+      event.preventDefault();
+    };
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'PrintScreen' || event.key === 'F12') {
+        event.preventDefault();
+      }
+    };
+
+    document.addEventListener('contextmenu', handleRightClick);
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('contextmenu', handleRightClick);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+
   }, []);
 
   const handleCloseEvent = () => {
@@ -342,7 +373,7 @@ const TicketDetail = () => {
             ></object>
           } */}
           {fileData &&
-            <PdfViewer file={fileData} fileId={id} className={style.ticketPDF}></PdfViewer>
+            <PdfViewer file={fileData} fileId={id} className={style.ticketPDF} ref={pdfViewerRef}></PdfViewer>
           }
         </div>
 

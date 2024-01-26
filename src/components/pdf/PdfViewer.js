@@ -30,8 +30,12 @@ const resetHash = () => {
   document.location.hash = "";
 };
 
-
-const PdfViewer = ({ file, fileId }) => {
+const PdfViewer = React.forwardRef(({ file, fileId }, ref) => {
+    React.useImperativeHandle(ref, () => ({
+      resetPdfSearch,
+      setSearchTerm,
+      searchPdf
+    }));
     const [pdf, setPdf] = useState('');
     const [highlights, setHighlights] = useState([]);
     const [width, setWidth] = useState(0);
@@ -137,28 +141,6 @@ const PdfViewer = ({ file, fileId }) => {
       });
   };
 
-  useEffect(() => {
-    const interval = setInterval(
-      () => {
-        const pdfContanerEl = document.querySelector(".PdfHighlighter");
-
-        if (pdfContanerEl && !hasPdfLoaded.current) {
-          clearInterval(interval);
-
-          hasPdfLoaded.current = true;
-          handleScroll(pdfContanerEl);
-        }
-      },
-      1000,
-      [pdfContanerEl],
-    );
-
-    return () => {
-      clearInterval(interval);
-      hasPdfLoaded.current = false;
-    };
-  }, []);
-
   const rotatePdf = async () => {
     if (pdfDocument) {
       setIsOpen(true);
@@ -188,7 +170,6 @@ const PdfViewer = ({ file, fileId }) => {
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchTerm) {
-      setSearchActive(true);
       searchPdf(searchTerm);
     }
   };
@@ -202,7 +183,7 @@ const PdfViewer = ({ file, fileId }) => {
     setTimeout(() => {
       const pdfContanerEl = document.querySelector(".PdfHighlighter");
       handleScroll(pdfContanerEl);
-    }, 1000);
+    }, 500);
   };
 
   const textHighlighter = async (searchText) => {
@@ -227,6 +208,7 @@ const PdfViewer = ({ file, fileId }) => {
 
   const searchPdf = async (searchTerm) => {
     try {
+      setSearchActive(true);
       if (pdfDocument && searchTerm) {
         textHighlighter(searchTerm);
         const searchResults = [];
@@ -521,6 +503,6 @@ const PdfViewer = ({ file, fileId }) => {
       </Dialog>
     </>
   );
-};
+});
 
 export default PdfViewer;

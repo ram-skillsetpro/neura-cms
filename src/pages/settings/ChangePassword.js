@@ -29,12 +29,16 @@ const ChangePassword = () => {
     initialValues: {
       oldPassword: '',
       newPassword: '',
+      confirmPassword: ''
     },
     validationSchema: Yup.object({
       oldPassword: Yup.string().required('Old Password is required'),
       newPassword: Yup.string()
         .required('New Password is required')
         .min(8, 'Password must be at least 8 characters'),
+      confirmPassword: Yup.string()
+        .required('Confirm Password is required')
+        .oneOf([Yup.ref('newPassword'), null], 'Passwords must match'),
     }),
     onSubmit: handleSubmit
   });
@@ -73,6 +77,22 @@ const ChangePassword = () => {
           />
           {formik.touched.newPassword && formik.errors.newPassword && (
             <div className='errorMsg'>{formik.errors.newPassword}</div>
+          )}
+        </div>
+
+        <div className='form-group'>
+          <label htmlFor="confirmPassword" className='label-control'>Confirm Password</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.confirmPassword} 
+            className='form-control'
+          />
+          {formik.touched.confirmPassword && formik.errors.confirmPassword && (
+            <div className='errorMsg'>{formik.errors.confirmPassword}</div>
           )}
         </div>
          
