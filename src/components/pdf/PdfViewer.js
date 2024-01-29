@@ -333,7 +333,7 @@ const PdfViewer = React.forwardRef(({ file, fileId }, ref) => {
 
   return (
     <>
-      <div className="App" style={{ display: "flex", height: `${height}px`, width: `${width}px`, maxWidth: '100%' }}>
+      <div className="App" style={{ display: "flex", width: `100%` }}>
 
           {/* <div style={{ height: "97vh", display: "flex", justifyContent: "center" }}>
             <canvas ref={canvasRef}></canvas>
@@ -346,9 +346,8 @@ const PdfViewer = React.forwardRef(({ file, fileId }, ref) => {
         )}
         <div
           style={{
-            height: `${height}px`,
-            width: `${width}px`,
-            maxWidth: '100%',
+            height: "calc(100vh - 204px)",
+            width: `100%`, 
             position: "relative",
           }}
         >

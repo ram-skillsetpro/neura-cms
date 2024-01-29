@@ -17,6 +17,8 @@
         width:300px;
         flex: 0 0 auto;
         .accBox {
+            max-height: calc(100vh - 220px);
+            overflow-y: auto;
             @include boxShadow(0 0 10px rgba(0, 0, 0, 0.05));
             margin-bottom: 20px;
         }
