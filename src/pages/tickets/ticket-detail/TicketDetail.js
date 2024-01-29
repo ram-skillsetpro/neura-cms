@@ -10,7 +10,7 @@ import style from './TicketDetail.module.scss';
 import { useLocation, useNavigate } from 'react-router-dom';
 import fetcher from '../../../utils/fetcher';
 import { hasAuthority } from '../../../utils/authGuard';
-import { AUTHORITY, ProcessMetaStatus, FileProcessStatus } from "../../../utils/constants";
+import { AUTHORITY, ProcessMetaStatus, FileProcessStatus, PageUrls } from "../../../utils/constants";
 import SnackBar from '../../../components/SnackBar';
 import { CircularProgress, Dialog, DialogContent, DialogTitle, Drawer, IconButton, TextField } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -111,6 +111,12 @@ const TicketDetail = () => {
         status: res.status === 200 ? 'success' : 'error',
         message: res.status === 200 ? 'Saved successfully' : res?.message
       });
+
+      if (res.status === 200) {
+        setTimeout(() => {
+          navigate(PageUrls.TICKETS);
+        }, 3000);
+      }
     } catch (error) {
       console.log(error);
     }
