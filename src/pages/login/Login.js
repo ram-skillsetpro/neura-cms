@@ -24,6 +24,7 @@ import style from './Login.module.scss';
 import { hasAuthority } from '../../utils/authGuard';
 import { AUTHORITY, PageUrls } from "../../utils/constants";
 import SnackBar from '../../components/SnackBar';
+import GoogleSignIn from './GoogleSignIn';
 
 
 const Login = () => {
@@ -167,6 +168,7 @@ const Login = () => {
                   )}
                 </div>
                 <button type="submit" className='btn btn-primary' onClick={formik.handleSubmit}>Sign In</button>
+                <GoogleSignIn />
                 
                 <div className={style.forgotPassword}>
                   <a href="#">Forgot password ?</a>
