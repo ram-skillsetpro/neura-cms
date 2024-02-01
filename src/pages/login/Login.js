@@ -167,7 +167,7 @@ const Login = () => {
                     <div className='errorMsg'>{formik.errors.password}</div>
                   )}
                 </div>
-                <button type="submit" className='btn btn-primary' onClick={formik.handleSubmit}>Sign In</button>
+                <button type="submit" className='btn btn-primary mb-3' onClick={formik.handleSubmit}>Sign In</button>
                 <GoogleSignIn />
                 
                 <div className={style.forgotPassword}>
