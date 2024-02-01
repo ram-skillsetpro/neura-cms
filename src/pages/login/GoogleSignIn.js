@@ -67,7 +67,7 @@ const GoogleSignIn = () => {
   return (
     <>
       <div>
-        <div id="g_id_onload" data-client_id="464691684498-muvaskstvkks3jdcde2r8d38bhnpq50o.apps.googleusercontent.com" data-context="signin" data-ux_mode="popup" data-callback="handleAuthRes" data-nonce="" data-auto_prompt="false"></div>
+        <div id="g_id_onload" data-client_id="1057998443068-jr64k29sg4jq201ub91bhcq5iftf5aji.apps.googleusercontent.com" data-context="signin" data-ux_mode="popup" data-callback="handleAuthRes" data-nonce="" data-auto_prompt="false"></div>
         <div className="g_id_signin" data-type="standard" data-shape="pill" data-theme="filled_black" data-text="signin_with" data-size="large" data-logo_alignment="left"></div>
       </div>
       <SnackBar {...snackbar} onClose={toggleSnackbar} />
