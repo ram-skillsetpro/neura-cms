@@ -1,5 +1,18 @@
 import { AUTHORITY_ROUT_MAP } from './constants';
 
+let redirectLoginCallback;
+
+export const setRedirectLoginCallback = (callback) => {
+  redirectLoginCallback = callback;
+};
+
+export const redirectToLogin = () => {
+  if (redirectLoginCallback) {
+    redirectLoginCallback();
+  }
+};
+
+
 export const isLoggedin = () => {
   return typeof window?.localStorage !== 'undefined' && !!localStorage.getItem('auth');
 };

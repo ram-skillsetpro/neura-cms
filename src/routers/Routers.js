@@ -1,6 +1,6 @@
 import React from "react";
-import { Navigate, Route, Routes, useLocation } from "react-router-dom";
-import { canAccessTheRouteWithUserAuthorities, isAuthenticated, isRestrictedRoutWithAuthority } from "../utils/authGuard";
+import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { canAccessTheRouteWithUserAuthorities, isAuthenticated, isRestrictedRoutWithAuthority, setRedirectLoginCallback } from "../utils/authGuard";
 import Layout from "../components/layout/Layout";  // Import the Layout HOC
 import Login from "../pages/login/Login";
 import Index from "../pages/Index";
@@ -33,6 +33,11 @@ function PrivateRoute({ element }) {
 }
 
 const Routers = () => {
+    const navigate = useNavigate();
+    setRedirectLoginCallback(() => {
+      navigate(PageUrls.LOGIN);
+    });
+    
     return(
         <Routes>
           <Route path={PageUrls.LOGIN} element={<Login />}/>
