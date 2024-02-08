@@ -38,7 +38,7 @@ const TablePendingLeads = ({userList, companyList}) => {
     const handleUpdateUserCompanyMapping= async () => {
         try {
           setDialogProgress(true);
-          const res = await fetcher.post(`cms/unapproved-leads/assign-demo`,  {companyId: selectedCompany, user: user.id});
+          const res = await fetcher.post(`cms/unapproved-leads/assign-demo`,  {companyId: selectedCompany, userId: user.id});
           if (res.status !== 200) {
             setSnackbar({
               show: true,
